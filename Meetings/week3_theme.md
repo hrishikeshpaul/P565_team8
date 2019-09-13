@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 ##### Group 8 Week3 Meeting
 
 # Three Selected Project Themes
