@@ -45,9 +45,52 @@ customer meetings.&nbsp; In this section it needs to be evident what
 topics were discussed in a fair amount of detail.<br> -->
 </div>
 
+### Views:
+- job seeker
+- employer or organization
+- recruiter
+- Linked Admin
+  - manually delete posts/ profiles/ organizations if fake
+  - announcement
+
+### features:
+1. login and registration
+   - roles like employers/recruiters and job seekers
+   - captcha
+   - unique user identification" allow to use usernames which are not taken already
+   - verification: email or phone
+   - generate notifications
+   - multi-factor authentication and OAuth integration
+     - OAuth
+     - Two factor authentication
+2. view/home
+   - show applicable positions
+   - profile with picture
+   - 
+3. search and filter
+4. job posts and apply
+    - cardinality of user to applications to a company
+    - see list of candidates
+    - email a summary of detailed requirement
+5. chat
+   - with people connected
+   - group (people applied the same company)
+   - asynchronous features
+   - people in my network , view profiles
+6. optional: recommendation
+7. notification
+   - post of company they applied
+   - candidates update their status such as looking for jobs
+8. skill assessment test and certification
+9. peer endorsement
+
+5 required features + 1 optional
 
 ---
-### Key Ideas
+
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Our Key Ideas
+</span> </div>
+
 - candidate filtering
   - Applicant 
     - Skill input 
@@ -58,16 +101,13 @@ topics were discussed in a fair amount of detail.<br> -->
     - skill requirement
   1. limit applicants' access to positions
   2. Recruiter review applicants' profile 
-     
-
-
-- book time with recruiter
- 
-  
-  
-  
 ---
-### UI
+<br>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Decisions
+Summary:</span> <br>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">UI
+</span> </div>
+
 - Employee
   1. Login
     - login with LinkedIn
@@ -97,45 +137,26 @@ topics were discussed in a fair amount of detail.<br> -->
           - Language:
             - category e.g. OOP
             - specific language
-   
 
 ---
-### Classes
-- Position(skill sets)
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Tech
+</span> </div>
 
-
----
-## Tech
-### Database
 - MongoDB
 - EXPRESS
 - Heroku
 - Vue
 - Node.js
+<br>
+---
+<span style="font-weight: bold;">New Action Items:</span> <br>
 
-## Name
-
-<br>
-<div style="margin-left: 40px;"><span style="font-weight: bold;">Decisions
-Summary:</span> Note here each decision that was made by the attendees<br>
-<br>
-<span style="font-weight: bold;">New Action Items:</span> List any new
-action items, who (one person only) is responsible, and when the action
-should be complete<br>
-</div>
-<br>
-<br>
-<big><big><br>
-</big></big>
-<hr style="width: 100%; height: 2px;">
+**Elevator Pitch**: Cole Norton<br>
+**Project Plan**: Sharanya Ravichandran, Cole Norton<br>
+**Demo**: Hrishikesh Paul<br>
+**Weekly Report & Meeting Minutes**: Rui Change
 
 
-<div style="margin-left: 40px; text-align: center;"><span
- style="font-weight: bold;">Page
-Author/Creator:</span> <span style="font-weight: bold;"><a
- href="http://homes.soic.indiana.edu/aabhutta/">Adeel Bhutta</a><br>
-Last Modified:</span> 8/23/2016
-</div>
 
 
 
