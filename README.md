@@ -1,5 +1,5 @@
 ## Documents
-[Weekly Status Report 1](./Meetings/WeeklyStatusReport1.html)<br>
+[Weekly Status Report 1](./documents/WeeklyStatusReport1.html)<br>
 
 ## Meeting Minutes
 [Meeting_Week3_theme](./Meetings/week3_theme.md)<br>
