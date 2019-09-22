@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <title>Views:</title>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        
+    </head>
+    <body>
+        <body>
+<h1 style="text-align: center;">&lt;Job Portal&gt;<br>
+</h1>
+<h1 style="text-align: center;">Meeting Minutes &lt;Sep 18, 2019&gt;<br>
+</h1>
+<h2 style="text-align: center;">CSCI-P465/565 (Software Engineering I)</h2>
+<h2 style="text-align: center;"><span
+ style="text-decoration: underline;">Meeting Attendees<br>
+</span></h2>
+<h3 style="text-align: center;">&lt;Ravichandran,Sharanya&gt;</h3>
+<h3 style="text-align: center;">&lt;Paul,Hrishikesh&gt;</h3>
+<h3 style="text-align: center;">&lt;Norton,Cole&gt;</h3>
+<h3 style="text-align: center;">&lt;Zhang,Rui&gt;</h3>
+<br>
+<hr style="width: 100%; height: 2px;"><br>
+<h2>General Meeting Info</h2>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Meeting
+Purpose: </span>Brainstorming on project<br>
+</div>
+<span style="font-weight: bold;"><br>
+</span>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Start
+Time:</span> 10:00 a.m. Sep 18, 2019<br>
+</div>
+<span style="font-weight: bold;"><br>
+</span>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Stop
+Time: </span>12:45 a.m. Sep 18, 2019<br>
+</div>
+<!-- <h2>Old Business</h2>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Action
+Item Status: </span>Provide status on all outstanding action items (if applicable)<br>
+<br>
+</div> -->
+<h2>New Business</h2>
+<br>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Discussions
+Summary:
+</span> 
+<!-- Document any discussions that took place during the
+meeting.&nbsp; Note specifics of the conversation, particularly for
+customer meetings.&nbsp; In this section it needs to be evident what
+topics were discussed in a fair amount of detail.<br> -->
+</div>
+<h3 id="views">Views:</h3>
+<ul>
+<li>job seeker</li>
+<li>employer or organization</li>
+<li>recruiter</li>
+<li>Linked Admin
+<ul>
+<li>manually delete posts/ profiles/ organizations if fake</li>
+<li>announcement</li>
+</ul>
+</li>
+</ul>
+<h3 id="features">features:</h3>
+<ol>
+<li>login and registration
+<ul>
+<li>roles like employers/recruiters and job seekers</li>
+<li>captcha</li>
+<li>unique user identification&quot; allow to use usernames which are not taken already</li>
+<li>verification: email or phone</li>
+<li>generate notifications</li>
+<li>multi-factor authentication and OAuth integration
+<ul>
+<li>OAuth</li>
+<li>Two factor authentication</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>view/home
+<ul>
+<li>show applicable positions</li>
+<li>profile with picture</li>
+<li></li>
+</ul>
+</li>
+<li>search and filter</li>
+<li>job posts and apply
+<ul>
+<li>cardinality of user to applications to a company</li>
+<li>see list of candidates</li>
+<li>email a summary of detailed requirement</li>
+</ul>
+</li>
+<li>chat
+<ul>
+<li>with people connected</li>
+<li>group (people applied the same company)</li>
+<li>asynchronous features</li>
+<li>people in my network , view profiles</li>
+</ul>
+</li>
+<li>optional: recommendation</li>
+<li>notification
+<ul>
+<li>post of company they applied</li>
+<li>candidates update their status such as looking for jobs</li>
+</ul>
+</li>
+<li>skill assessment test and certification</li>
+<li>peer endorsement</li>
+</ol>
+<p>5 required features + 1 optional</p>
+<hr>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Our Key Ideas
+</span> </div>
+<ul>
+<li>candidate filtering
+<ul>
+<li>Applicant
+<ul>
+<li>Skill input
+<ul>
+<li>LinkedIn API</li>
+<li>Build Online Profile</li>
+<li>analyze PDF resume</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Position
+<ul>
+<li>skill requirement</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>limit applicants' access to positions</li>
+<li>Recruiter review applicants' profile</li>
+</ol>
+</li>
+</ul>
+<hr>
+<br>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Decisions
+Summary:</span> <br>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">UI
+</span> </div>
+<ul>
+<li>
+<p>Employee</p>
+<ol>
+<li>Login</li>
+</ol>
+<ul>
+<li>login with LinkedIn</li>
+</ul>
+<ol start="2">
+<li>Main Page</li>
+<li>Job List
+<ul>
+<li><strong>search</strong> bar</li>
+<li>jobs in categories (role) cards stack
+<ul>
+<li>hide positions that skill set doesn't match</li>
+<li>each card:
+<ul>
+<li>content:
+<ul>
+<li>Company</li>
+<li>Title</li>
+<li>Location</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>click on card
+<ul>
+<li>detailed requirements</li>
+<li>Apply/Pass button</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Profile Page</li>
+</ol>
+</li>
+<li>
+<p>Employer</p>
+<ol>
+<li>Sign up</li>
+<li>Main Page
+<ul>
+<li>Applicants' profile by roles, positions...</li>
+<li>Accept an application to give applicant</li>
+</ul>
+</li>
+<li>Post job
+<ul>
+<li>choose category of role</li>
+<li>fill out skill requirement
+<ul>
+<li>Language:
+<ul>
+<li>category e.g. OOP</li>
+<li>specific language</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<div style="margin-left: 40px;"><span style="font-weight: bold;">Tech
+</span> </div>
+<ul>
+<li>MongoDB</li>
+<li>EXPRESS</li>
+<li>Heroku</li>
+<li>Vue</li>
+<li>Node.js
+<br></li>
+</ul>
+<hr>
+<p><span style="font-weight: bold;">New Action Items:</span> <br></p>
+<p><strong>Elevator Pitch</strong>: Cole Norton<br>
+<strong>Project Plan</strong>: Sharanya Ravichandran, Cole Norton<br>
+<strong>Demo</strong>: Hrishikesh Paul<br>
+<strong>Weekly Report &amp; Meeting Minutes</strong>: Rui Change</p>
+
+    </body>
+    </html>
