@@ -1,12 +1,14 @@
 <body>
 <h1 style="text-align: center;">&lt;Job Portal&gt;<br>
 </h1>
-<h1 style="text-align: center;">Meeting Minutes &lt;Sep 18, 2019&gt;<br>
+<h1 style="text-align: center;">Customer Meeting Minutes &lt;Sep 18, 2019&gt;<br>
 </h1>
 <h2 style="text-align: center;">CSCI-P465/565 (Software Engineering I)</h2>
 <h2 style="text-align: center;"><span
  style="text-decoration: underline;">Meeting Attendees<br>
 </span></h2>
+<h3 style="text-align: center;">&lt;Wagh,Pauravi&gt;</h3>
+<h3 style="text-align: center;">&lt;Maruthi,Harish&gt;</h3>
 <h3 style="text-align: center;">&lt;Ravichandran,Sharanya&gt;</h3>
 <h3 style="text-align: center;">&lt;Paul,Hrishikesh&gt;</h3>
 <h3 style="text-align: center;">&lt;Norton,Cole&gt;</h3>
@@ -15,7 +17,7 @@
 <hr style="width: 100%; height: 2px;"><br>
 <h2>General Meeting Info</h2>
 <div style="margin-left: 40px;"><span style="font-weight: bold;">Meeting
-Purpose: </span>Brainstorming on project<br>
+Purpose: </span>Confirm requirements of customers and refine project design<br>
 </div>
 <span style="font-weight: bold;"><br>
 </span>
@@ -25,7 +27,7 @@ Time:</span> 10:00 a.m. Sep 18, 2019<br>
 <span style="font-weight: bold;"><br>
 </span>
 <div style="margin-left: 40px;"><span style="font-weight: bold;">Stop
-Time: </span>12:45 a.m. Sep 18, 2019<br>
+Time: </span>12:45 p.m. Sep 18, 2019<br>
 </div>
 
 <!-- <h2>Old Business</h2>
@@ -44,8 +46,9 @@ meeting.&nbsp; Note specifics of the conversation, particularly for
 customer meetings.&nbsp; In this section it needs to be evident what
 topics were discussed in a fair amount of detail.<br> -->
 </div>
+<div style="margin-left: 40px;"><span style="font-weight:;">Views:
+</div>
 
-### Views:
 - job seeker
 - employer or organization
 - recruiter
@@ -53,7 +56,9 @@ topics were discussed in a fair amount of detail.<br> -->
   - manually delete posts/ profiles/ organizations if fake
   - announcement
 
-### features:
+<div style="margin-left: 40px;"><span style="font-weight:;">features:
+</div>
+
 1. login and registration
    - roles like employers/recruiters and job seekers
    - captcha
@@ -86,7 +91,6 @@ topics were discussed in a fair amount of detail.<br> -->
 
 5 required features + 1 optional
 
----
 
 <div style="margin-left: 40px;"><span style="font-weight: bold;">Our Key Ideas
 </span> </div>
@@ -138,7 +142,7 @@ Summary:</span> <br>
             - category e.g. OOP
             - specific language
 
----
+
 <div style="margin-left: 40px;"><span style="font-weight: bold;">Tech
 </span> </div>
 
@@ -154,7 +158,7 @@ Summary:</span> <br>
 **Elevator Pitch**: Cole Norton<br>
 **Project Plan**: Sharanya Ravichandran, Cole Norton<br>
 **Demo**: Hrishikesh Paul<br>
-**Weekly Report & Meeting Minutes**: Rui Change
+**Weekly Report & Meeting Minutes**: Rui Zhang
 
 
 
