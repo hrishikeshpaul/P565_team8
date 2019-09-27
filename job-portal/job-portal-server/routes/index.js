@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/try', function (req, res, next) {
-  res.send('trial successful')
+  res.send('trial successful develop branch')
 })
 
 module.exports = router;
