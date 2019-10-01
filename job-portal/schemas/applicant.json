@@ -1,0 +1,166 @@
+{
+  "$id": "#applicant",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "date": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": [
+            "integer"
+          ],
+          "minimum": 1900,
+          "maximum": 9999
+        },
+        "month": {
+          "type": [
+            "string",
+            "integer"
+          ],
+          "enum": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      },
+      "required": [
+        "year",
+        "month"
+      ]
+    },
+    "event": {
+      "type": "object",
+      "properties": {
+        "detail": {
+          "type": "string"
+        },
+        "beginDate": {
+          "description": "begin year(int) and month(String/int)",
+          "$ref": "#/definitions/date"
+        },
+        "endDate": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "Present"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/date"
+            }
+          ]
+        }
+      },
+      "required": [
+        "beginDate",
+        "detail",
+        "endDate"
+      ]
+    }
+  },
+  "title": "Applicant",
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "userID": {
+      "$comment": "We will need some hash function to generate unique User's ID on register, and deal with duplication",
+      "description": "positive integer or string of digits",
+      "type": [
+        "string",
+        "integer"
+      ],
+      "pattern": "^[1-9][0-9]*$",
+      "minimum": 1
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "CurrentDegree": {
+      "type": "string",
+      "enum": [
+        "Bachelor",
+        "Master",
+        "Doctorate"
+      ]
+    },
+    "Graduate": {
+      "description": "graduate date(year and month)",
+      "$ref": "#/definitions/date"
+    },
+    "Educations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/event"
+      }
+    },
+    "Projects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/event"
+      }
+    },
+    "Experiences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/event"
+      }
+    },
+    "Skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Interests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "first_name",
+    "last_name",
+    "userID"
+  ]
+}
+
