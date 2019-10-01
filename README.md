@@ -19,21 +19,19 @@ I have listed down the libraries you need to have installed on your system befor
 ## How to run
 
 1. `git clone https://github.com/RayZhang001/P565_team8.git`
+2. `cd P565_team8/job-portal`
+3. Make sure your mongodb service is running in the background
 
 Then open 2 terminals/Git-bashes or whatever you guys use,
 
 ##### For Server (on one terminal)
-1. `cd P565_team8/job-portal/job-portal-server`
 2. `npm install`
 3. `npm start`
-4. Navigate to `http://localhost:8081` and you should see a blank page that
-says 'Welcome to Express'. This means that your server is up and runnig.
 
-##### For Client (on the other terminal)
-1. `cd P565_team8/job-portal/job-portal-client`
-2. `npm install`
-3. `npm run serve`
-4. Navigate to `http://localhost:8080` and you should see just the nav bar.
+##### For Server (on the other terminal)
+1. `cd P565_team8/job-portal`
+2. `nodemon ./bin/www` 
+4. Navigate to `http://localhost:8080` and you should see the login page
 
 So with these, you will have basic it running. If you have any questions or
 if anything isn't working please let me know.
