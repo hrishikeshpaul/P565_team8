@@ -1,64 +1,54 @@
 <template>
   <div>
-    <div style="height: 100vh; background-color: #e4e4e7" >
+    <div style="height: 100vh; position: relative;" >
+      <div id="video_overlays"></div>
+      <video autoplay loop muted id="video" style="width: auto; height: auto; position: fixed; z-index: -2">
+        <source src="../assets/lv2.mp4" type="video/mp4">
+      </video>
       <div class="container">
         <div style="display: block;">
-          <div class="text-center big-title mb-5">
-            NOQ
-          </div>
           <div>
             <b-card style="border-radius: 8px !important;">
+              <div class="text-center big-title">
+                <span class="px-2 logo-noq">noQ</span>
+              </div>
+              <p class="text-center mt-1" style="font-size: 15px; color: gray">Making Career Fairs Easier</p>
+              <hr />
               <div style="width: 350px;">
-                <b-tabs content-class="mt-3">
-                  <b-tab title="Student" active>
-                    <b-col cols="12" >
-                      <div v-if="errors && errors.length">
-                        <div v-for="error of errors">
-                          <b-alert show>{{error.message}}</b-alert>
-                        </div>
+                <b-tabs content-class="mt-3" v-model="tabIndex" >
+                  <b-tab :title="forgotPassword ? 'Forgot Password' : 'Login'">
+                      <div v-if="error">
+                        <b-alert show :variant="variant" v-html="error"></b-alert>
                       </div>
-                      <b-form @submit="onSubmit">
+                      <b-form>
+
                         <b-form-group id="fieldsetHorizontal"
                                       :label-cols="4"
                                       breakpoint="md"
+                                      label-size="sm"
                                       label="Email">
                           <b-form-input id="username" :state="state" v-model.trim="login.username"></b-form-input>
                         </b-form-group>
                         <b-form-group id="fieldsetHorizontal"
+                                      v-if="!forgotPassword"
+                                      class="mb-2"
                                       :label-cols="4"
                                       breakpoint="md"
+                                      label-size="sm"
                                       label="Password">
-                          <b-form-input type="password" id="password" :state="state" v-model.trim="login.password"></b-form-input>
+                          <b-form-input type="password" id="password" :state="state" v-model.trim="login.password" ></b-form-input>
                         </b-form-group>
-                        <b-button type="submit" variant="primary">Login</b-button>
-                        <b-button type="button" variant="success" @click.stop="register()">Register</b-button>
+                        <b-button type="submit" variant="warning" class="mt-3" style="width: 100%" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
+                        <b-button type="submit" variant="warning" class="mt-1" style="width: 100%" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
+
+                        <hr class="mb-2"/>
+                        <a href="" class="text-muted mt-0" @click.prevent="forgotPassword = !forgotPassword">{{forgotPassword ? 'Back' : 'Forgot Password?'}}</a>
+                        <br />
+                        <a href="" class="text-muted" @click.prevent="changeTab(1)" v-if="!forgotPassword">Don't have an account?</a>
                       </b-form>
-                    </b-col>
                   </b-tab>
-                  <b-tab title="Employer">
-                    <b-col cols="12" >
-                      <div v-if="errors && errors.length">
-                        <div v-for="error of errors">
-                          <b-alert show>{{error.message}}</b-alert>
-                        </div>
-                      </div>
-                      <b-form @submit="onSubmit">
-                        <b-form-group id="fieldsetHorizontal"
-                                      :label-cols="4"
-                                      breakpoint="md"
-                                      label="Username">
-                          <b-form-input id="username" :state="state" v-model.trim="login.username"></b-form-input>
-                        </b-form-group>
-                        <b-form-group id="fieldsetHorizontal"
-                                      :label-cols="4"
-                                      breakpoint="md"
-                                      label="Password">
-                          <b-form-input type="password" id="password" :state="state" v-model.trim="login.password"></b-form-input>
-                        </b-form-group>
-                        <b-button type="submit" variant="primary">Login</b-button>
-                        <b-button type="button" variant="success" @click.stop="register()">Register</b-button>
-                      </b-form>
-                    </b-col>
+                  <b-tab title="Register">
+                    <Register @registered="registration_completed"/>
                   </b-tab>
                 </b-tabs>
               </div>
@@ -71,7 +61,8 @@
         </div>
       </div>
     </div>
-    <div style="background-color: white; align-items: center; margin-top: 20px; margin-bottom: 20px;" class="my-4 mb-5">
+    <!-- WHAT DO WE OFFER -->
+    <div style="background-color: white; align-items: center; padding-bottom: 20px;" class="pt-4 pb-5">
       <div class="text-center big-title">
         What do we offer?
         <hr style="width: 50%"/>
@@ -146,61 +137,53 @@
 
       </div>
     </div>
-    <div style="background-color: #fff0e0; align-items: center" class="pt-4">
+    <div style="background-color: #fff0e0; align-items: center" class="pt-4 pb-5">
       <div class="text-center big-title">
         Our Team
         <hr style="width: 50%"/>
       </div>
-
-      <div>
-        <div class="row mt-5" style="align-items: center;" >
-          <div class="col-lg-4 col-xs-1 col-sm-2 text-center" >
-            <img src="../assets/job.png" class="mb-4"/>
-            <br />
-            <span class="offer-title">Efficient Job Matching</span>
-            <br />
-            <div class="px-5 pt-2">
-            <span class="offer-description">A matching based system to efficiently get paired up with jobs or students that suit
-              you the best, based on your skills.
-            </span>
-            </div>
+      <!-- OUR TEAM -->
+      <div class="px-5">
+        <div class="row" style="align-items: center;" >
+          <div class="col-lg-3 col-xs-1 col-sm-1 col-md-2 text-center  p-5" >
+           <b-card
+             title="Hrishikesh Paul"
+             sub-title="Indiana University"
+           >
+             <hr width="50%"/>
+             <b-card-text>Graduate, Computer Science</b-card-text>
+           </b-card>
           </div>
-          <div class="col-lg-4 col-xs-1 col-sm-1 col-md-2 text-center" >
-            <img src="../assets/filter.png" class="mb-4"/>
-            <br />
-            <span class="offer-title">Discover Filtering</span>
-            <br />
-            <div class="px-5 pt-2">
-            <span class="offer-description">Companies and organizations are filtered based on their requirements and a student's skillset
-            </span>
-            </div>
+          <div class="col-lg-3 col-xs-1 col-sm-1 col-md-2 text-center p-5" >
+            <b-card
+              title="Sandwich Cole"
+              sub-title="Indiana University"
+            >
+              <hr width="50%"/>
+              <b-card-text>Junior, Computer Science</b-card-text>
+            </b-card>
           </div>
-          <div class="col-lg-4 col-xs-1 col-sm-1 col-md-2 text-center" >
-            <img src="../assets/chat.png" class="mb-4"/>
-            <br />
-            <span class="offer-title">Efficient Job Matching</span>
-            <br />
-            <div class="px-5 pt-2">
-            <span class="offer-description">An efficient chatting system to set up interviews, meetings etc.
-            </span>
-            </div>
+          <div class="col-lg-3 col-xs-1 col-sm-1 col-md-2 text-center p-5" >
+            <b-card
+              title="Ramen Rui"
+              sub-title="Indiana University"
+            >
+              <hr width="50%"/>
+              <b-card-text>Junior, Computer Science</b-card-text>
+            </b-card>
           </div>
-        </div>
-        <div class="row mt-5 " style="align-items: center" >
-          <div class="col-lg-4 col-xs-1 col-sm-2 text-center" >
-
-          </div>
-          <div class="col-lg-4 col-xs-1 col-sm-1 col-md-2 text-center" >
-
-          </div>
-          <div class="col-lg-4 col-xs-1 col-sm-1 col-md-2 text-center" >
-
+          <div class="col-lg-3 col-xs-1 col-sm-1 col-md-2 text-center p-5" >
+            <b-card
+              title="Samosa Sharanya"
+              sub-title="Indiana University"
+            >
+              <hr width="50%"/>
+              <b-card-text>Graduate, Computer Science</b-card-text>
+            </b-card>
           </div>
         </div>
-
       </div>
     </div>
-
   </div>
 
 </template>
@@ -208,16 +191,56 @@
 <script>
 
 import axios from 'axios'
+import Register from './Register'
 
 export default {
   name: 'Login',
   data () {
     return {
       login: {},
-      errors: []
+      error: '',
+      tabIndex: 0,
+      variant: 'danger',
+      forgotPassword: false
+    }
+  },
+  components: {
+    Register
+  },
+  watch: {
+    tabIndex (val) {
+      this.error = ''
+    },
+    error (val) {
+      if (val) {
+        setTimeout(() => this.error = '', 2000)
+      }
     }
   },
   methods: {
+    resetPassword () {
+      axios.post(`http://localhost:3000/api/auth/forgot/`, {email: this.login.username})
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+
+          this.error = e.response.data.msg
+
+        })
+    },
+    changeTab (idx) {
+      if (idx === 1) {
+        this.tabIndex = 1
+      }
+    },
+    registration_completed (val) {
+      if (val) {
+        this.tabIndex = 0
+        this.error = 'Successfully Registered. Please verify your email address.'
+        this.variant = 'success'
+      }
+    },
     onSubmit (evt) {
       evt.preventDefault()
       axios.post(`http://localhost:3000/api/auth/login/`, this.login)
@@ -228,8 +251,13 @@ export default {
           })
         })
         .catch(e => {
-          console.log(e)
-          this.errors.push(e)
+
+          this.error = e.response.data.msg
+
+          if (e.response.data.link) {
+            this.variant = 'danger'
+            this.error = this.error + ' Please click <a href="http://localhost:3000/api/auth/resend/' + this.login.username + '" @click.prevent="" >here</a> to resend token.'
+          }
         })
     },
     register () {
@@ -250,8 +278,8 @@ export default {
     align-items: center;
   }
   i {
-    border: solid black;
-    border-width: 0 2px 2px 0;
+    border: solid white;
+    border-width: 0 3px 3px 0;
     display: inline-block;
     padding: 3px;
     height: 30px;
@@ -262,8 +290,15 @@ export default {
     -webkit-transform: rotate(45deg);
   }
 
+  .logo-noq {
+    background-color: #f7c141;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px #b4b4b4;
+  }
+
   .big-title{
-    font-size: 40px;
+    font-size: 50px;
+    color: white;
   }
 
   .offer-title{
@@ -273,4 +308,15 @@ export default {
   .offer-description {
     text-align: justify;
   }
+
+  #video_overlays {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.46);
+    z-index: -1;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
 </style>

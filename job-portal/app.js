@@ -6,12 +6,18 @@ var bodyParser = require('body-parser');
 
 var app = express();
 var auth = require('./routes/auth');
+var home = require('./routes/home');
 
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
-mongoose.connect('mongodb://localhost/noq', { promiseLibrary: require('bluebird') })
-  .then(() =>  console.log('connection succesful'))
+mongoose.connect('mongodb://localhost/noq-se', { promiseLibrary: require('bluebird') })
+  .then(() =>  console.log('connection successful'))
   .catch((err) => console.error(err));
+
+
+// mongoose.connect('mongodb+srv://noqadminn:paul12345@noq-gnts0.mongodb.net/test?retryWrites=true&w=majority', {dbName: 'noq'})
+//   .then(() =>  console.log('connection succesful'))
+//   .catch((err) => console.error(err));
 
 app.use(logger('dev'));
 app.use(function(req, res, next) {
@@ -30,6 +36,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'false'}));
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/api/auth', auth);
+app.use('/', home);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

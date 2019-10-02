@@ -12,12 +12,21 @@ export default new Router({
     {
       path: '/',
       name: 'HomePage',
-      component: Home
+      component: Home,
+      beforeEnter (to, from, next) {
+        if (localStorage.getItem('jwtToken')) {
+          next()
+        } else {
+          next({
+            name: 'Login'
+          })
+        }
+      }
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
     },
     {
       path: '/register',
