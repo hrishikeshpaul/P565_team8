@@ -184,6 +184,9 @@
         </div>
       </div>
     </div>
+    <div style="background-color: #6c757d;" class="p-3 text-center">
+      <span style="color: white;">A Project by students from Indiana University, Bloomington</span>
+    </div>
   </div>
 
 </template>
