@@ -188,8 +188,52 @@ router.get('/reset/:token', function (req, res, next) {
     if (!user) {
       res.status(400).send({msg: 'Password reset token is invalid or has expired.'});
     }
-    res.redirect('localhost:8080/register')
+    res.render('reset_password')
   });
 })
+
+router.post('/reset/:token', function(req, res) {
+  async.waterfall([
+    function(done) {
+      User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+        if (!user) {
+          res.send({msg: 'Password reset token is invalid or has expired.'});
+        }
+
+        user.password = req.body.password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+
+        user.save(function(err) {
+          req.logIn(user, function(err) {
+            done(err, user);
+          });
+        });
+      });
+    },
+    function(user, done) {
+      var smtpTransport = nodemailer.createTransport( {
+        service: 'SendGrid',
+        auth: {
+          user: 'hrishikeshpaul',
+          pass: 'Keshpaul1996'
+        }
+      });
+      var mailOptions = {
+        to: user.email,
+        from: 'passwordreset@noq.com',
+        subject: 'Your password has been changed',
+        text: 'Hello,\n\n' +
+          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function(err) {
+        return res.status(200).send({msg: 'Password has successfully been updated.'})
+
+      });
+    }
+  ], function(err) {
+    return res.status(200).send({msg: 'Password has successfully been updated.'})
+  });
+});
 
 module.exports = router

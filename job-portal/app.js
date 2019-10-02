@@ -1,8 +1,9 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var engine = require('consolidate');
+var passport = require('passport')
 
 var app = express();
 var auth = require('./routes/auth');
@@ -18,6 +19,10 @@ mongoose.connect('mongodb://localhost/noq-se', { promiseLibrary: require('bluebi
 // mongoose.connect('mongodb+srv://noqadminn:paul12345@noq-gnts0.mongodb.net/test?retryWrites=true&w=majority', {dbName: 'noq'})
 //   .then(() =>  console.log('connection succesful'))
 //   .catch((err) => console.error(err));
+
+app.set('views', __dirname + '/public/views');
+app.engine('html', engine.mustache);
+app.set('view engine', 'html')
 
 app.use(logger('dev'));
 app.use(function(req, res, next) {
@@ -35,6 +40,10 @@ app.use(function(req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'false'}));
 app.use(express.static(path.join(__dirname, 'dist')));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/api/auth', auth);
 app.use('/', home);
 

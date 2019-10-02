@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div style="height: 100vh; position: relative;" >
-      <div id="video_overlays"></div>
-      <video autoplay loop muted id="video" style="width: auto; height: auto; position: fixed; z-index: -2">
-        <source src="../assets/lv2.mp4" type="video/mp4">
-      </video>
+    <div style="height: 100vh; position: relative; background-color: #d3d3d3" >
+<!--      <div id="video_overlays"></div>-->
+<!--      <video autoplay loop muted id="video" style="width: auto; height: auto; position: absolute; z-index: -2;">-->
+<!--        <source src="../assets/lv2.mp4" type="video/mp4">-->
+<!--      </video>-->
       <div class="container">
         <div style="display: block;">
           <div>
@@ -63,7 +63,7 @@
     </div>
     <!-- WHAT DO WE OFFER -->
     <div style="background-color: white; align-items: center; padding-bottom: 20px;" class="pt-4 pb-5">
-      <div class="text-center big-title">
+      <div class="text-center big-title" style="color: black;">
         What do we offer?
         <hr style="width: 50%"/>
       </div>
@@ -138,7 +138,7 @@
       </div>
     </div>
     <div style="background-color: #fff0e0; align-items: center" class="pt-4 pb-5">
-      <div class="text-center big-title">
+      <div class="text-center big-title" style="color: black">
         Our Team
         <hr style="width: 50%"/>
       </div>
@@ -147,7 +147,7 @@
         <div class="row" style="align-items: center;" >
           <div class="col-lg-3 col-xs-1 col-sm-1 col-md-2 text-center  p-5" >
            <b-card
-             title="Hrishikesh Paul"
+             title="Sushi Paul"
              sub-title="Indiana University"
            >
              <hr width="50%"/>
@@ -174,7 +174,7 @@
           </div>
           <div class="col-lg-3 col-xs-1 col-sm-1 col-md-2 text-center p-5" >
             <b-card
-              title="Samosa Sharanya"
+              title="Sharanya Egg"
               sub-title="Indiana University"
             >
               <hr width="50%"/>
@@ -213,7 +213,7 @@ export default {
     },
     error (val) {
       if (val) {
-        setTimeout(() => this.error = '', 2000)
+        setTimeout(() => this.error = '', 5000)
       }
     }
   },
@@ -221,12 +221,12 @@ export default {
     resetPassword () {
       axios.post(`http://localhost:3000/api/auth/forgot/`, {email: this.login.username})
         .then(response => {
+          this.error = 'Further Instructions has been send sent to the email id.'
+          this.variant = 'success'
           console.log(response)
         })
         .catch(e => {
-
           this.error = e.response.data.msg
-
         })
     },
     changeTab (idx) {
@@ -310,7 +310,7 @@ export default {
   }
 
   #video_overlays {
-    position: absolute;
+    position: fixed;
     background-color: rgba(0, 0, 0, 0.46);
     z-index: -1;
     left: 0;
