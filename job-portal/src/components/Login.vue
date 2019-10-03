@@ -97,7 +97,7 @@
             <span class="offer-title">Seamless Communication</span>
             <br />
             <div class="px-5 pt-2">
-            <span class="offer-description">An efficient chatting system to set up interviews, meetings etc.
+            <span class="offer-description">An efficient chatting system to set up interviews, meetings, etc.
             </span>
             </div>
           </div>
@@ -109,7 +109,7 @@
             <span class="offer-title">Profile Builder</span>
             <br />
             <div class="px-5 pt-2">
-            <span class="offer-description"> An intuitive profile builder for organization and students to convey valuable information
+            <span class="offer-description"> An intuitive profile builder for organizations and students to convey valuable information.
             </span>
             </div>
           </div>
@@ -129,7 +129,7 @@
             <span class="offer-title">Easy Job Posting</span>
             <br />
             <div class="px-5 pt-2">
-            <span class="offer-description"> An easy way for organizations to post jobs to look for potential employers.
+            <span class="offer-description"> An easy way for organizations to post jobs to look for potential employees.
             </span>
             </div>
           </div>
