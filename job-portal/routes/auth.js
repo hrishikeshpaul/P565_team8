@@ -134,7 +134,6 @@ router.get('/resend/:id', function (req, res, next) {
 })
 
 router.post('/forgot', function(req, res, next) {
-
   async.waterfall([
     function(done) {
       crypto.randomBytes(20, function(err, buf) {
@@ -174,6 +173,7 @@ router.post('/forgot', function(req, res, next) {
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
       smtpTransport.sendMail(mailOptions, function(err) {
+        if (err) return res.status(400).send({msg: 'Something went wrong!'})
         return res.send({msg: 'An e-mail has been sent to ' + req.body.email + ' with further instructions.'})
       });
     }
@@ -235,5 +235,27 @@ router.post('/reset/:token', function(req, res) {
     return res.status(200).send({msg: 'Password has successfully been updated.'})
   });
 });
+
+router.get('/linkedin',
+  passport.authenticate('linkedin', { scope: ['r_emailaddress', 'r_liteprofile', ''] }))
+
+router.get('/linkedin/callback', passport.authenticate('linkedin', function (err, user, info) {
+  console.log(user)
+  var token = jwt.sign(user.toJSON(), settings.secret)
+  // return the information including token as JSON
+  return res.json({success: true, token: 'JWT ' + token})
+
+  }
+));
+
+router.get('/github',
+  passport.authenticate('github'));
+
+router.get('/github/callback',
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.status(200).send({msg: 'Done Auth through github'})
+  });
 
 module.exports = router

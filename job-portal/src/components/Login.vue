@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div style="height: 100vh; position: relative; background-color: #d3d3d3" >
-<!--      <div id="video_overlays"></div>-->
-<!--      <video autoplay loop muted id="video" style="width: auto; height: auto; position: absolute; z-index: -2;">-->
-<!--        <source src="../assets/lv2.mp4" type="video/mp4">-->
-<!--      </video>-->
+    <div style="height: 100vh; position: relative; ">
+      <div id="video_overlays"></div>
+      <video autoplay loop muted id="video" style="width: auto; height: auto; position: absolute; z-index: -2;">
+        <source src="../assets/lv2.mp4" type="video/mp4">
+      </video>
       <div class="container">
         <div style="display: block;">
           <div>
@@ -17,9 +17,17 @@
               <div style="width: 350px;">
                 <b-tabs content-class="mt-3" v-model="tabIndex" >
                   <b-tab :title="forgotPassword ? 'Forgot Password' : 'Login'">
-                      <div v-if="error">
-                        <b-alert show :variant="variant" v-html="error"></b-alert>
+                    <div v-if="error">
+                      <b-alert show :variant="variant" v-html="error"></b-alert>
+                    </div>
+                      <div class="text-center mt-4">
+                        <a class="btn btn-md btn-info" @click="linkedInLogin">LinkedIn</a>
+                        <a class="btn btn-md btn-secondary" @click="githubLogin">GitHub</a>
                       </div>
+                      <div class="center-separator my-3 mt-4">
+                        or
+
+                    </div>
                       <b-form>
 
                         <b-form-group id="fieldsetHorizontal"
@@ -27,7 +35,7 @@
                                       breakpoint="md"
                                       label-size="sm"
                                       label="Email">
-                          <b-form-input id="username" :state="state" v-model.trim="login.username"></b-form-input>
+                          <b-form-input id="username" v-model.trim="login.username"></b-form-input>
                         </b-form-group>
                         <b-form-group id="fieldsetHorizontal"
                                       v-if="!forgotPassword"
@@ -36,7 +44,7 @@
                                       breakpoint="md"
                                       label-size="sm"
                                       label="Password">
-                          <b-form-input type="password" id="password" :state="state" v-model.trim="login.password" ></b-form-input>
+                          <b-form-input type="password" id="password" v-model.trim="login.password" ></b-form-input>
                         </b-form-group>
                         <b-button type="submit" variant="warning" class="mt-3" style="width: 100%" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
                         <b-button type="submit" variant="warning" class="mt-1" style="width: 100%" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
@@ -56,7 +64,7 @@
           </div>
           <div class="mt-5 pt-5 text-center">
             <br />
-            <a class="align-bottom" href="#"><i class="arrow down"></i></a>
+            <a class="align-bottom" href="#"><i class="arrow down down-arrow"></i></a>
           </div>
         </div>
       </div>
@@ -221,6 +229,26 @@ export default {
     }
   },
   methods: {
+    githubLogin () {
+      axios.get(`http://localhost:3000/api/auth/github/`)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+          this.error = e.response.data.msg
+        })
+    },
+    linkedInLogin () {
+      axios.get(`http://localhost:3000/api/auth/linkedin/`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*'}
+        }).then(response => {
+          console.log(response)
+        })
+        .catch(e => {
+          this.error = e.response.data.msg
+        })
+    },
     resetPassword () {
       axios.post(`http://localhost:3000/api/auth/forgot/`, {email: this.login.username})
         .then(response => {
@@ -280,7 +308,7 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  i {
+  .down-arrow {
     border: solid white;
     border-width: 0 3px 3px 0;
     display: inline-block;
@@ -320,6 +348,22 @@ export default {
     right: 0;
     top: 0;
     bottom: 0;
+  }
+  .center-separator {
+    display: flex;
+    line-height: 1px;
+    color: #858585;
+  }
+
+  .center-separator::before, .center-separator::after {
+    content: '';
+    display: inline-block;
+    flex-grow: 1;
+    margin-top: 0.05em;
+    background: #c7c7c7;
+    height: 1px;
+    margin-right: 10px;
+    margin-left: 10px;
   }
 
 </style>

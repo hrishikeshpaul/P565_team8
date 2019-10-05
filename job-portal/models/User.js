@@ -17,7 +17,10 @@ var UserSchema = new Schema({
     default: false
   },
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
+  type_of_user: {
+    type: String
+  }
 })
 
 UserSchema.pre('save', function (next) {
