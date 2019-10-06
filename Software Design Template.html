@@ -106,48 +106,6 @@ We plan to use StarUML to help us design UML diagrams. In this program, we can b
     However, a system must be composed of multiple components (that is, a
     system cannot be one component).&nbsp;<br>
         <ul>
-		<h3 style="margin-left: 40px;">3.0: Chat Component</h3>
-		<div style="margin-left: 70px;">
-        <li><span style="font-weight: bold;">Component Name</span><br>
-      Chat
-        </li>
-        <li><span style="font-weight: bold;">Component Description</span><br>
-      This is the chat feature of our project. The chat feature will allow applicants and recruiters to message each other once both parties have "accepted" each other. Either the recruiter or applicant will write a message in a text book, which will
-      then be sent to the other party, where the sender will be notified if the message has been "read" or not. In this feature, interviews can be set up, more information on the job can be provided, and links to job assessment sites can be given. This will be a part of the main execution loop,
-      due to the fact a user can chat whenever they feel like it, so we need to be prepared for them to do that. 
-        </li>
-        <li><span style="font-weight: bold;"></span><span
-       style="font-weight: bold;">Responsible Development Team Member</span><br>
-      Sharyanya
-        </li>
-        <li><span style="font-weight: bold;">Component Diagram</span><br> </li>
-       <img src="chat-diagram.svg" style='padding-top: 20px; padding-bottom: 20px;'>
-        <li><span style="font-weight: bold;">Component User Interface</span><br>
-      The user will see a text box upon entering a chat with another user, there will be a button to submit the message, as well as the ability to hit 'enter'. 
-      When the other user is typing, 3 bubbles will appear to show that the user is indeed typing. Furthermore, a user will see a "read" message once the other user has read their message.
-          <span style="font-weight: bold;"></span></li>
-        <li><span style="font-weight: bold;">Component Objects</span><br></li>
-        <ul>
-          <li>Makes an operating system call</li>
-          N/A
-          <li>Makes a hardware-specific system call<br>N/A
-          </li>
-          <li>Creates/alters/deletes a file<br>N/A
-          </li>
-          <li>Explicitly calls the method of another object </li>
-        Will call the methods of the module we use for chatting, TBD.
-          <li>Is explicitly called by another object<br>
-        This component will be called by the "add" method of the MongoDB object. 
-          </li>
-          <li>Passes data to another object</li>
-        Will pass data to MongoDB object in JSON format.
-          <li>Receives data from another object <br>
-        Will receive data from User object in String format.
-          </li>
-          <li>Is derived from another object<br>N/A
-          </li>
-        </ul>
-		</div>
      <h3 style="margin-left: 40px;">3.1: Login Component</h3>
      <div style="margin-left: 40px;">
        <ul>
@@ -241,8 +199,8 @@ We plan to use StarUML to help us design UML diagrams. In this program, we can b
        style="font-weight: bold;">Responsible Development Team Member</span><br>
        Cole Norton<br>
      </li>
-     <li><span style="font-weight: bold;">Component Diagram</span><br><samp></samp>
-      <img src='profile-uml.svg' style="padding-top: 20px; padding-bottom: 20px;" />
+     <li><span style="font-weight: bold;">Component Diagram</span>
+      <img src='profile-uml.png' style="padding-top: 20px;"   />
       </li>
     <li><span style="font-weight: bold;">Component User Interface</span><br>
 		This component for applicants will feature 3 main fields, one for skills, one for education, and another for experience. Similarly for all 3 types of profiles, the name and company/school will be located at the top of the profile.<br>
@@ -258,6 +216,40 @@ We plan to use StarUML to help us design UML diagrams. In this program, we can b
       Error Case 3: Email Validity Check: Checks for valid email adress in contact info.<br>
       <br>
     </li>
+	<h3>3.3: Chat Component</h3>
+		<div>
+        <li><span style="font-weight: bold;">Component Name</span><br>
+      Chat
+        </li>
+        <li><span style="font-weight: bold;">Component Description</span><br>
+      This is the chat feature of our project. The chat feature will allow applicants and recruiters to message each other once both parties have "accepted" each other. Either the recruiter or applicant will write a message in a text book, which will
+      then be sent to the other party, where the sender will be notified if the message has been "read" or not. In this feature, interviews can be set up, more information on the job can be provided, and links to job assessment sites can be given. This will be a part of the main execution loop,
+      due to the fact a user can chat whenever they feel like it, so we need to be prepared for them to do that. 
+        </li>
+        <li><span style="font-weight: bold;"></span><span
+       style="font-weight: bold;">Responsible Development Team Member</span><br>
+      Sharyanya
+        </li>
+        <li><span style="font-weight: bold;">Component Diagram</span><br> </li>
+       <img src="Capture.PNG">
+        <li><span style="font-weight: bold;">Component User Interface</span><br>
+      The user will see a text box upon entering a chat with another user, there will be a button to submit the message, as well as the ability to hit 'enter'. 
+      When the other user is typing, 3 bubbles will appear to show that the user is indeed typing. Furthermore, a user will see a "read" message once the other user has read their message.
+	  <span style="font-weight: bold;"></span></li>
+	<li><span style="font-weight: bold;">Component Objects</span><br></li>
+			This component will be called by the "add" method of the MongoDB object. 
+			It will receive data from User object in String format. 
+			Furthermore, it will call the methods of the module we use for chatting, TBD.
+	<li><span style="font-weight: bold;">Component Interfaces (internal
+      and external)</span><br>
+      The component is not interfaced with any other component.
+      </li>
+   <li><span style="font-weight: bold;">Component Error Handling</span><br>
+      Error Case 1: Completed Message: This will check if the user has typed something in the chat box, as we do not want
+	  to send an empty message to another user.
+      <br>
+    </li>
+		</div>
   </ul>
      </div>
   <br>
