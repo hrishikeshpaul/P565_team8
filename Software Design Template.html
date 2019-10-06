@@ -7,17 +7,17 @@
   <meta content="Default User" name="author">
 </head>
 <body>
-  <h1 style="text-align: center;">&lt;Project Name&gt;<br>
+  <h1 style="text-align: center;">noQ<br>
   </h1>
   <h1 style="text-align: center;">Software Design</h1>
   <h2 style="text-align: center;">CSCI-P465/565 (Software Engineering
   I)&nbsp;</h2>
   <div style="text-align: center;">
     <h2><span style="text-decoration: underline;">Project Team</span></h2>
-    <h3>&lt;Project Team Member&gt;</h3>
-    <h3>&lt;Project Team Member&gt;</h3>
-    <h3>&lt;Project Team Member&gt;</h3>
-    <h3>&lt;Project Team Member&gt;</h3>
+    <h3>Cole Norton</h3>
+    <h3>Rui Zhang</h3>
+    <h3>Hrishikesh Paul</h3>
+    <h3>Sharanya Ravichandran</h3>
     <br>
     <hr style="width: 100%; height: 2px;"></div>
     <h2>1. Introduction</h2>
@@ -121,7 +121,7 @@ We plan to use StarUML to help us design UML diagrams. In this program, we can b
       Sharyanya
         </li>
         <li><span style="font-weight: bold;">Component Diagram</span><br> </li>
-       <img src="chat-diagram.PNG">
+       <img src="Capture.PNG">
         <li><span style="font-weight: bold;">Component User Interface</span><br>
       The user will see a text box upon entering a chat with another user, there will be a button to submit the message, as well as the ability to hit 'enter'. 
       When the other user is typing, 3 bubbles will appear to show that the user is indeed typing. Furthermore, a user will see a "read" message once the other user has read their message.
@@ -225,7 +225,41 @@ We plan to use StarUML to help us design UML diagrams. In this program, we can b
     </li>
   </ul>
      </div>
-    
+    <h3 style="margin-left: 40px;">3.3: Profile Component</h3>
+     <div style="margin-left: 40px;">
+       <ul>
+      <li><span style="font-weight: bold;">Component Name</span><br>
+        Profile Component<br>
+      </li>
+      <li><span style="font-weight: bold;">Component Description</span>
+        <br>
+          The Profile component is the actual profile of the applicant, recruiter, or company. For the applicant, it will feature experience, skills, education, name, and a link to their LinkedIn. For
+		  the recruiter, it will feature their company, name, and contact info. Finally for the company, it will feature their name, location, and a description of what they offer.
+        <br>
+      </li>
+      <li><span style="font-weight: bold;"></span><span
+       style="font-weight: bold;">Responsible Development Team Member</span><br>
+       Cole Norton<br>
+     </li>
+     <li><span style="font-weight: bold;">Component Diagram</span>
+      <img src='profile-uml.png' style="padding-top: 20px;"   />
+      </li>
+    <li><span style="font-weight: bold;">Component User Interface</span><br>
+		This component for applicants will feature 3 main fields, one for skills, one for education, and another for experience. Similarly for all 3 types of profiles, the name and company/school will be located at the top of the profile.<br>
+      <span style="font-weight: bold;"></span></li>
+      <li><span style="font-weight: bold;">Component Objects</span><br>
+		The applicants profile will be passed to the job listing object when applying, and the company profile will be passed to the job listing object as the company an applicant is applying for. The profile name will also be used in the chat component, as a user must know whom they are communicating with. <li><span style="font-weight: bold;">Component Interfaces (internal
+      and external)</span><br>
+      The component is not interfaced with any other component.
+      </li>
+    <li><span style="font-weight: bold;">Component Error Handling</span><br>
+      Error Case 1: GPA Validity Check: Checks for valid GPA.<br>
+      Error Case 2: Graduation Validity Check: Checks for valid graduation year.<br>
+      Error Case 3: Email Validity Check: Checks for valid email adress in contact info.<br>
+      <br>
+    </li>
+  </ul>
+     </div>
   <br>
   <h2>Revision History</h2>
   <br>
@@ -240,11 +274,11 @@ We plan to use StarUML to help us design UML diagrams. In this program, we can b
       </th>
     </tr>
     <tr>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;"><br> Cole
       </td>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;"><br> 10/5/2019
       </td>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;"><br> Add initial components
       </td>
     </tr>
     <tr>
