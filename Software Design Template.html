@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>System Design Template</title>
+    <meta content="Default User" name="author">
+</head>
+
+<body>
+    <h1 style="text-align: center;">noQ<br>
+    </h1>
+    <h1 style="text-align: center;">Software Design</h1>
+    <h2 style="text-align: center;">CSCI-P465/565 (Software Engineering I)&nbsp;
+    </h2>
+    <div style="text-align: center;">
+        <h2><span style="text-decoration: underline;">Project Team</span></h2>
+        <h3>Cole Norton</h3>
+        <h3>Rui Zhang</h3>
+        <h3>Hrishikesh Paul</h3>
+        <h3>Sharanya Ravichandran</h3>
+        <br>
+        <hr style="width: 100%; height: 2px;">
+    </div>
+    <h2>1. Introduction</h2>
+    <!-- This section introduces the design approach to the software system.<br> -->
+    <!-- <br> -->
+    <h3 style="margin-left: 40px;">1.1 System Description</h3>
+    <div style="margin-left: 40px;">
+        <!-- Provide a description of the system, and the problem that is being solved by developing the system (may be copied from the Project Plan or Software Specification if those documents are accurate) -->
+        Our product, noQ., aims to reduce the strife seen at career fairs by implementing various pre-screening measures so that only the most qualified students can meet with companies on the day of the fair. In doing so, students will be able to skip the line
+        at their preferred companies if they are qualified for positions they are applying to, companies can filter certain skills that will be needed for their positions, and will create a more pleasant career fair experience as a whole.<br>
+    </div>
+    <br>
+    <h3 style="margin-left: 40px;">1.2 Design Evolution</h3>
+    <!-- <div style="margin-left: 40px;">
+        This section is intended to document the rationale behind the selected design solution.<br>
+    </div>
+    <br> -->
+    <h4 style="margin-left: 80px;">1.2.1 Design Issues</h4>
+    <div style="margin-left: 80px;">
+        <!-- Include in this section any issues/requirements/constraints that drive the design of the system.&nbsp; This may include desired operating environment, interface protocols, the need to be remotely accessible, etc.<br><br>  -->
+        The system is intended to be used for both recruiters and applicants to undergo screening procedures that can be done before an on-campus career fair, thus applicants should be able to review available positions and send their profile along with their
+        applications to recruiters before the career fair, and recruiters should have the ability to post available positions and access applicants' profiles remotely and inform applicants about the result and next steps. The system should give user ability
+        to access corresponding data remotely and should not be operating environment dependent.
+
+        <!-- applicants should apply for posted positions online first, and should have the ability to chat
+        with recruiters over the internet once applicants' first stage applications are approved. Recruiters should also be able to access applicants' online profiles and make decisions according to position requirements. -->
+        <br>
+    </div>
+    <br>
+    <h4 style="margin-left: 80px;">1.2.2 Candidate Design Solutions</h4>
+    <div style="margin-left: 80px;">
+        <!-- Briefly (a paragraph or two) describe each of the possible design solutions that your team discussed/explored. -->
+        <div style="margin-left: 40px;">
+            <h5>Solution 1</h5>
+            Applicants would be able to scan their resume with a mobile application and create their profile during the check-in process in a career fair and then apply for positions in the same application. Recruiters can review submitted profiles and give applicants
+            permission of having an in-person interview.
+
+            <h5>Solution 2</h5>
+            Applicants would be able to log in to our website by creating their accounts or login their third party accounts such as LinkedIn, and then build their profile, apply to positions from a list of jobs that they are qualified for. Then they should have
+            the ability to chat with recruiters over the internet once their first stage applications are approved. Recruiters should be able to access applicants' online profiles and give candidates permission of having an in-person interview during
+            a career fair.
+        </div>
+
+    </div>
+    <br>
+    <h4 style="margin-left: 80px;">1.2.3 Design Solution Rationale</h4>
+    <div style="margin-left: 80px;">
+        <!-- Provide some reasoning for the design option that your development team selected.&nbsp; Tie in the selected approach's ability to meet the requirements, and most effectively address the design issues. -->
+        Solution 2 was selected by the development team. Based on the consideration of timeline, budget and our objectives, solution 2 meets our requirements best. The system have to include an online service and be operating environment dependent, thus an web
+        application would be more appropriate. Additionally, mobile applications for different operating system is way beyond our capability within the time frame of the project.
+
+        <br>
+    </div>
+    <br>
+    <h3 style="margin-left: 40px;">1.3 Design Approach</h3>
+    <h4 style="margin-left: 80px;">1.3.1 Methods</h4>
+    <div style="margin-left: 80px;">
+
+        We used object-oriented design because we believe that will best allow us to build our project. Using UML diagrams, we can easily see the relationships between each class, which allows us to further understand and develop our product. We also used sequence
+        diagrams in order to showcase how the whole process will start, end, and the steps in between. This allows us to capture every step in the process, which is highly important in developing a perfect product for our customers.
+    </div>
+    <h4 style="margin-left: 80px;">1.3.2 Standards</h4>
+    <div style="margin-left: 80px;">
+        We did not necessarily adhere to any singular design standard. When designing a component, we holistically evaluated the pros and cons to each design we made, ensuring the highest possible product was produced. For naming conventions, we went with the
+        industry standard for uppercase class names, and camel-case for functions.
+    </div>
+    <h4 style="margin-left: 80px;">1.3.3 Tools</h4>
+    <div style="margin-left: 80px;">
+        We plan to use StarUML to help us design UML diagrams. In this program, we can build UML diagrams by dragging and dropping various connections/attributes, such as composition and inheritance. This is instrumental in designing UML diagrams, and the returned
+        diagram will help us design the highest quality product.
+    </div>
+    <br>
+    <h2>2. System Architecture</h2>
+    <h3 style="margin-left: 40px;">2.1 System Design</h3>
+    <div style="margin-left: 40px;">
+
+        NoQ is based on the MongoDB, Express, Vue and Node technology stack. The figure below shows the system architecture at the higher level.
+
+        <img src='noq-system-architecture.svg' style="padding-top: 20px; padding-bottom: 20px;" />
+
+        <p>The client can access the web app through any internet based browser. The front-end technologies include <b>Vue.js</b>, which is the front-end framework, <b>Bootstrap</b>, which is a front-end styling framework, <b>HTML</b> and <b>CSS</b>. Vue.js
+            can be used to make AJAX requests, make flexible and stable websites. Bootstrap is a styling library that has a plethora of classes to make a website look good. HTML and CSS are core web design languages.</p> Vue.js makes axios requests to
+        the server that is built upon <b>Node.js</b>. <b>Express.js</b> is a library for node.js that includes a tonne of functions to handle requests and send reponses back to front-ends. The databse being used is <b>MongoDB</b>. <b>Mongoose</b> is a
+        javascript library that bridges the gap between mongo shell commands and javascript. Furthermore, the web application uses another form of authentication which is the <b>LinknedIn OAuth.</b> Via this, ann user is able to retrieve basic information
+        about their profile.
+    </div>
+
+    <br>
+    <h2>3. Component Design</h2>
+    <br> The Component Design section details the proposed design of each system component.&nbsp; A system conponent is a functional partition of the system.&nbsp; Components may be organized as you see fit - a component may be a collection of objects,
+    or a single object.&nbsp; However, a system must be composed of multiple components (that is, a system cannot be one component).&nbsp;<br>
+    <ul>
+        <h3 style="margin-left: 40px;">3.1: Login Component</h3>
+        <div style="margin-left: 40px;">
+            <ul>
+                <li><span style="font-weight: bold;">Component Name</span><br> Login Component<br>
+                </li>
+                <li><span style="font-weight: bold;">Component Description</span>
+                    <br> The login component, is the first component that the user sees when they start the web application. It authenticates the user and also puts the user into session. The login component also makes use of the LinknedIn OAuth to get
+                    data from linknedIn to log the user in. This component also has the 'Forgot Password' feature apart from the authentication feature. For authentication, the component makes use of Local Strategy and LinkedIn Strategy. Local Strategy
+                    lets an user authenticate using a username and password. LinkedIn Strategy on the other hand allows the user to log in to the web application using their LinkedIn account.
+                    <br>
+                </li>
+                <li><span style="font-weight: bold;"></span><span style="font-weight: bold;">Responsible Development Team Member</span><br> Hrishikesh Paul<br>
+                </li>
+                <li><span style="font-weight: bold;">Component Diagram</span><br> Below is the component diagram from the login page. Both the strategies have been depicted. <br />
+                    <img src='login-component-noq.svg' style="padding-top: 20px;" />
+                </li>
+                <li><span style="font-weight: bold;">Component User Interface</span><br> This component uses a sleek UI, with 2 input fields for the email and password, and 2 buttons - a submit button and a linkedin login button. The component also has a
+                    link to reset a password and a link for the user to register.
+                    <br>
+                    <span style="font-weight: bold;"></span></li>
+                <li><span style="font-weight: bold;">Component Objects</span><br> The login component makes use of various methods and objects. The main object is the User object. The code checks if there is an user with the user email id provided by the
+                    user is present in the database, and authenticates the user. The login component generates a JWT token that is put in the session, and also puts the user information in the Vuex Store, so that all the other components can use the user
+                    data.
+                    <li><span style="font-weight: bold;">Component Interfaces (internal
+      and external)</span><br> The component is not interfaced with any other component.
+                    </li>
+                    <li><span style="font-weight: bold;">Component Error Handling</span><br> Error Case 1: Email Validity Check: Checks for valid email format.<br> Error Case 2: Password Validity Check: Checks for valid length of password that should be greater
+                        than 6.<br> Error Case 3: Verified User Check: User.isVerified variable checks if the user is verified.<br>
+                        <br>
+                    </li>
+            </ul>
+        </div>
+
+        <h3 style="margin-left: 40px;">3.2: Register Component</h3>
+        <div style="margin-left: 40px;">
+            <ul>
+                <li><span style="font-weight: bold;">Component Name</span><br> Register Component<br>
+                </li>
+                <li><span style="font-weight: bold;">Component Description</span>
+                    <br> The register component is another important component, as it adds users to the database. It makes use of various libraries such as bcrypt, passport, sendgrid. Bcrypt is used for hashing passwords, passport is for registering user
+                    through local strategies and sendgrid is for sending verification emails.
+                    <br>
+                </li>
+                <li><span style="font-weight: bold;"></span><span style="font-weight: bold;">Responsible Development Team Member</span><br> Hrishikesh Paul<br>
+                </li>
+                <li><span style="font-weight: bold;">Component Diagram</span><br> Below is the component diagram from the login page.<br />
+                    <img src='register-component-noq.svg' style="padding-top: 20px;" />
+                </li>
+                <li><span style="font-weight: bold;">Component User Interface</span><br> This component uses a sleek UI, with innput fields for email, password, re-enter password. A select box for selectign the type of user. A ninput box for phone number.
+                    <br>
+                    <span style="font-weight: bold;"></span></li>
+                <li><span style="font-weight: bold;">Component Objects</span><br> The register component makes use of various methods and objects. The main object is the User object. The code checks if there is an user with the user email id provided by the
+                    user is present in the database, and if not adds it to the database. The component also sennds an email via sendgrid for the verification of the user.
+                    <li><span style="font-weight: bold;">Component Interfaces (internal
+      and external)</span><br> The component is not interfaced with any other component.
+                    </li>
+                    <li><span style="font-weight: bold;">Component Error Handling</span><br> Error Case 1: Email Validity Check: Checks for valid email format.<br> Error Case 2: Password Validity Check: Checks for valid length of password that should be greater
+                        than 6.<br> Error Case 3: Re-Password Validity Check: Checks if the both the password entered is the same.<br> Error Case 4: Phone Number Validity Check: Checks if the phone number is valid.<br>
+                        <br>
+                    </li>
+            </ul>
+        </div>
+        <h3 style="margin-left: 40px;">3.3: Profile Component</h3>
+        <div style="margin-left: 40px;">
+            <ul>
+                <li><span style="font-weight: bold;">Component Name</span><br> Profile Component<br>
+                </li>
+                <li><span style="font-weight: bold;">Component Description</span>
+                    <br> The Profile component is the actual profile of the applicant, recruiter, or company. For the applicant, it will feature experience, skills, education, name, and a link to their LinkedIn. For the recruiter, it will feature their
+                    company, name, and contact info. Finally for the company, it will feature their name, location, and a description of what they offer.
+                    <br>
+                </li>
+                <li><span style="font-weight: bold;"></span><span style="font-weight: bold;">Responsible Development Team Member</span><br> Cole Norton<br>
+                </li>
+                <li><span style="font-weight: bold;">Component Diagram</span> <br />
+                    <img src='profile-uml.svg' style="padding-top: 20px; padding-bottom: 20px;" />
+                </li>
+                <li><span style="font-weight: bold;">Component User Interface</span><br> This component for applicants will feature 3 main fields, one for skills, one for education, and another for experience. Similarly for all 3 types of profiles, the name
+                    and company/school will be located at the top of the profile.<br>
+                    <span style="font-weight: bold;"></span></li>
+                <li><span style="font-weight: bold;">Component Objects</span><br> The applicants profile will be passed to the job listing object when applying, and the company profile will be passed to the job listing object as the company an applicant is
+                    applying for. The profile name will also be used in the chat component, as a user must know whom they are communicating with.
+                    <li><span style="font-weight: bold;">Component Interfaces (internal
+      and external)</span><br> The component is not interfaced with any other component.
+                    </li>
+                    <li><span style="font-weight: bold;">Component Error Handling</span><br> Error Case 1: GPA Validity Check: Checks for valid GPA.<br> Error Case 2: Graduation Validity Check: Checks for valid graduation year.<br> Error Case 3: Email Validity
+                        Check: Checks for valid email adress in contact info.<br>
+                        <br>
+                    </li>
+        </div>
+
+
+
+        <h3 style="margin-left: 40px;">3.4: Landing Page Component</h3>
+        <div style="margin-left: 40px;">
+            <ul>
+                <li><span style="font-weight: bold;">Component Name</span>
+                    <br> Landing Page Component<br>
+                </li>
+                <li><span style="font-weight: bold;">Component Description</span>
+                    <br> The Landing Page Component is the main page of our web service after user successfully signing in and creating their profiles. There will be three different views for different type of users, i.e. Applicant, Recruiter and Company
+                    administrator.
+                    <br>
+                </li>
+                <li><span style="font-weight: bold;"></span><span style="font-weight: bold;">Responsible Development Team Member</span><br> Rui Zhang<br>
+                </li>
+                <li><span style="font-weight: bold;">Component Diagram</span> <br />
+                    <img src='landing-page-uml.svg' style="padding-top: 20px; padding-bottom: 20px;" />
+                </li>
+                <li><span style="font-weight: bold;">Component User Interface</span>
+                    <br> Applicants should be able to see cards of jobs with company icons they are qualified for, categorized by type of roles, when hover over a card, company name, position name should be displayed. When clicked on a card, job description
+                    page should popup. Applicants can also chat with connected recruiters and review submitted applications.
+                    <br> <br> Recruiters should be able to see all positions they manage, categorized by university, displayed as cards, with number of applicants and position title on top. When click on a card, list of applicants should be displayed.
+                    Recruiters should also be able to chat with connected applicants.
+                    <br> <br> Company administrators should be able to see all positions they posted, categorized by university, displayed as cards, with number of applicants and position title on top. When click on a card, list of applicants and recruiter
+                    should be displayed. administrators should also have ability to modify and post jobs.
+
+                    <br> <br> All type of users should be able to modify their profiles. Similarly for all 3 types of profiles, the name and company/school will be located at the top of the profile.<br><br>
+                    <span style="font-weight: bold;"></span></li>
+                <li><span style="font-weight: bold;">Component Objects</span>
+                    <br> In Applicant's view, Job objects will be used for displaying cards. UserProfile object will be used for displaying avatar and username. Recruiter objects will be used to view connected recruiters and start a chat.
+                    <br><br> In Recruiter's view, Job objects will be used for displaying cards. UserProfile object will be used for displaying avatar and username. Applicant objects will be used to view connected recruiters and start a chat.
+                    <br><br> In Company's view, Job objects will be used for displaying cards. UserProfile object will be used for displaying avatar and username. Recruiter objects and Applicant objects will be accessed when job cards are clicked.<br><br>
+                    <li><span style="font-weight: bold;">Component Interfaces (internal
+                and external)</span><br> Chat component, Profile component and Job component will be interfaced with this component.
+                    </li>
+                    <li><span style="font-weight: bold;">Component Error Handling</span>
+                        <br> Error Case 1: Non-matched position showing up: match applicant's skills with position's skill requirements and only show a job if the applicant have enough required skill.
+                        <br> Error Case 2: Job is not available for applicant's university. Match applicant's university with job's university.
+                        <br> Error Case 3: Job is not available for applicant's current degree. Match applicant's degree with job's degree requirement.
+                        <br> Error Case 4: Job does not provide sponsorship while applicant is international student. check if the job provide sponsorship before display.
+                    </li>
+        </div>
+
+        <h3 style="margin-left: 40px;">3.5: Job Card Component</h3>
+        <div style="margin-left: 40px;">
+            <ul>
+                <li><span style="font-weight: bold;">Component Name</span>
+                    <br> Job Card Component<br>
+                </li>
+                <li><span style="font-weight: bold;">Component Description</span>
+                    <br> The Job Card Component is where most activities take place. Users can view job details, applicants can apply for jobs, recruiters can see candidates for jobs, and company administrators can manage job details, assign recruiter
+                    through this component.
+                    <br>
+                </li>
+                <li><span style="font-weight: bold;"></span><span style="font-weight: bold;">Responsible Development Team Member</span><br> Rui Zhang<br>
+                </li>
+                <li><span style="font-weight: bold;">Component Diagram</span> <br />
+                    <img src='job-uml.svg' style="padding-top: 20px; padding-bottom: 20px;" />
+                </li>
+                <li><span style="font-weight: bold;">Component User Interface</span>
+                    <br> For all user types, Job details including job ID, title, role, description, required skills, degree, whether providing sponsorship, corresponding recruiters and universities will be displayed.
+                    <br><br> Applicants can apply or hide a job through this component by clicking corresponding buttons. page should popup. Applicants can also chat with connected recruiters and review submitted applications.
+                    <br> <br> Recruiters can access applicants' profiles through this component by clicking on an applicant's name in the applicants list.
+                    <br> <br> Company administrators should be able to modify job details or assign recruiters.<br><br>
+                    <span style="font-weight: bold;"></span></li>
+                <li><span style="font-weight: bold;">Component Objects</span>
+                    <br> In Applicant's view, Job objects will be used for displaying job details. Recruiter objects will be used to display recruiters' basic information.
+                    <br><br> In Recruiter's view, Job objects will be used for displaying job details. Applicant objects will be used to display applicants' basic information.
+                    <br><br> In Company's view, Job objects will be used for displaying job details. Applicant and Recruiter objects will be used to display applicants' and recruiters' basic information.<br><br>
+                    <li><span style="font-weight: bold;">Component Interfaces (internal
+                and external)</span><br> Profile component will be interfaced with this component.
+                    </li>
+                    <li><span style="font-weight: bold;">Component Error Handling</span>
+                        <br> Error Case 1: Missing information: Check for completeness of job posting when a company administrator is editing a position's information.
+                    </li>
+        </div>
+
+
+
+        <h3 style="margin-left: 40px;">3.6: Chat Component</h3>
+        <div style="margin-left: 40px;">
+            <ul>
+                <li><span style="font-weight: bold;">Component Name</span><br> Chat
+                </li>
+                <li><span style="font-weight: bold;">Component Description</span><br> This is the chat feature of our project. The chat feature will allow applicants and recruiters to message each other once both parties have "accepted" each other. Either
+                    the recruiter or applicant will write a message in a text book, which will then be sent to the other party, where the sender will be notified if the message has been "read" or not. In this feature, interviews can be set up, more information
+                    on the job can be provided, and links to job assessment sites can be given. This will be a part of the main execution loop, due to the fact a user can chat whenever they feel like it, so we need to be prepared for them to do that.
+                </li>
+                <li><span style="font-weight: bold;"></span><span style="font-weight: bold;">Responsible Development Team Member</span><br> Sharyanya
+                </li>
+                <li><span style="font-weight: bold;">Component Diagram</span><br> </li>
+                <img src="chat-uml.svg" style='padding-top: 20px; padding-bottom: 20px;'>
+                <li><span style="font-weight: bold;">Component User Interface</span><br> The user will see a text box upon entering a chat with another user, there will be a button to submit the message, as well as the ability to hit 'enter'. When the other
+                    user is typing, 3 bubbles will appear to show that the user is indeed typing. Furthermore, a user will see a "read" message once the other user has read their message.
+                    <span style="font-weight: bold;"></span></li>
+                <li><span style="font-weight: bold;">Component Objects</span><br></li>
+                This component will be called by the "add" method of the MongoDB object. It will receive data from User object in String format. Furthermore, it will call the methods of the module we use for chatting, TBD.
+                <li><span style="font-weight: bold;">Component Interfaces (internal
+      and external)</span><br> The component is not interfaced with any other component.
+                </li>
+                <li><span style="font-weight: bold;">Component Error Handling</span><br> Error Case 1: Completed Message: This will check if the user has typed something in the chat box, as we do not want to send an empty message to another user.
+                    <br>
+                </li>
+            </ul>
+        </div>
+
+        <br>
+
+
+
+
+
+
+
+
+
+
+        <h2>Revision History</h2>
+        <br>
+        <table style="width: 100%; text-align: left;" border="1" cellpadding="2" cellspacing="2">
+            <tbody>
+                <tr>
+                    <th style="vertical-align: top;">Revision</th>
+                    <th style="vertical-align: top;">Date<br>
+                    </th>
+                    <th style="vertical-align: top;">Change Description<br>
+                    </th>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><br> Cole
+                    </td>
+                    <td style="vertical-align: top;"><br> 10/5/2019
+                    </td>
+                    <td style="vertical-align: top;"><br> Add initial components
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                    <td style="vertical-align: top;"><br>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <big><big><br>
+</big></big>
+        <hr style="width: 100%; height: 2px;">
+        <div style="text-align: center;"><span style="font-weight: bold;">Page
+Author/Creator:</span> <a href="http://homes.soic.indiana.edu/aabhutta/">Adeel Bhutta</a><span style="font-weight: bold;"><br>
+Last Modified:</span> 8/23/2016</div>
+        <br>
+</body>
+
+</html>
