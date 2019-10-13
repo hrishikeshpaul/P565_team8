@@ -11,6 +11,7 @@
                     label="Email">
         <b-form-input id="username" v-model.trim="register.username" class="no-border"></b-form-input>
       </b-form-group>
+      
       <b-form-group id="fieldsetHorizontal"
                     :label-cols="4"
                     label-size="sm"
@@ -25,6 +26,11 @@
                     label="Re-Enter Password">
         <b-form-input type="password" id="password2" :state="state" v-model.trim="register.password2" class="no-border"></b-form-input>
       </b-form-group>
+      <ul class="helper-text">
+        <li class="length">Must be at least 8 characters long</li>
+        <li class="uppercase">Must contain an uppercase letter</li>
+        <li class="special">Must contain a special character</li>
+    </ul>
       <b-button type="submit" variant="warning" class="mt-2" style="width: 100%">Register</b-button>
       <br />
     </b-form>

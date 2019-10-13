@@ -13,6 +13,20 @@ var crypto = require('crypto')
 var nodemailer = require('nodemailer')
 var Token = require('../models/Token')
 
+function passValidation(pass) {
+  counter = 0
+  if (pass.length >= 8){
+    counter++;
+  }
+  if (/[A-Z]/.test(pass)){
+    counter++
+  }
+  if (/[!@#$&*]/.test(pass)) {
+    counter++;
+}
+  return counter == 3;
+}
+
 router.post('/register', function (req, res) {
 
   if (!req.body.username || !req.body.password) {
@@ -21,7 +35,11 @@ router.post('/register', function (req, res) {
     var newUser = new User({
       email: req.body.username,
       password: req.body.password
+      
     })
+    if (passValidation(newUser.password) == false){
+      return res.status(409).json({success: false, msg: 'Password requirements not met.'})
+    }
     console.log(newUser)
     // save the user
     newUser.save(function (err) {
