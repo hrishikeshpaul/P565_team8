@@ -53,26 +53,22 @@ app.use('/', home);
 
 
 // // catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-// 	var err = new Error('Not Found');
-// 	err.status = 404;
-// 	next(err);
-// });
+app.use(function (req, res, next) {
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
+});
 
-// // restful api error handler
-// app.use(function (err, req, res, next) {
-// 	console.log(err);
+// restful api error handler
+app.use(function (err, req, res, next) {
+	console.log(err);
 
-// 	if (req.app.get('env') !== 'development') {
-// 		delete err.stack;
-// 	}
+	if (req.app.get('env') !== 'development') {
+		delete err.stack;
+	}
 
-// 	res.status(err.statusCode || 500).json(err);
-// });
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+	res.status(err.statusCode || 500).json(err);
+});
 
 
 module.exports = app;
