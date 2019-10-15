@@ -25,6 +25,13 @@
                     label="Re-Enter Password">
         <b-form-input type="password" id="password2" :state="state" v-model.trim="register.password2" class="no-border"></b-form-input>
       </b-form-group>
+      <b-form-group
+        id="fieldsetHorizontal"
+        label-size="sm"
+        breakpoint="md"
+        label="Select Role">
+        <b-form-select v-model="register.role" :options="options" size="md" id="role"></b-form-select>
+      </b-form-group>
       <b-button type="submit" variant="warning" class="mt-2" style="width: 100%">Register</b-button>
       <br />
     </b-form>
@@ -39,9 +46,15 @@ export default {
   name: 'Register',
   data () {
     return {
-      register: {},
+      register: {
+        role: 'student'
+      },
       error: '',
-      state: null
+      state: null,
+      options: [
+        { value: 'student', text: 'Student' },
+        { value: 'employer', text: 'Employer' }
+      ]
     }
   },
   watch: {

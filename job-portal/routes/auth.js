@@ -20,7 +20,8 @@ router.post('/register', function (req, res) {
   } else {
     var newUser = new User({
       email: req.body.username,
-      password: req.body.password
+      password: req.body.password,
+      role: req.body.role
     })
     console.log(newUser)
     // save the user

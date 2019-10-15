@@ -21,7 +21,11 @@ var UserSchema = new Schema({
   role: {
     type: String
   },
-  passed_jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}]
+  passed_jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}],
+  first_time: {
+    type: Boolean,
+    default: true
+  }
 })
 
 UserSchema.pre('save', function (next) {

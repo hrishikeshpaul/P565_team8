@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="height: 100vh; position: relative; ">
+      <div style="height: 100vh; position: relative; ">
       <div id="video_overlays"></div>
       <video autoplay loop muted id="video" style="width: auto; height: auto; position: absolute; z-index: -2;">
         <source src="../assets/lv2.mp4" type="video/mp4">
@@ -277,12 +277,19 @@ export default {
       axios.post(`http://localhost:3000/api/auth/login/`, this.login)
         .then(response => {
           localStorage.setItem('jwtToken', response.data.token)
+
           localStorage.setItem('user_id', response.data.user._id)
           localStorage.setItem('role', response.data.user.role)
 
-          this.$router.push({
-            name: 'HomePage'
-          })
+          if (response.data.user.first_time) {
+            this.$router.push({
+              name: 'ProfileBuilder'
+            })
+          } else {
+            this.$router.push({
+              name: 'HomePage'
+            })
+          }
         })
         .catch(e => {
 
