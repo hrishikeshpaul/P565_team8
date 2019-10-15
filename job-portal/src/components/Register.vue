@@ -1,4 +1,6 @@
+
 <template>
+
   <div>
     <div v-if="error">
         <b-alert show variant="danger">{{error}}</b-alert>
@@ -35,12 +37,25 @@
       <br />
     </b-form>
   </div>
+  
 </template>
 
 <script>
-
 import axios from 'axios'
+  function validate(pass){
+        var counter = 0
+        if (pass.length >= 8){
+          counter++;
+        }
+        if (/[A-Z]/.test(pass)){
+          counter++
+        }
+        if (/[!@#$&*]/.test(pass)) {
+          counter++;
+      }
+        return counter == 3;
 
+    }
 export default {
   name: 'Register',
   data () {
@@ -53,7 +68,7 @@ export default {
   watch: {
     error (val) {
       if (val) {
-        setTimeout(() => this.error = '', 2000)
+        setTimeout(() => this.error = '', 5000)
       }
     }
   },
@@ -61,23 +76,33 @@ export default {
     onSubmit (evt) {
       this.error = ''
       evt.preventDefault()
-      if (this.register.password === this.register.password2) {
+      if (this.register.password === this.register.password2 & validate(this.register.password) === true) {
         this.state = true
         axios.post(`http://localhost:3000/api/auth/register/`, this.register)
           .then(response => {
             this.$emit('registered', true)
           })
           .catch(e => {
-            console.log(e)
             this.error = e.response.data.msg
+            this.state = false
           })
-      } else {
-        this.error = 'Password do not match'
+      }
+      else if (this.register.password != this.register.password2) {
+        this.error = 'Passwords do not match'
         this.state = false
       }
+      else if (validate(this.register.password) === false){
+        this.error = "Password requirements not met"
+        this.state = false
+      }
+      
+      
     }
+    
+    
   }
 }
+
 </script>
 
 <style scoped>

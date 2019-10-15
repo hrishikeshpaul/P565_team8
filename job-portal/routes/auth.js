@@ -13,20 +13,6 @@ var crypto = require('crypto')
 var nodemailer = require('nodemailer')
 var Token = require('../models/Token')
 
-function passValidation(pass) {
-  counter = 0
-  if (pass.length >= 8){
-    counter++;
-  }
-  if (/[A-Z]/.test(pass)){
-    counter++
-  }
-  if (/[!@#$&*]/.test(pass)) {
-    counter++;
-}
-  return counter == 3;
-}
-
 router.post('/register', function (req, res) {
 
   if (!req.body.username || !req.body.password) {
@@ -37,20 +23,19 @@ router.post('/register', function (req, res) {
       password: req.body.password
       
     })
-    if (passValidation(newUser.password) == false){
-      return res.status(409).json({success: false, msg: 'Password requirements not met.'})
-    }
-    console.log(newUser)
     // save the user
     newUser.save(function (err) {
       if (err) {
         return res.status(409).json({success: false, msg: 'Username already exists.'})
       }
+
+
       var token = new Token({_userId: newUser._id, token: crypto.randomBytes(16).toString('hex')})
       token.save(function (err) {
         if (err) {
           return res.status(500).send({msg: err.message})
         }
+        console.log(newUser)
 
         var transporter = nodemailer.createTransport({
           service: 'Sendgrid',
@@ -63,9 +48,11 @@ router.post('/register', function (req, res) {
           text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/api\/auth\/confirmation\/' + token.token + '.\n\n Regards,\nnoQ Admin'
         }
         transporter.sendMail(mailOptions, function (err) {
+          alert("wr")
           if (err) {
             return res.status(500).send({msg: err.message})
           }
+          
           res.status(200).send({success: true, msg: 'A verification email has been sent to ' + newUser.email + '.'})
         })
       })
