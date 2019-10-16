@@ -10,7 +10,6 @@ var auth = require('./routes/auth');
 var home = require('./routes/home');
 var job = require('./routes/job')
 var profile = require('./routes/profile');
-var job = require('./routes/job');
 
 
 var mongoose = require('mongoose');
@@ -50,7 +49,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/auth', auth);
-app.use('/api/job', job);
+
 app.use('/api/profile', profile);
 
 app.use('/', home);

@@ -2,11 +2,21 @@
     <div class="mt-5 container">
     <div class="container main-container">
        <b-card style="max-height: 90vh; overflow-y: auto;">
-         <form-wizard @on-complete="onComplete" step-size="sm" color="orange">
+         <form-wizard
+           @on-complete="onComplete"
+           step-size="sm" color="orange"
+           @on-change="handleTabChanged"
+           @on-loading="setLoading"
+           @on-validate="handleValidation"
+           @on-error="handleErrorMessage"
+         >
            <h2 slot="title">Hi, let us get you started with your profile!</h2>
+           <div class="mb-2"><span v-if="errorMsg"  style="color: red;">{{errorMsg}}</span></div>
 
            <tab-content title="Personal details"
-                        icon="ti-user" :before-change="beforeTabSwitch">
+                        icon="ti-user"
+                        :before-change="validateAsync"
+           >
              <b-form>
                <b-form-group id="fieldsetHorizontal"
                              :label-cols="4"
@@ -26,7 +36,8 @@
              </b-form>
            </tab-content>
            <tab-content :title="role === 'student' ? 'Education' : 'Orgainsational Information'"
-                        :icon="role === 'student' ? 'ti-book' : 'ti-bag'">
+                        :icon="role === 'student' ? 'ti-book' : 'ti-bag'"
+                        :before-change="validateAsync">
              <div v-for="(education,index) in educations" v-if="role === 'student'">
                <div class="row" v-if="educations.length > 1">
                  <div class="col-11">
@@ -210,6 +221,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
 export default {
   name: 'ProfileBuilder',
   data () {
@@ -234,17 +246,59 @@ export default {
         from: '',
         to: '',
         current: []
-      }]
+      }],
+      activeIndex: 0,
+      loadingWizard: false,
+      errorMsg: null,
+      goNextIfNoError: false,
+      showNoError: false,
+      noError: ''
     }
   },
   methods: {
     onComplete: function () {
       alert('Yay. Done!')
     },
-    // beforeTabSwitch: function () {
-    //   alert(this.user)
-    //   return true
-    // },
+    handleTabChanged (prevIndex, nextIndex) {
+      this.activeIndex = nextIndex;
+    },
+    setLoading: function (value) {
+      this.loadingWizard = value
+    },
+    handleValidation: function (isValid, tabIndex){
+      console.log('Tab: ' + tabIndex + ' valid: ' + isValid)
+    },
+    handleErrorMessage: function(errorMsg) {
+      this.errorMsg = errorMsg
+    },
+    validateAsync:function() {
+      return new Promise((resolve, reject) => {
+        var id = localStorage.getItem('user_id')
+        var params = {
+          'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
+          'Content-Type': 'application/json'
+        }
+        if (this.activeIndex === 0) {
+          var obj = {
+            data: {
+              name: this.user.name,
+              company: this.user.company
+            },
+            user: {id: id}
+          }
+          if (!this.user.name)
+            reject('Please enter your name')
+
+          axios.post(`http://localhost:3000/api/profile`, obj, {headers: params})
+            .then(response => {
+              resolve(true)
+            })
+            .catch(e => {
+              reject(e.response.data)
+            })
+        }
+      })
+    },
     addItem (array) {
       if (array === 'education')
         this.educations.push(
