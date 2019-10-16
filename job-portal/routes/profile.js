@@ -12,8 +12,10 @@ const { check, validationResult } = require('express-validator');
 // @route : GET api/profile/me
 // @desc : Get current user's profile
 // @access : Public
-
-router.get('/me', function (req, res, next) {
+router.get('/check', function (req, res, next) {
+	res.send('hello');
+});
+router.get('/me', passport.authenticate('jwt', { session: false }), function (req, res, next) {
 	try {
 		Profile.findOne({ user: req.user.id }, function (err, profile) {
 			if (!profile) {
@@ -32,7 +34,7 @@ router.get('/me', function (req, res, next) {
 // @route : POST api/profile/
 // @desc : create/update a user's profile
 // @access : Private
-router.post('/', [check('status', 'Status is required').not().isEmpty(), check('skills', 'Skills is required').not().isEmpty()], function (req, res, next) {
+router.post('/', passport.authenticate('jwt', { session: false }), [check('status', 'Status is required').not().isEmpty(), check('skills', 'Skills is required').not().isEmpty()], function (req, res, next) {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() })
@@ -100,7 +102,7 @@ router.post('/', [check('status', 'Status is required').not().isEmpty(), check('
 // @desc   : Get all user's profiles
 // @access : Public
 
-router.get('/', function (req, res, next) {
+router.get('/', passport.authenticate('jwt', { session: false }), function (req, res, next) {
 	try {
 		Profile.find(function (err, profiles) {
 			res.json(profiles);
@@ -115,7 +117,7 @@ router.get('/', function (req, res, next) {
 // @desc   : Get all users profiles
 // @access : Public
 
-router.get('/:user_id', function (req, res, next) {
+router.get('/:user_id', passport.authenticate('jwt', { session: false }), function (req, res, next) {
 	try {
 		Profile.findOne({ user: req.params.user_id }, function (err, profile1) {
 			if (!profile1)
@@ -154,33 +156,17 @@ router.get('/:user_id', function (req, res, next) {
 // @desc   : Add experience to profile
 // @access : Private
 
-router.put('/experience', [check('title', 'Title is required').not().isEmpty(), check('company', 'Company is required').not().isEmpty(), check('from', 'From date is required').not().isEmpty(),], function (req, res, err) {
+router.put('/experience', passport.authenticate('jwt', { session: false }), function (req, res, err) {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() });
 	}
-	const {
-		title,
-		company,
-		location,
-		from,
-		to,
-		current,
-		description
-	} = req.body;
-
-	const newExperience = {
-		title,
-		company,
-		location,
-		from,
-		to,
-		current,
-		description
-	}
+	//	res.send(req.body);
 	try {
 		Profile.findOne({ user: req.user.id }, function (err, profile) {
-			profile.experience.unshift(newExperience);
+			for (i = 0; i < req.body.experience.length; i++) {
+				profile.experience.push(req.body.experience[i]);
+			}
 			profile.save(function (err) {
 				res.json(profile);
 			});
@@ -189,13 +175,56 @@ router.put('/experience', [check('title', 'Title is required').not().isEmpty(), 
 		console.error(err.message);
 		res.status(500).send('Server Error');
 	}
+
 });
+// @route  : PUT api/profile/education/:education_id
+// @desc   : Update the details of an existing education
+// @access : Private
+
+router.put('/experience/:experience_id', passport.authenticate('jwt', { session: false }), function (req, res, err) {
+	try {
+		console.log('in here');
+		const {
+			title,
+			company,
+			location,
+			from,
+			to,
+			current,
+			description
+		} = req.body;
+
+		const newExperience = {
+			title,
+			company,
+			location,
+			from,
+			to,
+			current,
+			description
+		}
+		Profile.findOne({ user: req.user.id },
+			//  'education._id': req.params.education_id }, { $set: newEducation }, 
+			function (err, profile) {
+				const index = profile.experience.map(element => element.id).indexOf(req.params.experience_id);
+				profile.experience[index] = newExperience;
+				profile.save(function (err) {
+					res.json(profile);
+				});
+				// res.json(profile);
+			});
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server Error');
+	}
+});
+
 
 // @route  : DELETE api/profile/experience/:experience_id
 // @desc   : Add experience to profile
 // @access : Private
 
-router.delete('/experience/:experience_id', function (req, res, err) {
+router.delete('/experience/:experience_id', passport.authenticate('jwt', { session: false }), function (req, res, err) {
 	try {
 		console.log('in here');
 		Profile.findOne({ user: req.user.id }, function (err, profile) {
@@ -220,37 +249,65 @@ router.delete('/experience/:experience_id', function (req, res, err) {
 // @desc   : Add education to profile
 // @access : Private
 
-router.put('/education', [check('school', 'School is required').not().isEmpty(), check('degree', 'Degree is required').not().isEmpty(), check('from', 'From date is required').not().isEmpty(), check('fieldofstudy', 'Feild of study is required').not().isEmpty()], function (req, res, err) {
+router.put('/education', passport.authenticate('jwt', { session: false }), function (req, res, err) {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() });
 	}
-	const {
-		school,
-		degree,
-		fieldofstudy,
-		from,
-		to,
-		current,
-		description
-	} = req.body;
-
-	const newEducation = {
-		school,
-		degree,
-		fieldofstudy,
-		from,
-		to,
-		current,
-		description
-	}
+	//	res.send(req.body);
 	try {
 		Profile.findOne({ user: req.user.id }, function (err, profile) {
-			profile.education.unshift(newEducation);
+			for (i = 0; i < req.body.education.length; i++) {
+				profile.education.push(req.body.education[i]);
+			}
 			profile.save(function (err) {
 				res.json(profile);
 			});
 		});
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server Error');
+	}
+
+});
+
+
+// @route  : PUT api/profile/education/:education_id
+// @desc   : Update the details of an existing education
+// @access : Private
+
+router.put('/education/:education_id', passport.authenticate('jwt', { session: false }), function (req, res, err) {
+	try {
+		console.log('in here');
+		const {
+			school,
+			degree,
+			fieldofstudy,
+			from,
+			to,
+			current,
+			description
+		} = req.body;
+
+		const newEducation = {
+			school,
+			degree,
+			fieldofstudy,
+			from,
+			to,
+			current,
+			description
+		}
+		Profile.findOne({ user: req.user.id },
+			//  'education._id': req.params.education_id }, { $set: newEducation }, 
+			function (err, profile) {
+				const index = profile.education.map(element => element.id).indexOf(req.params.education_id);
+				profile.education[index] = newEducation;
+				profile.save(function (err) {
+					res.json(profile);
+				});
+				// res.json(profile);
+			});
 	} catch (err) {
 		console.error(err.message);
 		res.status(500).send('Server Error');
@@ -261,7 +318,7 @@ router.put('/education', [check('school', 'School is required').not().isEmpty(),
 // @desc   : Add education to profile
 // @access : Private
 
-router.delete('/education/:education_id', function (req, res, err) {
+router.delete('/education/:education_id', passport.authenticate('jwt', { session: false }), function (req, res, err) {
 	try {
 		console.log('in here');
 		Profile.findOne({ user: req.user.id }, function (err, profile) {
