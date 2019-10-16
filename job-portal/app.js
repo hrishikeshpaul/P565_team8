@@ -10,6 +10,7 @@ var auth = require('./routes/auth');
 var home = require('./routes/home');
 var job = require('./routes/job')
 var profile = require('./routes/profile');
+var job = require('./routes/job');
 
 
 var mongoose = require('mongoose');
@@ -49,29 +50,34 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/auth', auth);
-app.use('/api/profile', passport.authenticate('jwt', { session: false }), profile);
+app.use('/api/job', job);
+app.use('/api/profile', profile);
+
 app.use('/', home);
 app.use('/api/jobs', passport.authenticate('jwt', { session: false }), job);
 
 
 
-// // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
-});
+// // // catch 404 and forward to error handler
+// app.use(function (req, res, next) {
+// 	var err = new Error('Not Found');
+// 	err.status = 404;
+// 	next(err);
+// });
 
-// restful api error handler
-app.use(function (err, req, res, next) {
-	console.log(err);
+// // restful api error handler
+// app.use(function (err, req, res, next) {
+// 	console.log(err);
 
-	if (req.app.get('env') !== 'development') {
-		delete err.stack;
-	}
+// 	if (req.app.get('env') !== 'development') {
+// 		delete err.stack;
+// 	}
 
-	res.status(err.statusCode || 500).json(err);
-});
+// 	res.status(err.statusCode || 500).json(err);
+// });
 
 
+// const PORT = process.env.PORT || 5000;
+
+// app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 module.exports = app;
