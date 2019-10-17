@@ -9,7 +9,7 @@ var app = express();
 var auth = require('./routes/auth');
 var home = require('./routes/home');
 var profile = require('./routes/profile');
-var job = require('./routes/job');
+var jobs = require('./routes/jobs');
 
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
@@ -48,7 +48,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/auth', auth);
-app.use('/api/job', job);
 app.use('/api/profile', profile);
 
 app.use('/', home);
