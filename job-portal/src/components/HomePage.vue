@@ -2,12 +2,27 @@
   <div>
     <NavBar @logout="logout"/>
     <div class="container">
-      <FilterBar/>
+      <FilterBar @group="callReGroup"/>
     </div>
     <div class="mx-5 px-5">
-      <div v-for="(job, key) in jobs">
-        <h2><span>{{key}}</span></h2>
-
+      <div v-for="(job, key) in computedJobs" class="mb-3" v-if="someData === 'student'" >
+        <div style="position: relative;">
+          <h2><div class="mb-3">{{ key }}</div></h2>
+          <div
+            v-for="(j, index) in job" v-if="job.length > 0"
+            style="display: inline-block;"
+            class="mr-5">
+            <JobCard
+              :job="j"
+              ref="card"
+              :id="j._id"
+              @accept="accept"
+              @reject="reject"
+              class="mb-3"
+              :style="{'min-width': '200px', 'z-index': index+1, 'width': '270px', 'height': '300px'}"/>
+          </div>
+          <div v-else>You are out of companies!</div>
+        </div>
       </div>
     </div>
   </div>
@@ -19,40 +34,123 @@ import axios from 'axios'
 
 import NavBar from './NavBar'
 import FilterBar from './FilterBar'
+import JobCard from './JobCard'
 
 export default {
   name: 'HomePage',
   components: {
     NavBar,
-    FilterBar
+    FilterBar,
+    JobCard
   },
   data () {
     return {
+      user_id: localStorage.getItem('user_id'),
       jobs: [],
+      showClass: false,
+      keyToGroup: 'position',
+      someData: localStorage.getItem('role')
+    }
+  },
+  computed: {
+    computedJobs: {
+      get: function () {
+        return this.reGroup(this.jobs, this.keyToGroup)
+      },
+      set: function (newVal) {
+        return newVal
+      }
     }
   },
   created () {
-    var headers = {
-      Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
-    }
-    axios.get(`http://localhost:3000/api/jobs`, {headers})
-      .then(response => {
-        this.jobs = this.reGroup(response.data, 'position')
-      })
-      .catch(e => {
-        if (e.response.status === 401) {
-          this.$router.push({
-            name: 'Login'
-          })
-        }
-      })
+    this.getData()
+
   },
   methods: {
+    getData () {
+      var headers = {
+        Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
+      }
+      var params = {
+        user: this.user_id
+      }
+      axios.get(`http://localhost:3000/api/jobs`, {params, headers})
+        .then(response => {
+          this.jobs = response.data
+          // this.jobs = this.reGroup(response.data, 'position')
+        })
+        .catch(e => {
+          if (e.response.status === 401) {
+            this.$router.push({
+              name: 'Login'
+            })
+          }
+        })
+    },
+    reject (i) {
+      var headers = {
+        Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
+        'Content-Type': 'application/json'
+      }
+
+      axios.patch(`http://localhost:3000/api/jobs/reject`, {
+        user: localStorage.getItem('user_id'),
+        job: i
+      }, {headers})
+        .then(response => {
+          console.log(this.$refs['card'])
+          this.$refs['card'].forEach(card => {
+            if (card.$el.id === i) {
+
+              // card.$el.classList.add('object')
+              // card.$el.classList.add('move-left')
+            }
+          })
+
+          this.jobs.splice(this.jobs.findIndex(function (it) {
+            return it._id === i
+          }), 1)
+
+        })
+        .catch(e => {
+          console.log(e.data)
+        })
+    },
+    accept (i) {
+      var headers = {
+        Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
+        'Content-Type': 'application/json'
+      }
+
+      axios.patch(`http://localhost:3000/api/jobs/accept`, {
+        user: localStorage.getItem('user_id'),
+        job: i
+      }, {headers})
+        .then(response => {
+          this.$refs['card'].forEach(card => {
+            if (card.$el.id === i) {
+              // card.$el.classList.add('object')
+              // card.$el.classList.add('move-right')
+            }
+          })
+          this.jobs.splice(this.jobs.findIndex(function (it) {
+            return it._id === i
+          }), 1)
+        })
+        .catch(e => {
+          console.log(e.data)
+        })
+    },
     logout () {
       localStorage.removeItem('jwtToken')
       this.$router.push({
         name: 'Login'
       })
+    },
+    callReGroup (key) {
+      console.log(key)
+      this.keyToGroup = key
+      this.computedJobs = this.reGroup(this.jobs, this.keyToGroup)
     },
     reGroup (list, key) {
       const newGroup = {}
@@ -62,7 +160,20 @@ export default {
         newGroup[item[key]] = newGroup[item[key]] || []
         newGroup[item[key]].push(newItem)
       })
-      return newGroup
+
+      const ordered = {};
+      Object.keys(newGroup).sort().forEach(function (key) {
+        ordered[key] = newGroup[key];
+      })
+
+      for (var k in ordered) {
+        ordered[k].forEach(job => {
+          job[this.keyToGroup] = k
+        })
+      }
+
+      return ordered
+
     }
 
   }
@@ -71,25 +182,24 @@ export default {
 </script>
 
 <style scoped>
-  h2 {
-    position: relative;
-  }
 
-  h2 span {
-    background-color: white;
-    padding-right: 10px;
+  .move-right {
+    transform: translate(150px,0);
+    -webkit-transform: translate(150px,0); /** Chrome & Safari **/
+    -o-transform: translate(150px,0); /** Opera **/
+    -moz-transform: translate(150px,0); /** Firefox **/
   }
-
-  h2:after {
-    content:"";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 0.5em;
-    border-top: 1px solid black;
-    z-index: -1;
+  .move-left {
+    transform: translate(-150px,0);
+    -webkit-transform: translate(1-50px,0); /** Chrome & Safari **/
+    -o-transform: translate(-150px,0); /** Opera **/
+    -moz-transform: translate(-150px,0); /** Firefox **/
   }
-
+  .object {
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out; /** Chrome & Safari **/
+    -moz-transition: all 0.5s ease-in-out; /** Firefox **/
+    -o-transition: all 0.5s ease-in-out; /** Opera **/
+  }
 
 </style>

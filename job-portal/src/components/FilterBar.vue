@@ -7,7 +7,6 @@
       placeholder="Search or add a tag"
       label="name" track-by="code"
       :options="options"
-      :multiple="true"
       :taggable="true"
       :option-height="104"
       @tag="addTag"></multiselect>
@@ -26,21 +25,22 @@ export default {
   data () {
     return {
       value: [
-        {
-          name: 'Role', code: 'role'
-        }
+        { name: 'Position', code: 'position' },
       ],
       options: [
-        { name: 'Vue.js', code: 'vu' },
-        { name: 'Javascript', code: 'js' },
-        { name: 'Open Source', code: 'os' },
-        { name: 'Vue.js', code: 'vu' },
-        { name: 'Javascript', code: 'js' },
-        { name: 'Open Source', code: 'os' },
-        { name: 'Vue.js', code: 'vu' },
-        { name: 'Javascript', code: 'js' },
-        { name: 'Open Source', code: 'os' }
+        { name: 'Position', code: 'position' },
+        { name: 'Location', code: 'location' },
+        { name: 'Company', code: 'company' }
       ]
+    }
+  },
+  watch: {
+    value (newVal) {
+      if (newVal.hasOwnProperty('code')) {
+        this.$emit('group', newVal.code)
+      } else {
+        this.value.push({ name: 'Position', code: 'position' })
+      }
     }
   },
   methods: {

@@ -11,6 +11,9 @@ const jobSchema = new Schema({
   description: {
     type: String
   },
+  company: {
+    type: String
+  },
   location: {
     type: String
   },
@@ -24,9 +27,7 @@ const jobSchema = new Schema({
     required: true,
     default: Date.now
   },
-  applicants: {
-    type: Array
-  },
+  applicants: [{type: Schema.Types.ObjectId, ref: 'User'}],
   deadline: {
     type: Date
   },

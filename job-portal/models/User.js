@@ -18,9 +18,10 @@ var UserSchema = new Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  type_of_user: {
+  role: {
     type: String
-  }
+  },
+  passed_jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}]
 })
 
 UserSchema.pre('save', function (next) {

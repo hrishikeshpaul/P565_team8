@@ -27,6 +27,15 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login,
+      beforeEnter (to, from, next) {
+        if (localStorage.getItem('jwtToken')) {
+          next({name: 'HomePage'})
+        } else {
+          next({
+            name: 'Login'
+          })
+        }
+      }
     },
     {
       path: '/register',
