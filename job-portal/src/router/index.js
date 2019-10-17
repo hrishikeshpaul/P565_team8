@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/HomePage'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+import NotFound from '@/components/NotFound'
 
 Vue.use(Router)
 
@@ -28,12 +29,12 @@ export default new Router({
       name: 'Login',
       component: Login,
       beforeEnter (to, from, next) {
-        if (localStorage.getItem('jwtToken')) {
-          next({name: 'HomePage'})
-        } else {
-          next({
-            name: 'Login'
-          })
+        if (from.fullPath === '/') {
+          if (localStorage.getItem('jwtToken')) {
+            next({name: 'HomePage'})
+          } else {
+            next()
+          }
         }
       }
     },
@@ -41,6 +42,11 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
+    },
+    {
+      path: '*',
+      name: '404',
+      component: NotFound
     }
   ]
 })
