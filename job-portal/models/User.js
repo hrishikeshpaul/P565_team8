@@ -25,6 +25,41 @@ var UserSchema = new Schema({
   first_time: {
     type: Boolean,
     default: true
+  },
+  name: {
+    type: String
+  },
+  company: {
+    type: String
+  },
+  website: {
+    type: String
+  },
+  location: {
+    type: String
+  },
+  status: {
+    type: String
+  },
+  skills: {
+    type: [String],
+  },
+  bio: {
+    type: String
+  },
+  experience: [{type: mongoose.Schema.Types.ObjectId, ref: 'Experience'}],
+  education: [{type: mongoose.Schema.Types.ObjectId, ref: 'Education'}],
+  social: {
+    linkedin: {
+      type: String
+    },
+    github: {
+      type: String
+    },
+  },
+  date: {
+    type: Date,
+    default: Date.now
   }
 })
 

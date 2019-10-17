@@ -33,6 +33,38 @@
                >
                  <b-form-input id="name" v-model.trim="user.company"></b-form-input>
                </b-form-group>
+               <b-form-group id="fieldsetHorizontal"
+                             :label-cols="4"
+                             breakpoint="md"
+                             label-size="sm"
+                             label="Website"
+               >
+                 <b-form-input id="website" v-model.trim="user.website"></b-form-input>
+               </b-form-group>
+               <b-form-group id="fieldsetHorizontal"
+                             :label-cols="4"
+                             breakpoint="md"
+                             label-size="sm"
+                             label="LinkedIn"
+               >
+                 <b-form-input id="linkedin" v-model.trim="user.social.linkedin"></b-form-input>
+               </b-form-group>
+               <b-form-group id="fieldsetHorizontal"
+                             :label-cols="4"
+                             breakpoint="md"
+                             label-size="sm"
+                             label="Github"
+               >
+                 <b-form-input id="github" v-model.trim="user.social.github"></b-form-input>
+               </b-form-group>
+               <b-form-group id="fieldsetHorizontal"
+                             :label-cols="4"
+                             breakpoint="md"
+                             label-size="sm"
+                             label="Bio"
+               >
+                 <b-form-input id="bio" v-model.trim="user.bio"></b-form-input>
+               </b-form-group>
              </b-form>
            </tab-content>
            <tab-content :title="role === 'student' ? 'Education' : 'Orgainsational Information'"
@@ -129,6 +161,7 @@
            <tab-content
                         v-if="role === 'student'"
                         title="Experience"
+                        :before-change="validateAsync"
                         icon="ti-bag">
              <div v-for="(experience,index) in experiences">
                <div class="row" v-if="experiences.length > 1">
@@ -227,7 +260,9 @@ export default {
   data () {
     return {
       name: '',
-      user: {},
+      user: {
+        social: {}
+      },
       role: '',
       company: {},
       experiences: [{
@@ -236,7 +271,7 @@ export default {
         location: '',
         from: '',
         to: '',
-        current: [],
+        current: [true],
         description: ''
       }],
       educations: [{
@@ -245,7 +280,7 @@ export default {
         fieldofstudy: '',
         from: '',
         to: '',
-        current: []
+        current: false
       }],
       activeIndex: 0,
       loadingWizard: false,
@@ -260,6 +295,7 @@ export default {
       alert('Yay. Done!')
     },
     handleTabChanged (prevIndex, nextIndex) {
+      console.log(nextIndex)
       this.activeIndex = nextIndex;
     },
     setLoading: function (value) {
@@ -282,20 +318,71 @@ export default {
           var obj = {
             data: {
               name: this.user.name,
-              company: this.user.company
+              company: this.user.company,
+              website: this.user.website,
+              social: this.user.social,
+              bio: this.user.bio
             },
             user: {id: id}
           }
           if (!this.user.name)
             reject('Please enter your name')
 
-          axios.post(`http://localhost:3000/api/profile`, obj, {headers: params})
+          axios.post(`http://localhost:3000/api/profile/personal`, obj, {headers: params})
             .then(response => {
               resolve(true)
             })
             .catch(e => {
               reject(e.response.data)
             })
+        } else if (this.activeIndex === 1) {
+          if (this.role === 'student') {
+            if (this.educations[0].school === '') {
+              resolve(true)
+            } else {
+              var obj = {
+                data: this.educations,
+                user: {id: id}
+              }
+              axios.post(`http://localhost:3000/api/profile/education`, obj, {headers: params})
+                .then(response => {
+                  resolve(true)
+                })
+                .catch(e => {
+                  reject(e.response.data)
+                })
+            }
+          }
+          else {
+            console.log('put the employer code here')
+          }
+        } else if (this.activeIndex === 2) {
+          if (this.role === 'student') {
+            if (this.experiences[0].company === '') {
+              resolve(true)
+            } else {
+              var obj = {
+                data: this.experiences,
+                user: {id: id}
+              }
+              // temporary solve of bug where the current is not working
+              obj.data.forEach(exp => {
+                exp.current = false
+              })
+              axios.post(`http://localhost:3000/api/profile/experience`, obj, {headers: params})
+                .then(response => {
+                  resolve(true)
+                })
+                .catch(e => {
+                  reject(e.response.data)
+                })
+            }
+          }
+          else {
+            console.log('put employer code')
+          }
+        } else if (this.activeIndex === 3) {
+          console.log('put skills code here')
         }
       })
     },
