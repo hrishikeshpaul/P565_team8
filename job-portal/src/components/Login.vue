@@ -277,11 +277,12 @@ export default {
       axios.post(`http://localhost:3000/api/auth/login/`, this.login)
         .then(response => {
           localStorage.setItem('jwtToken', response.data.token)
-
+          localStorage.setItem('user_first_time', response.data.user.first_time)
           localStorage.setItem('user_id', response.data.user._id)
           localStorage.setItem('role', response.data.user.role)
 
           if (response.data.user.first_time) {
+            console.log('loginn')
             this.$router.push({
               name: 'ProfileBuilder'
             })

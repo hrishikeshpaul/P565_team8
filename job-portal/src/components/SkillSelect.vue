@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5">
+  <div class="pb-2">
     <multiselect
       v-model="value"
       :max-height="150"
@@ -8,6 +8,7 @@
       label="name" track-by="code"
       :options="options"
       :taggable="true"
+      :multiple="true"
       :option-height="104"
       @tag="addTag"></multiselect>
   </div>
@@ -18,28 +19,26 @@ import Multiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 export default {
-  name: 'FilterBar',
+  name: 'SkillSelect',
   components: {
     Multiselect
   },
   data () {
     return {
       value: [
-        { name: 'Position', code: 'position' }
+
       ],
       options: [
-        { name: 'Position', code: 'position' },
-        { name: 'Location', code: 'location' },
-        { name: 'Company', code: 'company' }
+        { name: 'Java', code: 'java' },
+        { name: 'Python', code: 'python' },
+        { name: 'Javascript', code: 'js' }
       ]
     }
   },
   watch: {
     value (newVal) {
-      if (typeof newVal.hasOwnProperty('code') !== null) {
-        this.$emit('group', newVal.code)
-      } else {
-        this.value.push({ name: 'Position', code: 'position' })
+      if (typeof newVal.hasOwnProperty('name') !== null) {
+        this.$emit('addSkills', newVal)
       }
     }
   },

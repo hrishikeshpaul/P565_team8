@@ -9,11 +9,13 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import 'ti-icons/css/themify-icons.css'
+import VuePageTransition from 'vue-page-transition'
 
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueFormWizard)
+Vue.use(VuePageTransition)
 
 /* eslint-disable no-new */
 new Vue({

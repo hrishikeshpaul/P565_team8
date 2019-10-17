@@ -36,13 +36,14 @@
     "passport-jwt": "^4.0.0",
     "passport-linkedin-oauth2": "^2.0.0",
     "serve-favicon": "^2.5.0",
-    "vue-multiselect": "^2.1.6",
     "themify-icons": "^1.0.0",
     "ti-icons": "^0.1.2",
     "vue": "^2.5.2",
     "vue-form-wizard": "^0.8.4",
+    "vue-multiselect": "^2.1.6",
+    "vue-page-transition": "^0.2.2",
     "vue-recaptcha": "^1.2.0",
-    "vue-router": "^3.0.1",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

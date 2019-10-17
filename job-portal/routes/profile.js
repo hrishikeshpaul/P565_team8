@@ -1,18 +1,16 @@
 var mongoose = require('mongoose')
 var passport = require('passport')
-var settings = require('../config/settings')
 require('../config/passport')(passport)
 var express = require('express')
-var jwt = require('jsonwebtoken')
 var router = express.Router()
-var Profile = require('../models/Profile')
-var User = require("../models/user");
+var User = require('../models/user');
 var Education = require('../models/Education')
 var Experience = require('../models/Experience')
 const { check, validationResult } = require('express-validator')
 
 /*
-* Only for name, company/university, website and social
+* Only for name, company/university, website and social websites
+* Fix social websites updating to blank if empty being sent
 */
 router.post('/personal', passport.authenticate('jwt', {session: false}), function (req, res, next) {
 
@@ -42,7 +40,7 @@ router.post('/personal', passport.authenticate('jwt', {session: false}), functio
 
 /*
 * Only education
-* PUT route to come after profile page is made!
+* PUT, DELETE route to come after profile page is made!
 */
 router.post('/education', passport.authenticate('jwt', { session: false }), function (req, res, err) {
 
@@ -65,9 +63,10 @@ router.post('/education', passport.authenticate('jwt', { session: false }), func
   return res.status(201).send('Saved')
 })
 
+
 /*
 * Only experience
-* PUT route to come after profile page is made!
+* PUT, DELETE route to come after profile page is made!
 */
 router.post('/experience', passport.authenticate('jwt', { session: false }), function (req, res, err) {
 
@@ -87,6 +86,33 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), fun
     })
   })
   return res.status(201).send('Saved')
+})
+
+/*
+* Only skills
+* PUT route to come after profile page is made!
+*/
+router.post('/skills', passport.authenticate('jwt', { session: false }), function (req, res, err) {
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({errors: errors.array()})
+  }
+
+  console.log(req.body.data.length)
+
+  if (req.body.data.length > 0) {
+    req.body.data.forEach(skill => {
+      User.updateOne({_id: req.body.user.id}, {$addToSet: {skills: skill}}, function (err, success) {
+        if (err) {
+          return res.status(400).send('Could not be sent')
+        }
+      })
+    })
+    return res.status(201).send('Saved')
+  } else {
+    return res.status(200).send('Nothing added')
+  }
 })
 
 module.exports = router

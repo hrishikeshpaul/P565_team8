@@ -148,7 +148,6 @@ export default {
       })
     },
     callReGroup (key) {
-      console.log(key)
       this.keyToGroup = key
       this.computedJobs = this.reGroup(this.jobs, this.keyToGroup)
     },

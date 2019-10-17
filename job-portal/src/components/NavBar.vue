@@ -13,7 +13,7 @@
                 <em>User</em>
               </template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
-              <b-dropdown-item href="#" @click="logout">Log Out</b-dropdown-item>
+              <b-dropdown-item href="#" @click.prevent="logout">Log Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
@@ -23,15 +23,14 @@
 </template>
 
 <script>
+
   export default {
     name: 'NavBar',
     data () {
-      return {
-
-      }
+      return {}
     },
     methods: {
-      logout() {
+      logout () {
         this.$emit('logout')
       }
     }

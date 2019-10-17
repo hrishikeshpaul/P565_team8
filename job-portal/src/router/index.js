@@ -17,7 +17,11 @@ export default new Router({
       component: Home,
       beforeEnter (to, from, next) {
         if (localStorage.getItem('jwtToken')) {
-          next()
+          if (localStorage.getItem('user_first_time') === 'true') {
+            next({name: 'ProfileBuilder'})
+          } else {
+            next()
+          }
         } else {
           next({
             name: 'Login'
@@ -30,12 +34,10 @@ export default new Router({
       name: 'Login',
       component: Login,
       beforeEnter (to, from, next) {
-        if (from.fullPath === '/') {
-          if (localStorage.getItem('jwtToken')) {
-            next({name: 'HomePage'})
-          } else {
-            next()
-          }
+        if (localStorage.getItem('jwtToken')) {
+          next({path: from.path})
+        } else {
+          next()
         }
       }
     },
@@ -52,7 +54,20 @@ export default new Router({
     {
       path: '/build_profile',
       name: 'ProfileBuilder',
-      component: ProfileBuilder
+      component: ProfileBuilder,
+      beforeEnter (to, from, next) {
+        if (localStorage.getItem('user_first_time') === 'true') {
+          if (localStorage.getItem('jwtToken')) {
+            next()
+          }
+        } else {
+          if (localStorage.getItem('jwtToken')) {
+            next({name: 'HomePage'})
+          } else {
+            next({name: 'Login'})
+          }
+        }
+      }
 
     }
   ]
