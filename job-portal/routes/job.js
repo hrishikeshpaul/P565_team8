@@ -23,7 +23,7 @@ router.get('/', function (req, res, next) {
         allJobs.forEach(job => {
           job._id = job._id.toString()
           job.applicants.forEach(i => {
-            if(i.toString() === req.query.user) {
+            if (i.toString() === req.query.user) {
               jobsToFilter.push(job._id)
             }
           })
@@ -46,18 +46,18 @@ router.post('/', function (req, res, next) {
 })
 
 router.patch('/reject', function (req, res, next) {
-  // User.updateOne({_id: req.body.user},{$addToSet: {passed_jobs: mongoose.Types.ObjectId(req.body.job)}}, function (err, success) {
-  //   if (err)
-  //     return res.status(400).send('Error')
-  //   return res.status(204).send('Updated')
-  // })
+  User.updateOne({_id: req.body.user},{$addToSet: {passed_jobs: mongoose.Types.ObjectId(req.body.job)}}, function (err, success) {
+    if (err)
+      return res.status(400).send('Error')
+    return res.status(204).send('Updated')
+  })
 
   return res.status(204).send('Updated')
 
 })
 
 router.patch('/accept', function (req, res, next) {
-  Job.updateOne({_id: req.body.job},{$addToSet: {applicants: mongoose.Types.ObjectId(req.body.user)}}, function (err, success) {
+  Job.updateOne({_id: req.body.job}, {$addToSet: {applicants: mongoose.Types.ObjectId(req.body.user)}}, function (err, success) {
     if (err)
       return res.status(400).send('Error')
     return res.status(204).send('Updated')
