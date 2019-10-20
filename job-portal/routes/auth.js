@@ -37,10 +37,10 @@ router.post('/register', function (req, res) {
         console.log(newUser)
 
         var transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth:{
-            user: 'colen81@gmail.com',
-            pass: 'Cassidy2011rip.'
+          service: 'SendGrid',
+          auth: {
+            user: 'hrishikeshpaul',
+            pass: 'Keshpaul1996'
           }
         });
         var mailOptions = {
@@ -82,7 +82,7 @@ router.post('/login', function (req, res) {
           // return the information including token as JSON
           res.json({success: true, token: 'JWT ' + token, user: user})
         } else {
-          res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'})
+          return res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'})
         }
       })
     }
@@ -106,7 +106,7 @@ router.get('/confirmation/:id', function (req, res, next) {
       user.isVerified = true;
       user.save(function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
-        res.status(200).send("<b>Verified!</b> <br /> Please click <a href='http://localhost:8080/login'>here</a> to login.");
+        return res.status(200).send("<b>Verified!</b> <br /> Please click <a href='http://localhost:8080/login'>here</a> to login.");
       });
     });
   });
@@ -128,11 +128,11 @@ router.get('/resend/:id', function (req, res, next) {
       if (err) { return res.status(500).send({ msg: err.message }); }
 
       // Send the email
-      var transporter = nodemailer.createTransport({ service: 'Sendgrid', auth: { user: 'hrishikeshpaul', pass: 'Keshpaul1996' } });
+      var transporter = nodemailer.createTransport({ service: 'SendGrid', auth: { user: 'hrishikeshpaul', pass: 'Keshpaul1996' } });
       var mailOptions = { from: 'no-reply@codemoto.io', to: user.email, subject: 'Account Verification Token', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/api\/auth\/confirmation\/' + token.token + '.\n' };
       transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
-        res.status(200).send('A verification email has been sent to ' + user.email + '. Please click <a href=\'http://localhost:8080/login\'>here</a> to go back.');
+        return res.status(200).send('A verification email has been sent to ' + user.email + '. Please click <a href=\'http://localhost:8080/login\'>here</a> to go back.');
       });
     });
 
