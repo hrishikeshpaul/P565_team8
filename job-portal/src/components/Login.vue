@@ -48,7 +48,16 @@
                         </b-form-group>
                         <b-button type="submit" variant="warning" class="mt-3" style="width: 100%" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
                         <b-button type="submit" variant="warning" class="mt-1" style="width: 100%" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
-
+                        <div class="form_container">
+                          <form action="#" id="my_captcha_form">
+                            <div class="g-recaptcha" 
+                        data-sitekey="6LfrFKQUAAAAAMzFobDZ7ZWy982lDxeps8cd1I2i" 
+                        ></div>
+                            <p>
+                            <!--<button type="submit" >Submit</button>-->
+                            </p>
+                          </form>
+                        </div>
                         <hr class="mb-2"/>
                         <a href="" class="text-muted mt-0" @click.prevent="forgotPassword = !forgotPassword">{{forgotPassword ? 'Back' : 'Forgot Password?'}}</a>
                         <br />
@@ -195,6 +204,7 @@
     <div style="background-color: #6c757d;" class="p-3 text-center">
       <span style="color: white;">A Project by students from Indiana University, Bloomington</span>
     </div>
+    
   </div>
 
 </template>
@@ -203,7 +213,22 @@
 
 import axios from 'axios'
 import Register from './Register'
-
+import Recaptcha from './Recaptcha'
+// document.getElementById("my_captcha_form").addEventListener("submit",function(evt)
+//   {
+  
+//   var response = grecaptcha.getResponse();
+//   if(response.length == 0) 
+//   { 
+//     //reCaptcha not verified
+//     alert("please verify you are humann!"); 
+//     evt.preventDefault();
+//     return false;
+//   }
+//   //captcha verified
+//   //do the rest of your validations here
+  
+// });
 export default {
   name: 'Login',
   data () {
@@ -216,7 +241,8 @@ export default {
     }
   },
   components: {
-    Register
+    Register,
+    Recaptcha
   },
   watch: {
     tabIndex (val) {
@@ -250,6 +276,7 @@ export default {
         })
     },
     resetPassword () {
+      console.log('why no work')
       axios.post(`http://localhost:3000/api/auth/forgot/`, {email: this.login.username})
         .then(response => {
           this.error = 'Further Instructions has been send sent to the email id.'
@@ -298,6 +325,15 @@ export default {
       this.$router.push({
         name: 'Register'
       })
+    },
+    submit (response){
+      console.log(response)
+    },
+    executeRecaptcha (){
+      this.$refs.recaptcha.execute()
+      if (grecaptcha.getResponse() == 0){
+        alert("sike")
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+
 var passport = require('passport')
 var settings = require('../config/settings')
 var async = require('async')
@@ -6,13 +7,11 @@ require('../config/passport')(passport)
 var express = require('express')
 var jwt = require('jsonwebtoken')
 var router = express.Router()
-
 var User = require('../models/user')
 
 var crypto = require('crypto')
 var nodemailer = require('nodemailer')
 var Token = require('../models/Token')
-
 router.post('/register', function (req, res) {
 
   if (!req.body.username || !req.body.password) {
@@ -21,23 +20,29 @@ router.post('/register', function (req, res) {
     var newUser = new User({
       email: req.body.username,
       password: req.body.password
+      
     })
-    console.log(newUser)
     // save the user
     newUser.save(function (err) {
       if (err) {
         return res.status(409).json({success: false, msg: 'Username already exists.'})
       }
+
+
       var token = new Token({_userId: newUser._id, token: crypto.randomBytes(16).toString('hex')})
       token.save(function (err) {
         if (err) {
           return res.status(500).send({msg: err.message})
         }
+        console.log(newUser)
 
         var transporter = nodemailer.createTransport({
-          service: 'Sendgrid',
-          auth: {user: 'hrishikeshpaul', pass: 'Keshpaul1996'}
-        })
+          service: 'SendGrid',
+          auth: {
+            user: 'hrishikeshpaul',
+            pass: 'Keshpaul1996'
+          }
+        });
         var mailOptions = {
           from: 'noq-reply@noq.com',
           to: newUser.email,
@@ -48,7 +53,8 @@ router.post('/register', function (req, res) {
           if (err) {
             return res.status(500).send({msg: err.message})
           }
-          res.status(200).send({success: true, msg: 'A verification email has been sent to ' + newUser.email + '.'})
+          
+         return res.status(200).send({success: true, msg: 'A verification email has been sent to ' + newUser.email + '.'})
         })
       })
 
@@ -76,7 +82,7 @@ router.post('/login', function (req, res) {
           // return the information including token as JSON
           res.json({success: true, token: 'JWT ' + token, user: user})
         } else {
-          res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'})
+          return res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'})
         }
       })
     }
@@ -100,7 +106,7 @@ router.get('/confirmation/:id', function (req, res, next) {
       user.isVerified = true;
       user.save(function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
-        res.status(200).send("<b>Verified!</b> <br /> Please click <a href='http://localhost:8080/login'>here</a> to login.");
+        return res.status(200).send("<b>Verified!</b> <br /> Please click <a href='http://localhost:8080/login'>here</a> to login.");
       });
     });
   });
@@ -122,11 +128,11 @@ router.get('/resend/:id', function (req, res, next) {
       if (err) { return res.status(500).send({ msg: err.message }); }
 
       // Send the email
-      var transporter = nodemailer.createTransport({ service: 'Sendgrid', auth: { user: 'hrishikeshpaul', pass: 'Keshpaul1996' } });
+      var transporter = nodemailer.createTransport({ service: 'SendGrid', auth: { user: 'hrishikeshpaul', pass: 'Keshpaul1996' } });
       var mailOptions = { from: 'no-reply@codemoto.io', to: user.email, subject: 'Account Verification Token', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/api\/auth\/confirmation\/' + token.token + '.\n' };
       transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
-        res.status(200).send('A verification email has been sent to ' + user.email + '. Please click <a href=\'http://localhost:8080/login\'>here</a> to go back.');
+        return res.status(200).send('A verification email has been sent to ' + user.email + '. Please click <a href=\'http://localhost:8080/login\'>here</a> to go back.');
       });
     });
 
