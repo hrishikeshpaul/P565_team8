@@ -304,6 +304,9 @@ export default {
       axios.post(`http://localhost:3000/api/auth/login/`, this.login)
         .then(response => {
           localStorage.setItem('jwtToken', response.data.token)
+          localStorage.setItem('user_id', response.data.user._id)
+          localStorage.setItem('role', response.data.user.role)
+
           this.$router.push({
             name: 'HomePage'
           })

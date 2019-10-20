@@ -8,6 +8,7 @@ var cors = require('cors')
 var app = express();
 var auth = require('./routes/auth');
 var home = require('./routes/home');
+var job = require('./routes/job')
 
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
@@ -47,6 +48,7 @@ app.use(passport.session());
 
 app.use('/api/auth', auth);
 app.use('/', home);
+app.use('/api/jobs', passport.authenticate('jwt', { session: false }), job);
 
 
 // catch 404 and forward to error handler
