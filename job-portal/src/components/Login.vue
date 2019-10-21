@@ -48,16 +48,8 @@
                         </b-form-group>
                         <b-button type="submit" variant="warning" class="mt-3" style="width: 100%" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
                         <b-button type="submit" variant="warning" class="mt-1" style="width: 100%" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
-                        <div class="form_container">
-                          <form action="#" id="my_captcha_form">
-                            <div class="g-recaptcha" 
-                        data-sitekey="6LfrFKQUAAAAAMzFobDZ7ZWy982lDxeps8cd1I2i" 
-                        ></div>
-                            <p>
-                            <!--<button type="submit" >Submit</button>-->
-                            </p>
-                          </form>
-                        </div>
+                        <div class="g-recaptcha" id="rcaptcha" style="margin-left: 90px;" data-sitekey="6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs"></div>
+                        <span id="captcha" style="margin-left:100px;color:red" />
                         <hr class="mb-2"/>
                         <a href="" class="text-muted mt-0" @click.prevent="forgotPassword = !forgotPassword">{{forgotPassword ? 'Back' : 'Forgot Password?'}}</a>
                         <br />
@@ -276,7 +268,6 @@ export default {
         })
     },
     resetPassword () {
-      console.log('why no work')
       axios.post(`http://localhost:3000/api/auth/forgot/`, {email: this.login.username})
         .then(response => {
           this.error = 'Further Instructions has been send sent to the email id.'
@@ -301,6 +292,11 @@ export default {
     },
     onSubmit (evt) {
       evt.preventDefault()
+      if (grecaptcha.getResponse() == 0){
+        this.error = 'Please verify captcha'
+        this.variant = 'danger'
+        return false
+      }
       axios.post(`http://localhost:3000/api/auth/login/`, this.login)
         .then(response => {
           localStorage.setItem('jwtToken', response.data.token)
@@ -325,12 +321,6 @@ export default {
     },
     submit (response){
       console.log(response)
-    },
-    executeRecaptcha (){
-      this.$refs.recaptcha.execute()
-      if (grecaptcha.getResponse() == 0){
-        alert("sike")
-      }
     }
   }
 }

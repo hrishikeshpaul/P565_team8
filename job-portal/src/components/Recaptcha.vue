@@ -10,7 +10,7 @@
 export default {
   data () {
     return {
-      sitekey: '6Ld7Bb4UAAAAACBwnhXDNZXUIvswVAyCWZgTslQY',
+      sitekey: '6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs',
       widgetId: 0
     }
   },
