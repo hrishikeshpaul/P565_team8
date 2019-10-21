@@ -27,9 +27,11 @@
     "express": "^4.16.3",
     "express-validator": "^6.2.0",
     "jsonwebtoken": "^8.2.0",
+    "mongodb": "^3.3.3",
     "mongoose": "^5.0.12",
     "morgan": "^1.9.0",
     "mustache": "^3.1.0",
+    "nodemailer": "^6.3.1",
     "nodemon": "^1.19.3",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",
@@ -45,7 +47,10 @@
     "vue-page-transition": "^0.2.2",
     "vue-recaptcha": "^1.2.0",
     "vue-router": "^3.0.1",
-    "vue-sweetalert2": "^2.1.4"
+    "vue-sweetalert2": "^2.1.4",
+    "swing": "^3.1.4",
+    "vue-swing": "0.0.10",
+    "vue2-interact": "0.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
