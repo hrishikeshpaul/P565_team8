@@ -493,9 +493,10 @@ export default {
           student: 'Student',
           employer: 'Employer'
         },
-        closeOnClickOutside: false,
+        allowOutsideClick: false,
+        showCancelButton: false,
         inputPlaceholder: 'Select role',
-        showCancelButton: true,
+        confirmButtonColor: '#f0ad4e',
         inputValidator: (value) => {
           return new Promise((resolve, reject) => {
             if (value === 'student' || value === 'employer') {
@@ -539,5 +540,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .swal-title {
+    margin: 0px;
+    font-size: 25px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
+    margin-bottom: 28px;
   }
 </style>
