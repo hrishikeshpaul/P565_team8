@@ -1,4 +1,3 @@
-var mongoose = require('mongoose')
 var passport = require('passport')
 var settings = require('../config/settings')
 var async = require('async')
@@ -6,7 +5,6 @@ require('../config/passport')(passport)
 var express = require('express')
 var jwt = require('jsonwebtoken')
 var router = express.Router()
-var request = require('request')
 
 var User = require('../models/user')
 
