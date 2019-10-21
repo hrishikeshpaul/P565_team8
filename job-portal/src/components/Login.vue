@@ -21,13 +21,11 @@
                       <b-alert show :variant="variant" v-html="error"></b-alert>
                     </div>
                       <div class="text-center mt-4">
-                        <a class="btn btn-md btn-info" @click="linkedInLogin">LinkedIn</a>
-                        <a class="btn btn-md btn-secondary" @click="githubLogin">GitHub</a>
+                        <a class="btn btn-md light linkedin-btn" @click="linkedInLogin" style="background-color: #597ca0; color: white;">Linked <i class="ti-linkedin"></i></a>
                       </div>
                       <div class="center-separator my-3 mt-4">
                         or
-
-                    </div>
+                      </div>
                       <b-form>
 
                         <b-form-group id="fieldsetHorizontal"
@@ -56,7 +54,7 @@
                       </b-form>
                   </b-tab>
                   <b-tab title="Register">
-                    <Register @registered="registration_completed"/>
+                    <Register @registered="registration_completed" @linkedin="linkedInLogin"/>
                   </b-tab>
                 </b-tabs>
               </div>
@@ -229,21 +227,12 @@ export default {
     }
   },
   methods: {
-    githubLogin () {
-      axios.get(`http://localhost:3000/api/auth/github/`)
-        .then(response => {
-          console.log(response)
-        })
-        .catch(e => {
-          this.error = e.response.data.msg
-        })
-    },
     linkedInLogin () {
-      axios.get(`http://localhost:3000/api/auth/linkedin/`, {
+      axios.get(`http://localhost:3000/auth/linkedin`, {
         headers: {
           'Access-Control-Allow-Origin': '*'}
         }).then(response => {
-          console.log(response)
+          window.location.href = response.data
         })
         .catch(e => {
           this.error = e.response.data.msg
@@ -254,7 +243,6 @@ export default {
         .then(response => {
           this.error = 'Further Instructions has been send sent to the email id.'
           this.variant = 'success'
-          console.log(response)
         })
         .catch(e => {
           this.error = e.response.data.msg
@@ -282,7 +270,6 @@ export default {
           localStorage.setItem('role', response.data.user.role)
 
           if (response.data.user.first_time) {
-            console.log('loginn')
             this.$router.push({
               name: 'ProfileBuilder'
             })
@@ -375,6 +362,14 @@ export default {
     height: 1px;
     margin-right: 10px;
     margin-left: 10px;
+  }
+
+  .linkedin-btn {
+    cursor: pointer;
+  }
+
+  .linkedin-btn:hover{
+    background-color: #6c9ccb !important;
   }
 
 </style>

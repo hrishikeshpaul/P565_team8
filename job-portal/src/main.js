@@ -10,12 +10,15 @@ import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import 'ti-icons/css/themify-icons.css'
 import VuePageTransition from 'vue-page-transition'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueFormWizard)
 Vue.use(VuePageTransition)
+Vue.use(VueSweetalert2);
 
 /* eslint-disable no-new */
 new Vue({

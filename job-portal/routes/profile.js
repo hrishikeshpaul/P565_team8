@@ -8,6 +8,15 @@ var Education = require('../models/Education')
 var Experience = require('../models/Experience')
 const { check, validationResult } = require('express-validator')
 
+
+router.post('/updateRole', passport.authenticate('jwt', {session: false}), function (req, res, next) {
+  console.log(req.body)
+  User.findOneAndUpdate({_id: req.body.user}, {$set: {role: req.body.role}}, function (err, succ) {
+    if (err)
+      return res.status(400).send('Error')
+    return res.status(204).send('Done')
+  })
+})
 /*
 * Only for name, company/university, website and social websites
 * Fix social websites updating to blank if empty being sent

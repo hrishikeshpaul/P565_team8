@@ -6,6 +6,7 @@ require('../config/passport')(passport)
 var express = require('express')
 var jwt = require('jsonwebtoken')
 var router = express.Router()
+var request = require('request')
 
 var User = require('../models/user')
 
@@ -66,7 +67,14 @@ router.post('/login', function (req, res) {
     if (!user) {
       res.status(401).send({success: false, msg: 'Authentication failed. User not found.'})
     } else if (!user.isVerified) {
-      res.status(401).send({success: false, msg: 'User not verified.', link:true})
+      res.status(401).send({success: false, msg: 'User not verified.', link: true})
+    } else if (user.isVerified && user.oauth) {
+      if (user.oauthToken === req.body.token) {
+        var token = jwt.sign(user.toJSON(), settings.secret)
+        res.json({success: true, token: 'JWT ' + token, user: user})
+      } else {
+        res.status(401).send({success: false, msg: 'Unauthorized User.'})
+      }
     } else {
       // check if password matches
       user.comparePassword(req.body.password, function (err, isMatch) {
