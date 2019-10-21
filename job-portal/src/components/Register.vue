@@ -3,6 +3,12 @@
     <div v-if="error">
         <b-alert show variant="danger">{{error}}</b-alert>
     </div>
+    <div class="text-center mt-4">
+      <a class="btn btn-md linkedin-btn light" @click="$emit('linkedin')" style="color: white;">Linked <i class="ti-linkedin"></i></a>
+    </div>
+    <div class="center-separator my-3 mt-4">
+      or
+    </div>
     <b-form @submit="onSubmit" class="p3">
       <b-form-group id="fieldsetHorizontal"
                     :label-cols="1"
@@ -88,5 +94,30 @@ export default {
 </script>
 
 <style scoped>
+  .center-separator {
+    display: flex;
+    line-height: 1px;
+    color: #858585;
+  }
+
+  .center-separator::before, .center-separator::after {
+    content: '';
+    display: inline-block;
+    flex-grow: 1;
+    margin-top: 0.05em;
+    background: #c7c7c7;
+    height: 1px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .linkedin-btn {
+    background-color: #597ca0;
+    color: white;
+    cursor: pointer;
+  }
+
+  .linkedin-btn:hover{
+    background-color: #6c9ccb !important;
+  }
 
 </style>

@@ -5,12 +5,39 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import NotFound from '@/components/NotFound'
 import ProfileBuilder from '@/components/ProfileBuilder'
+import axios from 'axios'
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/oauth/:id/:token',
+      name: 'OAuth',
+      beforeEnter (to, from, next) {
+        console.log(to.params)
+        axios.post(`http://localhost:3000/api/auth/login/`, {username: to.params.id, token: to.params.token})
+          .then(response => {
+            localStorage.setItem('jwtToken', response.data.token)
+            localStorage.setItem('user_first_time', response.data.user.first_time)
+            localStorage.setItem('user_id', response.data.user._id)
+            localStorage.setItem('role', response.data.user.role)
+
+            if (response.data.user.first_time) {
+              next({
+                name: 'ProfileBuilder'
+              })
+            } else {
+              next({
+                name: 'HomePage'
+              })
+            }
+          })
+      }
+
+
+    },
     {
       path: '/',
       name: 'HomePage',
