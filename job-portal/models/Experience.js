@@ -18,7 +18,8 @@ const experienceSchema = new Schema({
     required: true
   },
   to: {
-    type: String
+    type: String,
+    default: null
   },
   current: {
     type: Boolean,

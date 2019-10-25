@@ -17,7 +17,7 @@ const jobSchema = new Schema({
   location: {
     type: String
   },
-  employee: {
+  employer: {
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User'
@@ -28,6 +28,8 @@ const jobSchema = new Schema({
     default: Date.now
   },
   applicants: [{type: Schema.Types.ObjectId, ref: 'User'}],
+  confirmed_users: [{type: Schema.Types.ObjectId, ref: 'User', default: []}],
+  rejected_users: [{type: Schema.Types.ObjectId, ref: 'User', default: []}],
   deadline: {
     type: Date
   },
