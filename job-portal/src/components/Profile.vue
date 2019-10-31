@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-    <div class="my-5 container px-0 shadow-sm mb-5 bg-white rounded" v-if="role === 'student'" style="margin-bottom: 50px;">
+    <div class="my-5 container px-0 shadow-sm mb-5 bg-white rounded" v-if="role === 'student'">
       <b-card no-body >
         <b-tabs card>
           <b-tab title="Acceptances" active>
@@ -41,12 +41,11 @@
               <span v-if="user.acceptances.length === 0">You don't have any acceptances! Start applying!</span>
               <div v-for="(job, idx) in user.acceptances" class="text-left mt-2">
                 <b-card :title="job.title">
-                  <button style="float: right;" class="btn btn-info">Message</button>
-                  <b>Company:</b>
-                  <p>{{job.company}}</p>
-                  <button style="float: right" class="btn btn-danger">Reject</button>
-                  <b>Recruiter: </b>
-                  <p>{{job.employer.name}}</p>
+                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
+                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-info"><i class="ti-comment-alt"></i></button>
+                  <b>Company:</b><p>{{job.company}}</p>
+                  <b>Recruiter: </b><p>{{job.employer.name}}</p>
+                  <b>Position:</b><p>{{job.position}}</p>
                 </b-card>
               </div>
             </b-card-body>
@@ -55,7 +54,8 @@
             <b-card-body>
               <div v-if="user.education.length > 0" v-for="edu in user.education" :id="edu.school">
                 <b-card class="mb-3">
-                  <button style="float: right;"><i class="ti-pencil" @click="show != show"></i></button>
+                  <button style="float: right;" class="btn btn-outline-danger ml-2" @click="deleteEducation(edu)"><i class="ti-close"></i></button>
+                  <button style="float: right;" class="btn btn-outline-secondary" @click="editEducationModal(edu)"><i class="ti-pencil"></i></button>
                   <div><b>Name</b>
                     <p>{{edu.school}} </p></div>
                   <div><b>Degree</b>
@@ -63,13 +63,14 @@
                   <div><b>Field of Study</b>
                     <p>{{edu.fieldofstudy}} </p></div>
                   <div><b>Duration</b>
-                    <p>{{$moment(edu.from).format('MMM Do YY') }} - {{edu.to !== null ? edu.to : 'Present'}} </p></div>
+                    <p>{{$moment(edu.from).format('MMM Do YY') }} - {{edu.to !== null ? $moment(edu.to).format('MMM Do YY') : 'Present'}} </p></div>
                 </b-card>
               </div>
               <button
                 v-if="role === 'student'"
                 style="width: 100%; border-radius: 10px;"
                 class="btn-outline-warning mb-2 mt-1 "
+                @click="addEducationModal"
               >
                 Add
               </button>
@@ -156,11 +157,13 @@
         </b-tabs>
       </b-card>
     </div>
+
     <JobInputModal :showModal="showJobInputModal" @hideModal="hideJobInputModal" :user="user" @getData="getData"/>
     <ProfileInputModal :showModal="showEditProfileModal" :user="user" @hideModal="hideEditProfileInputModal"/>
     <ProfileSettingsModal :showModal="showProfileSettingsModal" :user="user" @hideModal="hideProfileSettingsModal" />
     <JobInfoModal :showModal="showJobInfoModal" :job="jobInfoToBePassed" @hideModal="hideJobInfoModal"/>
     <DeleteConfirmModal :showModal="showDeleteConfirmModal" @hideModal="hideDeleteConfirmModal" @delete="deleteJobPosting" :job="jobInfoToBePassed"/>
+    <EducationModal :show-modal="showEducationModal" @hideModal="hideEducationModal" :education="educationToBePassed" :buttonText="educationButtonText" :user="user"/>
   </div>
 </template>
 
@@ -174,6 +177,7 @@ import ProfileInputModal from './ProfileEditModal'
 import ProfileSettingsModal from './ProfileSettingsModal'
 import JobInfoModal from './JobInfoModal'
 import DeleteConfirmModal from './DeleteConfirmModal'
+import EducationModal from './EducationModal'
 
 import Gravatar from 'vue-gravatar'
 
@@ -186,7 +190,8 @@ export default {
     ProfileInputModal,
     ProfileSettingsModal,
     JobInfoModal,
-    DeleteConfirmModal
+    DeleteConfirmModal,
+    EducationModal
   },
   data () {
     return {
@@ -202,6 +207,8 @@ export default {
         ]
       },
       jobInfoToBePassed: {},
+      educationToBePassed: {},
+      educationButtonText: '',
       user_id: localStorage.getItem('user_id'),
       user: {},
       role: localStorage.role,
@@ -211,6 +218,7 @@ export default {
       showProfileSettingsModal: false,
       showJobInfoModal: false,
       showDeleteConfirmModal: false,
+      showEducationModal: false,
       employerSearchJob: ''
     }
   },
@@ -272,6 +280,41 @@ export default {
     },
     hideDeleteConfirmModal () {
       this.showDeleteConfirmModal = false
+    },
+    editEducationModal (education) {
+      this.educationToBePassed = education
+      this.educationButtonText = 'Edit Education'
+      this.showEducationModal = !this.showEducationModal
+    },
+    hideEducationModal () {
+      this.showEducationModal = false
+      this.getData()
+    },
+    addEducationModal () {
+      this.educationToBePassed = {
+        to: null,
+        from: null,
+        school: '',
+        fieldofstudy: '',
+        degree: '',
+        current: false
+      }
+      this.educationButtonText = 'Add Education'
+      this.showEducationModal = !this.showEducationModal
+    },
+    deleteEducation (edu) {
+      var headers = {
+        Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
+      }
+      console.log(edu)
+      axios.delete(`http://localhost:3000/api/profile/education/${edu._id}`, {headers: headers})
+        .then(response => {
+          alert('Deleted')
+          this.getData()
+        })
+        .catch(err => {
+          alert(err.response.data)
+        })
     },
     deleteJobPosting (id) {
       var headers = {

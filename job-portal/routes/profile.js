@@ -40,29 +40,45 @@ router.post('/personal', passport.authenticate('jwt', {session: false}), functio
 
 /*
 * Only education
-* PUT, DELETE route to come after profile page is made!
 */
 router.post('/education', passport.authenticate('jwt', { session: false }), function (req, res, err) {
-
+  console.log(req.body)
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  console.log(req.body)
-
   req.body.data.forEach(education => {
     new Education(education).save(function (err, edu) {
       if (err)
-        return res.status(400).send('Could not save education')
+        console.log('Education can\'t be saved')
       User.updateOne({_id: req.body.user.id}, {$addToSet: {education: edu._id}}, function (err, success) {
       if (err)
-        return res.status(400).send('Could not be sent')
+          console.log(err)
       })
     })
   })
   return res.status(201).send('Saved')
 })
 
+router.patch('/education/:id', passport.authenticate('jwt', { session: false }), function (req, res, next) {
+  Education.findOneAndUpdate({_id: req.params.id}, {$set: req.body}, function (err, succ) {
+    if (err)
+      return res.status(400).send('Error')
+    else return res.status(200).send('Done')
+  })
+})
+
+/**
+ * Does not cascade DELETE
+**/
+
+router.delete('/education/:id', passport.authenticate('jwt', { session: false }), function (req, res, next) {
+  Education.remove({_id: req.params.id}, function (err, succ) {
+    if (err)
+      return res.status(400).send('Error')
+    else return res.status(200).send('Done')
+  })
+})
 
 /*
 * Only experience
