@@ -28,7 +28,7 @@
             <!--            <span style="font-size: 20px;" v-html="user.social.linkedin.length > 0 ? user.social.linkedin : null">{{user.social.linkedin.length > 0 ? user.social.linkedin : null}} {{user.social.github ? ' | ' + user.social.github : null}} | {{user.website ? ' | ' + user.website : null}}</span>-->
           </div>
           <div style="justify-content: center; text-align: justify;">
-            <span style="font-size: 20px; font-style: italic;">{{user.bio.length > 40 ? user.bio.substring(0, 120) + ' ...' : user.bio}}</span>
+            <span style="font-size: 20px; font-style: italic;">{{user.bio.length > 40 ? user.bio.substring(0, 150) + ' ...' : user.bio}}</span>
           </div>
         </div>
       </div>
@@ -118,11 +118,11 @@
               <div v-for="(job, idx) in employerJobs">
                 <b-card class="text-left my-2" :title="job.title">
                   <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="deleteJobPosting"><i class="ti-close"></i></button>
-                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-secondary"><i class="ti-pencil"></i></button>
+                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-secondary" @click="jobInfoModal(job)"><i class="ti-pencil"></i></button>
                   <b>Location: </b><p>{{job.location}}</p>
                   <b>Position: </b><p>{{job.position}}</p>
-                  <b>Description: </b><p>{{job.description}}</p>
-                  <b>Skills Required: </b><p>{{job.skills.length > 0 ? job.skills.join(', ') : 'None'}}</p>
+                  <b>Description: </b><p style="white-space: pre-wrap">{{job.description}}</p>
+                  <b>Skills Required: </b><p>{{job.skills.length > 0 ? job.skills.map(s => s.name).join(', ') : 'None'}}</p>
                   <b>Total Applications: </b><p>{{job.applicants.length}}</p>
                 </b-card>
               </div>
@@ -154,9 +154,10 @@
         </b-tabs>
       </b-card>
     </div>
-    <JobInputModal :showModal="showJobInputModal" @hideModal="hideJobInputModal" :user="user"/>
+    <JobInputModal :showModal="showJobInputModal" @hideModal="hideJobInputModal" :user="user" @getData="getData"/>
     <ProfileInputModal :showModal="showEditProfileModal" :user="user" @hideModal="hideEditProfileInputModal"/>
     <ProfileSettingsModal :showModal="showProfileSettingsModal" :user="user" @hideModal="hideProfileSettingsModal" />
+    <JobInfoModal :showModal="showJobInfoModal" :job="jobInfoToBePassed" @hideModal="hideJobInfoModal"/>
   </div>
 </template>
 
@@ -168,8 +169,9 @@ import NavBar from './NavBar'
 import JobInputModal from './JobInputModal'
 import ProfileInputModal from './ProfileEditModal'
 import ProfileSettingsModal from './ProfileSettingsModal'
+import JobInfoModal from './JobInfoModal'
 
-import Gravatar from 'vue-gravatar';
+import Gravatar from 'vue-gravatar'
 
 export default {
   name: 'Profile',
@@ -178,7 +180,8 @@ export default {
     Gravatar,
     JobInputModal,
     ProfileInputModal,
-    ProfileSettingsModal
+    ProfileSettingsModal,
+    JobInfoModal
   },
   data () {
     return {
@@ -193,6 +196,7 @@ export default {
           "title"
         ]
       },
+      jobInfoToBePassed: {},
       user_id: localStorage.getItem('user_id'),
       user: {},
       role: localStorage.role,
@@ -200,6 +204,7 @@ export default {
       showJobInputModal: false,
       showEditProfileModal: false,
       showProfileSettingsModal: false,
+      showJobInfoModal: false,
       employerSearchJob: ''
     }
   },
@@ -248,26 +253,37 @@ export default {
     hideProfileSettingsModal () {
       this.showProfileSettingsModal = false
     },
+    jobInfoModal (job) {
+      this.jobInfoToBePassed = job
+      this.showJobInfoModal = !this.showJobInfoModal
+    },
+    hideJobInfoModal () {
+      this.showJobInfoModal = false
+    },
     deleteJobPosting () {
 
+    },
+    getData () {
+      console.log('call')
+      var headers = {
+        Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
+      }
+
+      axios.get(`http://localhost:3000/api/user/${this.user_id}`, {headers: headers})
+        .then(response => {
+          this.user = response.data
+        })
+        .catch(e => {
+          if (e.response.status === 401) {
+            this.$router.push({
+              name: 'Login'
+            })
+          }
+        })
     }
   },
   created () {
-    var headers = {
-      Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
-    }
-
-    axios.get(`http://localhost:3000/api/user/${this.user_id}`, {headers: headers})
-      .then(response => {
-        this.user = response.data
-      })
-      .catch(e => {
-        if (e.response.status === 401) {
-          this.$router.push({
-            name: 'Login'
-          })
-        }
-      })
+    this.getData()
   }
 }
 </script>

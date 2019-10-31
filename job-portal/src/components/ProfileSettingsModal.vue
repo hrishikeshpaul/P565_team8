@@ -71,7 +71,6 @@ export default {
   },
   methods: {
     changePassword () {
-      console.log('hi')
       var headers = {
         Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
       }

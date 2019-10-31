@@ -413,14 +413,14 @@ export default {
           }
         } else if (this.activeIndex === 3) {
           if (this.skills.length > 0) {
-            console.log('not done')
-            var skillsArray = []
-            this.skills.forEach(skill => {
-              skillsArray.push(skill.name)
-            })
+            // console.log('not done')
+            // var skillsArray = []
+            // this.skills.forEach(skill => {
+            //   skillsArray.push(skill.name)
+            // })
 
             var obj = {
-              data: skillsArray,
+              data: this.skills,
               user: {id: id}
             }
 

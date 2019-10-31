@@ -120,7 +120,6 @@ router.patch('/reject', function (req, res, next) {
       return res.status(204).send('Updated')
     })
   }
-
 })
 
 router.patch('/accept', function (req, res, next) {
@@ -130,7 +129,6 @@ router.patch('/accept', function (req, res, next) {
         return res.status(400).send('Error')
       return res.status(204).send('Updated')
     })
-
   } else if (req.body.role === 'employer') {
     Job.findOneAndUpdate({_id: req.body.job}, {$pullAll: {applicants: [req.body.userToAccept]}, $addToSet: {confirmed_users: req.body.userToAccept}}, function (err, job) {
       if (err)
@@ -138,7 +136,14 @@ router.patch('/accept', function (req, res, next) {
       return res.status(204).send('Updated')
     })
   }
+})
 
+router.patch('/:id', function (req, res, next) {
+  Job.findOneAndUpdate({_id: req.params.id}, {$set: req.body}, function (err, succ) {
+    if (err)
+      return res.status(400).send('Error')
+    return res.status(200).send('Done')
+  })
 })
 
 module.exports = router

@@ -5,7 +5,7 @@
       :max-height="150"
       tag-placeholder="Add this as new tag"
       placeholder="Search or add a tag"
-      label="name" track-by="code"
+      label="name" track-by="name"
       :options="options"
       :taggable="true"
       :multiple="true"
@@ -23,6 +23,11 @@ export default {
   components: {
     Multiselect
   },
+  props: {
+    recievedValues: {
+      type: Array
+    }
+  },
   data () {
     return {
       value: [
@@ -31,11 +36,19 @@ export default {
       options: [
         { name: 'Java', code: 'java' },
         { name: 'Python', code: 'python' },
-        { name: 'Javascript', code: 'js' }
+        { name: 'Javascript', code: 'js' },
+        { name: 'Node.js', code: 'node.js' },
+        { name: 'React.js', code: 'react.js' },
+        { name: 'Flask', code: 'flask' }
       ]
     }
   },
   watch: {
+    recievedValues (newVal) {
+      if (newVal.length > 0) {
+        this.value = newVal
+      }
+    },
     value (newVal) {
       if (typeof newVal.hasOwnProperty('name') !== null) {
         this.$emit('addSkills', newVal)
