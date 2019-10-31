@@ -28,7 +28,7 @@
             <!--            <span style="font-size: 20px;" v-html="user.social.linkedin.length > 0 ? user.social.linkedin : null">{{user.social.linkedin.length > 0 ? user.social.linkedin : null}} {{user.social.github ? ' | ' + user.social.github : null}} | {{user.website ? ' | ' + user.website : null}}</span>-->
           </div>
           <div style="justify-content: center; text-align: justify;">
-            <span style="font-size: 20px; font-style: italic;">{{user.bio.length > 40 ? user.bio.substring(0, 120) + ' ...' : user.bio}}</span>
+<!--            <span style="font-size: 20px; font-style: italic;">{{user.bio.length > 40 ? user.bio.substring(0, 120) + ' ...' : user.bio}}</span>-->
           </div>
         </div>
       </div>
@@ -104,20 +104,18 @@
         </b-tabs>
       </b-card>
     </div>
-    <div class="my-5 container" v-if="role === 'employer'">
+    <div class="my-5 container px-0" v-if="role === 'employer'">
       <b-card no-body>
         <b-tabs card>
           <b-tab title="Job Posting" active style="max-height: 1000px; overflow-y: auto;">
             <b-card-text>
-              <button
-                @click="jobInputModal"
-                v-if="role === 'employer'"
-                style="width: 100%; border-radius: 10px;"
-                class="btn-outline-warning mb-2 mt-1"
-              >
-                Post Job
-              </button>
-              <div v-for="(job, idx) in user.jobs">
+              <b-input-group class="mb-3">
+                <b-form-input placeholder="Search for job" v-model="employerSearchJob"></b-form-input>
+                <b-input-group-append>
+                  <b-button variant="warning" style="border: 1px solid #dba30e"><i class="ti-search"></i></b-button>
+                </b-input-group-append>
+              </b-input-group>
+              <div v-for="(job, idx) in employerJobs">
                 <b-card class="text-left my-2" :title="job.title">
                   <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="deleteJobPosting"><i class="ti-close"></i></button>
                   <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-secondary"><i class="ti-pencil"></i></button>
@@ -128,6 +126,14 @@
                   <b>Total Applications: </b><p>{{job.applicants.length}}</p>
                 </b-card>
               </div>
+              <button
+                @click="jobInputModal"
+                v-if="role === 'employer'"
+                style="width: 100%; border-radius: 10px;"
+                class="btn-outline-warning mb-2 mt-1"
+              >
+                Post Job
+              </button>
             </b-card-text>
           </b-tab>
           <b-tab title="Applicants" style="max-height: 1000px; overflow-y: auto;">
@@ -156,6 +162,8 @@
 
 <script>
 import axios from 'axios'
+import Fuse from 'fuse.js'
+
 import NavBar from './NavBar'
 import JobInputModal from './JobInputModal'
 import ProfileInputModal from './ProfileEditModal'
@@ -174,13 +182,40 @@ export default {
   },
   data () {
     return {
+      fuseOptions: {
+        shouldSort: true,
+        threshold: 0.2,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+          "title"
+        ]
+      },
       user_id: localStorage.getItem('user_id'),
       user: {},
       role: localStorage.role,
       show: true,
       showJobInputModal: false,
       showEditProfileModal: false,
-      showProfileSettingsModal: false
+      showProfileSettingsModal: false,
+      employerSearchJob: ''
+    }
+  },
+  computed: {
+    employerJobs: {
+      get: function (s) {
+        if (!this.employerSearchJob)
+          return this.user.jobs
+        else {
+          var fuse = new Fuse(this.user.jobs, this.fuseOptions)
+          return fuse.search(this.employerSearchJob)
+        }
+      },
+      set: function (newVal) {
+        return newVal
+      }
     }
   },
   watch: {
@@ -225,8 +260,6 @@ export default {
     axios.get(`http://localhost:3000/api/user/${this.user_id}`, {headers: headers})
       .then(response => {
         this.user = response.data
-        console.log(this.user)
-
       })
       .catch(e => {
         if (e.response.status === 401) {
