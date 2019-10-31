@@ -11,14 +11,8 @@ import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import 'ti-icons/css/themify-icons.css'
 import VuePageTransition from 'vue-page-transition'
-
-import Vuesax from 'vuesax'
-
-import 'vuesax/dist/vuesax.css' //Vuesax styles
-Vue.use(Vuesax, {
-
-})
-
+import VueSidebarMenu from 'vue-sidebar-menu'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)

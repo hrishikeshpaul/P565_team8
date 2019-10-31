@@ -47,6 +47,7 @@
     "vue-page-transition": "^0.2.2",
     "vue-recaptcha": "^1.2.0",
     "vue-router": "^3.0.1",
+    "vue-sidebar-menu": "^4.4.1",
     "vuesax": "^3.11.0"
   },
   "devDependencies": {

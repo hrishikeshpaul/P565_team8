@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <NavBar />
-    <div class="mt-5 container p-5" style="border: 1px solid #cecece; border-radius: 8px;">
-      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-info"><i class="ti-pencil"></i></button>
-      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-secondary mr-2"><i class="ti-settings"></i></button>
+  <div >
+    <NavBar/>
+    <div class="mt-5 container p-5" style="border: 1px solid #cecece; border-radius: 8px; background-color: white">
+      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-info" @click="profileInputModal"><i class="ti-pencil"></i></button>
+      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-secondary mr-2"><i class="ti-settings"></i>
+      </button>
 
       <div class="row">
         <div class="col-lg-3 col-sm-12" style="border-right: 1px solid #b8b8b8">
@@ -16,40 +17,55 @@
         </div>
         <div class="col-8">
           <div>
-            <span style="font-size: 40px;">{{user.name}}</span>
+            <span style="font-size: 40px;" >{{user.name}}</span>
           </div>
           <div>
             <span style="font-size: 20px; color: grey;">{{user.company}}</span>
           </div>
           <div>
-            <span style="font-size: 20px;">{{user.social.linkedin.length > 0 ? user.social.linkedin : null}} {{user.social.github ? ' | ' + user.social.github : null}} | {{user.website ? ' | ' + user.website : null}}</span>
+            <a style="font-size: 20px;" href="#">{{user.website}}</a>
+
+            <!--            <span style="font-size: 20px;" v-html="user.social.linkedin.length > 0 ? user.social.linkedin : null">{{user.social.linkedin.length > 0 ? user.social.linkedin : null}} {{user.social.github ? ' | ' + user.social.github : null}} | {{user.website ? ' | ' + user.website : null}}</span>-->
           </div>
-          <div>
-            <span style="font-size: 20px; font-style: italic">{{user.bio}}</span>
+          <div style="justify-content: center; text-align: justify;">
+            <span style="font-size: 20px; font-style: italic;">{{user.bio.length > 40 ? user.bio.substring(0, 120) + ' ...' : user.bio}}</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="my-5 container" v-if="role === 'student'">
-      <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12 p-0">
-          <b-card>
-            <div class="text-center">
-              <span style="font-size: 30px;">Your Information</span>
-              <hr style="width: 50%;" />
-            </div>
-            <b-card-body class="p-0">
-              <div id="education">
-              <label><b>Education</b></label>
-              <b-collapse v-if="user.education.length > 0" v-for="edu in user.education" :id="edu.school" v-model="show">
+    <div class="my-5 container px-0" v-if="role === 'student'" style="margin-bottom: 50px;">
+      <b-card no-body >
+        <b-tabs card>
+          <b-tab title="Acceptances" active>
+            <b-card-text>
+              <span v-if="user.acceptances.length === 0">You don't have any acceptances! Start applying!</span>
+              <div v-for="(job, idx) in user.acceptances" class="text-left mt-2">
+                <b-card :title="job.title">
+                  <button style="float: right;" class="btn btn-info">Message</button>
+                  <b>Company:</b>
+                  <p>{{job.company}}</p>
+                  <button style="float: right" class="btn btn-danger">Reject</button>
+                  <b>Recruiter: </b>
+                  <p>{{job.employer.name}}</p>
+                </b-card>
+              </div>
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Education">
+            <b-card-text>
+              <div v-if="user.education.length > 0" v-for="edu in user.education" :id="edu.school">
                 <b-card class="mb-3">
                   <button style="float: right;"><i class="ti-pencil" @click="show != show"></i></button>
-                  <div><b>Name</b><p>{{edu.school}} </p></div>
-                  <div><b>Degree</b> <p>{{edu.degree}} </p></div>
-                  <div><b>Field of Study</b> <p>{{edu.fieldofstudy}} </p></div>
-                  <div><b>Duration</b> <p>{{$moment(edu.from).format("MMM Do YY") }} - {{edu.to !== null ? edu.to : 'Present'}} </p></div>
+                  <div><b>Name</b>
+                    <p>{{edu.school}} </p></div>
+                  <div><b>Degree</b>
+                    <p>{{edu.degree}} </p></div>
+                  <div><b>Field of Study</b>
+                    <p>{{edu.fieldofstudy}} </p></div>
+                  <div><b>Duration</b>
+                    <p>{{$moment(edu.from).format('MMM Do YY') }} - {{edu.to !== null ? edu.to : 'Present'}} </p></div>
                 </b-card>
-              </b-collapse>
+              </div>
               <button
                 v-if="role === 'student'"
                 style="width: 100%; border-radius: 10px;"
@@ -57,53 +73,50 @@
               >
                 Add
               </button>
-            </div>
-              <div id="Experience">
-                <label><b>Experiences</b></label>
-                <div v-if="user.experience.length > 0" v-for="exp in user.experience">
-                  <b-card class="mb-3">
-                    <button style="float: right;"><i class="ti-pencil"></i></button>
-                    <div><b>Company/Organization</b><p>{{exp.company}} </p></div>
-                    <div><b>Title</b> <p>{{exp.title}} </p></div>
-                    <div><b>Location</b> <p>{{exp.location}} </p></div>
-                    <div><b>Duration</b> <p>{{$moment(exp.from).format("MMM Do YY") }} - {{exp.to !== null ? edu.to : 'Present'}} </p></div>
-                    <div><b>Description</b><p>{{exp.description}}</p></div>
-                  </b-card>
-                </div>
-                <button
-                  v-if="role === 'student'"
-                  style="width: 100%; border-radius: 10px;"
-                  class="btn-outline-warning mb-2 mt-1 "
-                >
-                  Add
-                </button>
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Experiences">
+            <b-card-text>
+              <div v-if="user.experience.length > 0" v-for="exp in user.experience">
+                <b-card class="mb-3">
+                  <button style="float: right;"><i class="ti-pencil"></i></button>
+                  <div><b>Company/Organization</b>
+                    <p>{{exp.company}} </p></div>
+                  <div><b>Title</b>
+                    <p>{{exp.title}} </p></div>
+                  <div><b>Location</b>
+                    <p>{{exp.location}} </p></div>
+                  <div><b>Duration</b>
+                    <p>{{$moment(exp.from).format('MMM Do YY') }} - {{exp.to !== null ? edu.to : 'Present'}} </p></div>
+                  <div><b>Description</b>
+                    <p>{{exp.description}}</p></div>
+                </b-card>
               </div>
-            </b-card-body>
-          </b-card>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 p-0 pl-3" v-if="role === 'student'">
-          <b-card title="Your Acceptances" class="text-center">
-            <hr style="width: 50%" />
-            <span v-if="user.acceptances.length === 0">You don't have any acceptances! Start applying!</span>
-            <div v-for="(job, idx) in user.acceptances" class="text-left">
-              <b-card :title="job.title">
-                <button style="float: right;" class="btn btn-info">Message</button>
-                <b>Company:</b><p>{{job.company}}</p>
-                <button style="float: right" class="btn btn-danger">Reject</button>
-                <b>Recruiter: </b><p>{{job.employer.name}}</p>
-              </b-card>
-            </div>
-          </b-card>
-        </div>
-      </div>
+              <button
+                v-if="role === 'student'"
+                style="width: 100%; border-radius: 10px;"
+                class="btn-outline-warning mb-2 mt-1 "
+              >
+                Add
+              </button>
+            </b-card-text>
+          </b-tab>
+        </b-tabs>
+      </b-card>
     </div>
     <div class="my-5 container" v-if="role === 'employer'">
-      <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12 p-0">
-          <b-card>
-            <div class="text-center">
-              <span style="font-size: 30px;">Your Job Postings</span>
-              <hr style="width: 50%;" />
+      <b-card no-body>
+        <b-tabs card>
+          <b-tab title="Job Posting" active style="max-height: 1000px; overflow-y: auto;">
+            <b-card-text>
+              <button
+                @click="jobInputModal"
+                v-if="role === 'employer'"
+                style="width: 100%; border-radius: 10px;"
+                class="btn-outline-warning mb-2 mt-1"
+              >
+                Post Job
+              </button>
               <div v-for="(job, idx) in user.jobs">
                 <b-card class="text-left my-2" :title="job.title">
                   <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="deleteJobPosting"><i class="ti-close"></i></button>
@@ -115,22 +128,10 @@
                   <b>Total Applications: </b><p>{{job.applicants.length}}</p>
                 </b-card>
               </div>
-              <button
-                @click="jobInputModal"
-                v-if="role === 'employer'"
-                style="width: 100%; border-radius: 10px;"
-                class="btn-outline-warning mb-2 mt-1"
-              >
-                Post Job
-              </button>
-            </div>
-          </b-card>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 p-0 pl-3">
-          <b-card>
-            <div class="text-center">
-              <span style="font-size: 30px;">Accepted Applicants</span>
-              <hr style="width: 50%;" />
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Applicants" style="max-height: 1000px; overflow-y: auto;">
+            <b-card-text>
               <div v-for="job in user.jobs">
                 <div v-for="user in job.confirmed_users">
                   <b-card class="text-left my-2" :title="user.name">
@@ -142,12 +143,13 @@
                   </b-card>
                 </div>
               </div>
-            </div>
-          </b-card>
-        </div>
-      </div>
+            </b-card-text>
+          </b-tab>
+        </b-tabs>
+      </b-card>
     </div>
     <JobInputModal :showModal="showJobInputModal" @hideModal="hideJobInputModal" :user="user"/>
+    <ProfileInputModal :showModal="showEditProfileModal" :user="user" @hideModal="hideEditProfileInputModal"/>
   </div>
 </template>
 
@@ -155,6 +157,7 @@
 import axios from 'axios'
 import NavBar from './NavBar'
 import JobInputModal from './JobInputModal'
+import ProfileInputModal from './ProfileEditModal'
 
 import Gravatar from 'vue-gravatar';
 
@@ -163,7 +166,8 @@ export default {
   components: {
     NavBar,
     Gravatar,
-    JobInputModal
+    JobInputModal,
+    ProfileInputModal
   },
   data () {
     return {
@@ -171,7 +175,8 @@ export default {
       user: {},
       role: localStorage.role,
       show: true,
-      showJobInputModal: false
+      showJobInputModal: false,
+      showEditProfileModal: false
     }
   },
   watch: {
@@ -191,6 +196,12 @@ export default {
     },
     hideJobInputModal () {
       this.showJobInputModal = false
+    },
+    profileInputModal () {
+      this.showEditProfileModal = !this.showEditProfileModal
+    },
+    hideEditProfileInputModal () {
+      this.showEditProfileModal = false
     },
     deleteJobPosting () {
 
