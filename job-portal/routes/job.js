@@ -50,7 +50,6 @@ router.get('/', function (req, res, next) {
         })
       })
   } else if (req.query.role === 'employer') {
-    console.log('here it is')
     // get back only those applicants who have applied!!!!!
     var applicants = []
     var passedApplicants = []
@@ -97,10 +96,15 @@ router.post('/', function (req, res, next) {
   var newJob = Job(req.body)
   newJob.save(function (err, job) {
     if (err)
-      console.log(err)
-      res.send(job)
+      return res.status(400).send('Error in posting job')
+    return res.status(204).send(job)
   })
 })
+
+router.delete('/:id', function (req, res, next) {
+
+})
+
 
 router.patch('/reject', function (req, res, next) {
   if (req.body.role === 'student') {

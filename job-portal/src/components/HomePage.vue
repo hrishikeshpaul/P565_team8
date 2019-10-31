@@ -120,10 +120,9 @@ export default {
         user: this.user_id,
         role: localStorage.role
       }
-      console.log(params)
+
       axios.get(`http://localhost:3000/api/jobs`, {params, headers})
         .then(response => {
-          console.log(response)
           if (this.someData === 'student')
             this.jobs = response.data
           else
@@ -232,7 +231,6 @@ export default {
         role: this.someData
       }, {headers})
         .then(response => {
-          console.log(this.$refs['card'])
           this.$refs['card'].forEach(card => {
             if (card.$el.id === i) {
               // annimations go here
@@ -260,7 +258,6 @@ export default {
         this.keyToGroup = key
         this.computedJobs = this.reGroup(this.jobs, this.keyToGroup)
       } else {
-        console.log('hi')
         this.employerKeyToGroup = key
         this.computedUsers = this.reGroup(this.users, key)
       }

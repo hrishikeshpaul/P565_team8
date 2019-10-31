@@ -1,30 +1,44 @@
 <template>
   <div>
     <NavBar />
-    <div class="text-center mt-5">
-      <gravatar
-        email="hrishikeshpaul12@gmail.com"
-        alt="Nobody"
-        :size="200"
-        default-img="mm"
-        style="border-radius: 50%; "/>
-      <div class="mt-2" >
-        <span style="font-size: 40px;">{{user.name}}</span>
-        <button href="#"><i class="ti-pencil"></i></button>
-      </div>
-      <div>
-        <span style="font-size: 20px;">{{user.company}}</span>
-        <button href="#"><i class="ti-pencil"></i></button>
+    <div class="mt-5 container p-5" style="border: 1px solid #cecece; border-radius: 8px;">
+      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-info"><i class="ti-pencil"></i></button>
+      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-secondary mr-2"><i class="ti-settings"></i></button>
+
+      <div class="row">
+        <div class="col-lg-3 col-sm-12" style="border-right: 1px solid #b8b8b8">
+          <gravatar
+            email="hrishikeshpaul12@gmail.com"
+            alt="Nobody"
+            :size="200"
+            default-img="mm"
+            style="border-radius: 50%; "/>
+        </div>
+        <div class="col-8">
+          <div>
+            <span style="font-size: 40px;">{{user.name}}</span>
+          </div>
+          <div>
+            <span style="font-size: 20px; color: grey;">{{user.company}}</span>
+          </div>
+          <div>
+            <span style="font-size: 20px;">{{user.social.linkedin.length > 0 ? user.social.linkedin : null}} {{user.social.github ? ' | ' + user.social.github : null}} | {{user.website ? ' | ' + user.website : null}}</span>
+          </div>
+          <div>
+            <span style="font-size: 20px; font-style: italic">{{user.bio}}</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="mx-5 my-5 px-5">
+    <div class="my-5 container" v-if="role === 'student'">
       <div class="row">
-        <div class="col-6">
+        <div class="col-lg-6 col-md-6 col-sm-12 p-0">
           <b-card>
             <div class="text-center">
               <span style="font-size: 30px;">Your Information</span>
+              <hr style="width: 50%;" />
             </div>
-            <b-card-body>
+            <b-card-body class="p-0">
               <div id="education">
               <label><b>Education</b></label>
               <b-collapse v-if="user.education.length > 0" v-for="edu in user.education" :id="edu.school" v-model="show">
@@ -67,44 +81,120 @@
             </b-card-body>
           </b-card>
         </div>
-        <div class="col-6" v-if="role === 'student'">
-          <b-card title="Your Applications" class="text-center">
-
+        <div class="col-lg-6 col-md-6 col-sm-12 p-0 pl-3" v-if="role === 'student'">
+          <b-card title="Your Acceptances" class="text-center">
+            <hr style="width: 50%" />
+            <span v-if="user.acceptances.length === 0">You don't have any acceptances! Start applying!</span>
+            <div v-for="(job, idx) in user.acceptances" class="text-left">
+              <b-card :title="job.title">
+                <button style="float: right;" class="btn btn-info">Message</button>
+                <b>Company:</b><p>{{job.company}}</p>
+                <button style="float: right" class="btn btn-danger">Reject</button>
+                <b>Recruiter: </b><p>{{job.employer.name}}</p>
+              </b-card>
+            </div>
           </b-card>
         </div>
       </div>
     </div>
+    <div class="my-5 container" v-if="role === 'employer'">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 p-0">
+          <b-card>
+            <div class="text-center">
+              <span style="font-size: 30px;">Your Job Postings</span>
+              <hr style="width: 50%;" />
+              <div v-for="(job, idx) in user.jobs">
+                <b-card class="text-left my-2" :title="job.title">
+                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="deleteJobPosting"><i class="ti-close"></i></button>
+                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-secondary"><i class="ti-pencil"></i></button>
+                  <b>Location: </b><p>{{job.location}}</p>
+                  <b>Position: </b><p>{{job.position}}</p>
+                  <b>Description: </b><p>{{job.description}}</p>
+                  <b>Skills Required: </b><p>{{job.skills.length > 0 ? job.skills.join(', ') : 'None'}}</p>
+                  <b>Total Applications: </b><p>{{job.applicants.length}}</p>
+                </b-card>
+              </div>
+              <button
+                @click="jobInputModal"
+                v-if="role === 'employer'"
+                style="width: 100%; border-radius: 10px;"
+                class="btn-outline-warning mb-2 mt-1"
+              >
+                Post Job
+              </button>
+            </div>
+          </b-card>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 p-0 pl-3">
+          <b-card>
+            <div class="text-center">
+              <span style="font-size: 30px;">Accepted Applicants</span>
+              <hr style="width: 50%;" />
+              <div v-for="job in user.jobs">
+                <div v-for="user in job.confirmed_users">
+                  <b-card class="text-left my-2" :title="user.name">
+                    <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-secondary"><i class="ti-pencil"></i></button>
+                    <b>Job:</b><p>{{job.title}}</p>
+                    <b>University: </b><p>{{user.company}}</p>
+                    <b>LinkedIn: </b><p>{{user.social.linkedin}}</p>
+                    <b>Skills: </b><p>{{user.skills.join(', ')}}</p>
+                  </b-card>
+                </div>
+              </div>
+            </div>
+          </b-card>
+        </div>
+      </div>
+    </div>
+    <JobInputModal :showModal="showJobInputModal" @hideModal="hideJobInputModal" :user="user"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import NavBar from './NavBar'
+import JobInputModal from './JobInputModal'
 
 import Gravatar from 'vue-gravatar';
-
 
 export default {
   name: 'Profile',
   components: {
     NavBar,
-    Gravatar
+    Gravatar,
+    JobInputModal
   },
   data () {
     return {
       user_id: localStorage.getItem('user_id'),
       user: {},
-      role: localStorage.user_role,
-      show: true
+      role: localStorage.role,
+      show: true,
+      showJobInputModal: false
     }
   },
-  method: {
+  watch: {
+    user (newData) {
+      this.user = newData
+    }
+  },
+  methods: {
     logout () {
       localStorage.removeItem('jwtToken')
       this.$router.push({
         name: 'Login'
       })
     },
+    jobInputModal () {
+      this.showJobInputModal = !this.showJobInputModal
+    },
+    hideJobInputModal () {
+      this.showJobInputModal = false
+    },
+    deleteJobPosting () {
+
+    }
   },
   created () {
     var headers = {

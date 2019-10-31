@@ -12,7 +12,7 @@
               <template v-slot:button-content>
                 <em>User</em>
               </template>
-              <b-dropdown-item href="#">Profile</b-dropdown-item>
+              <b-dropdown-item href="/profile">Profile</b-dropdown-item>
               <b-dropdown-item href="#" @click.prevent="logout">Log Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
