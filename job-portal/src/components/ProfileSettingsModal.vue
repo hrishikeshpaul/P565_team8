@@ -1,8 +1,8 @@
 <template>
   <div>
     <div>
-      <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false"
-               data-backdrop="static" :title="'Profile Settings'">
+      <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
+        data-backdrop="static" :title="'Profile Settings'">
         <div class="d-block text-center">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">

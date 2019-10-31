@@ -1,7 +1,7 @@
 <template>
   <div >
-    <NavBar/>
-    <div class="mt-5 container p-5" style="border: 1px solid #cecece; border-radius: 8px; background-color: white">
+    <NavBar @logout="logout"/>
+    <div class="mt-5 container p-5 shadow-sm p-3 mb-5 bg-white rounded" style="border: 1px solid #cecece; border-radius: 8px; background-color: white">
       <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-info" @click="profileInputModal"><i class="ti-pencil"></i></button>
       <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-secondary mr-2" @click="profileSettingsModal"><i class="ti-settings"></i>
       </button>
@@ -28,12 +28,12 @@
             <!--            <span style="font-size: 20px;" v-html="user.social.linkedin.length > 0 ? user.social.linkedin : null">{{user.social.linkedin.length > 0 ? user.social.linkedin : null}} {{user.social.github ? ' | ' + user.social.github : null}} | {{user.website ? ' | ' + user.website : null}}</span>-->
           </div>
           <div style="justify-content: center; text-align: justify;">
-<!--            <span style="font-size: 20px; font-style: italic;">{{user.bio.length > 40 ? user.bio.substring(0, 120) + ' ...' : user.bio}}</span>-->
+            <span style="font-size: 20px; font-style: italic;">{{user.bio.length > 40 ? user.bio.substring(0, 120) + ' ...' : user.bio}}</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="my-5 container px-0" v-if="role === 'student'" style="margin-bottom: 50px;">
+    <div class="my-5 container px-0 shadow-sm mb-5 bg-white rounded" v-if="role === 'student'" style="margin-bottom: 50px;">
       <b-card no-body >
         <b-tabs card>
           <b-tab title="Acceptances" active>
@@ -104,7 +104,7 @@
         </b-tabs>
       </b-card>
     </div>
-    <div class="my-5 container px-0" v-if="role === 'employer'">
+    <div class="my-5 container px-0 shadow-sm mb-5 bg-white rounded" v-if="role === 'employer'">
       <b-card no-body>
         <b-tabs card>
           <b-tab title="Job Posting" active style="max-height: 1000px; overflow-y: auto;">
