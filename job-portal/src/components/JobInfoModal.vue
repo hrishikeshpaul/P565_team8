@@ -97,7 +97,7 @@ export default {
       // var id = localStorage.getItem('user_id')
       var id = this.job._id
 
-      axios.patch(`http://localhost:3000/api/jobs/${id}`, this.newJob, {headers: headers})
+      axios.patch(`http://localhost:3000/api/jobs/edit/${id}`, this.newJob, {headers: headers})
         .then(response => {
           if (response.status === 200) {
             this.show = false

@@ -142,11 +142,20 @@ router.patch('/accept', function (req, res, next) {
   }
 })
 
-router.patch('/:id', function (req, res, next) {
+router.patch('/edit/:id', function (req, res, next) {
   Job.findOneAndUpdate({_id: req.params.id}, {$set: req.body}, function (err, succ) {
     if (err)
       return res.status(400).send('Error')
     return res.status(200).send('Done')
+  })
+})
+
+router.patch('/rejectconfirmedapplicant', function (req, res, next) {
+  Job.findOneAndUpdate({_id: req.body.job}, {$pull: {confirmed_users: mongoose.Types.ObjectId(req.body.user)}, $addToSet: {rejected_users: mongoose.Types.ObjectId(req.body.user)}}, function (err, succ) {
+    if (err)
+      console.log(err)
+    else
+      return res.status(200).send('Updated')
   })
 })
 

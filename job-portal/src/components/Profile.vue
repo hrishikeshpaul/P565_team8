@@ -87,7 +87,8 @@
                   <div><b>Location</b>
                     <p>{{exp.location}} </p></div>
                   <div><b>Duration</b>
-                    <p>{{$moment(exp.from).format('MMM Do YY') }} - {{exp.to !== null ? edu.to : 'Present'}} </p></div>
+                    <p>{{$moment(exp.from).format('MMM Do YY') }} - {{$moment(exp.to).format('MMM Do YY') }} </p>
+                  </div>
                   <div><b>Description</b>
                     <p>{{exp.description}}</p></div>
                 </b-card>
@@ -141,7 +142,8 @@
               <div v-for="job in user.jobs">
                 <div v-for="user in job.confirmed_users">
                   <b-card class="text-left my-2" :title="user.name">
-                    <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-secondary"><i class="ti-pencil"></i></button>
+                    <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
+                    <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-info"><i class="ti-comment-alt"></i></button>
                     <b>Job:</b><p>{{job.title}}</p>
                     <b>University: </b><p>{{user.company}}</p>
                     <b>LinkedIn: </b><p>{{user.social.linkedin}}</p>
@@ -284,6 +286,20 @@ export default {
         .catch(err => {
           alert(err.response.data)
         })
+    },
+    rejectConfirmedApplicant (job_id, user_id) {
+      var headers = {
+        Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
+      }
+
+      axios.patch(`http://localhost:3000/api/jobs/rejectconfirmedapplicant`, {job: job_id, user: user_id}, {headers: headers})
+        .then(response => {
+          this.getData()
+        })
+        .catch(err => {
+          alert('Delete could not happen.')
+        })
+
     },
     getData () {
       var headers = {

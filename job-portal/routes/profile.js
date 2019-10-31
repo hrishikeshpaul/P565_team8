@@ -99,13 +99,12 @@ router.post('/skills', passport.authenticate('jwt', { session: false }), functio
     return res.status(400).json({errors: errors.array()})
   }
 
-  console.log(req.body.data.length)
-
   if (req.body.data.length > 0) {
     req.body.data.forEach(skill => {
       User.updateOne({_id: req.body.user.id}, {$addToSet: {skills: skill}}, function (err, success) {
         if (err) {
-          return res.status(400).send('Could not be sent')
+          console.log(err)
+          // return res.status(400).send('Could not be sent')
         }
       })
     })

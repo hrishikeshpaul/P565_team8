@@ -14,11 +14,11 @@ const experienceSchema = new Schema({
     type: String
   },
   from: {
-    type: String,
+    type: Date,
     required: true
   },
   to: {
-    type: String,
+    type: Date,
     default: null
   },
   current: {
