@@ -82,11 +82,6 @@ export default {
     },
     job (newVal) {
       this.newJob = newVal
-      var newSkills = []
-      this.newJob.skills.forEach(skill => {
-        newSkills.push({name: skill})
-      })
-      this.newJob.skills = newSkills
     }
   },
   methods: {

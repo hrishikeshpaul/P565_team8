@@ -102,7 +102,11 @@ router.post('/', function (req, res, next) {
 })
 
 router.delete('/:id', function (req, res, next) {
-
+  Job.remove({_id: req.params.id}, function (err, succ) {
+    if(err)
+      return res.status(400).send('Could not delete')
+    return res.status(200).send('deleted')
+  })
 })
 
 

@@ -37,7 +37,7 @@
       <b-card no-body >
         <b-tabs card>
           <b-tab title="Acceptances" active>
-            <b-card-text>
+            <b-card-body>
               <span v-if="user.acceptances.length === 0">You don't have any acceptances! Start applying!</span>
               <div v-for="(job, idx) in user.acceptances" class="text-left mt-2">
                 <b-card :title="job.title">
@@ -49,10 +49,10 @@
                   <p>{{job.employer.name}}</p>
                 </b-card>
               </div>
-            </b-card-text>
+            </b-card-body>
           </b-tab>
           <b-tab title="Education">
-            <b-card-text>
+            <b-card-body>
               <div v-if="user.education.length > 0" v-for="edu in user.education" :id="edu.school">
                 <b-card class="mb-3">
                   <button style="float: right;"><i class="ti-pencil" @click="show != show"></i></button>
@@ -73,10 +73,10 @@
               >
                 Add
               </button>
-            </b-card-text>
+            </b-card-body>
           </b-tab>
           <b-tab title="Experiences">
-            <b-card-text>
+            <b-card-body>
               <div v-if="user.experience.length > 0" v-for="exp in user.experience">
                 <b-card class="mb-3">
                   <button style="float: right;"><i class="ti-pencil"></i></button>
@@ -99,7 +99,7 @@
               >
                 Add
               </button>
-            </b-card-text>
+            </b-card-body>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -108,7 +108,7 @@
       <b-card no-body>
         <b-tabs card>
           <b-tab title="Job Posting" active style="max-height: 1000px; overflow-y: auto;">
-            <b-card-text>
+            <b-card-body>
               <b-input-group class="mb-3">
                 <b-form-input placeholder="Search for job" v-model="employerSearchJob"></b-form-input>
                 <b-input-group-append>
@@ -117,7 +117,7 @@
               </b-input-group>
               <div v-for="(job, idx) in employerJobs">
                 <b-card class="text-left my-2" :title="job.title">
-                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="deleteJobPosting"><i class="ti-close"></i></button>
+                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="deleteConfirmModal(job)"><i class="ti-close"></i></button>
                   <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-secondary" @click="jobInfoModal(job)"><i class="ti-pencil"></i></button>
                   <b>Location: </b><p>{{job.location}}</p>
                   <b>Position: </b><p>{{job.position}}</p>
@@ -134,10 +134,10 @@
               >
                 Post Job
               </button>
-            </b-card-text>
+            </b-card-body>
           </b-tab>
           <b-tab title="Applicants" style="max-height: 1000px; overflow-y: auto;">
-            <b-card-text>
+            <b-card-body>
               <div v-for="job in user.jobs">
                 <div v-for="user in job.confirmed_users">
                   <b-card class="text-left my-2" :title="user.name">
@@ -149,7 +149,7 @@
                   </b-card>
                 </div>
               </div>
-            </b-card-text>
+            </b-card-body>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -158,6 +158,7 @@
     <ProfileInputModal :showModal="showEditProfileModal" :user="user" @hideModal="hideEditProfileInputModal"/>
     <ProfileSettingsModal :showModal="showProfileSettingsModal" :user="user" @hideModal="hideProfileSettingsModal" />
     <JobInfoModal :showModal="showJobInfoModal" :job="jobInfoToBePassed" @hideModal="hideJobInfoModal"/>
+    <DeleteConfirmModal :showModal="showDeleteConfirmModal" @hideModal="hideDeleteConfirmModal" @delete="deleteJobPosting" :job="jobInfoToBePassed"/>
   </div>
 </template>
 
@@ -170,6 +171,7 @@ import JobInputModal from './JobInputModal'
 import ProfileInputModal from './ProfileEditModal'
 import ProfileSettingsModal from './ProfileSettingsModal'
 import JobInfoModal from './JobInfoModal'
+import DeleteConfirmModal from './DeleteConfirmModal'
 
 import Gravatar from 'vue-gravatar'
 
@@ -181,7 +183,8 @@ export default {
     JobInputModal,
     ProfileInputModal,
     ProfileSettingsModal,
-    JobInfoModal
+    JobInfoModal,
+    DeleteConfirmModal
   },
   data () {
     return {
@@ -205,6 +208,7 @@ export default {
       showEditProfileModal: false,
       showProfileSettingsModal: false,
       showJobInfoModal: false,
+      showDeleteConfirmModal: false,
       employerSearchJob: ''
     }
   },
@@ -260,11 +264,28 @@ export default {
     hideJobInfoModal () {
       this.showJobInfoModal = false
     },
-    deleteJobPosting () {
-
+    deleteConfirmModal (job) {
+      this.jobInfoToBePassed = job
+      this.showDeleteConfirmModal = !this.showDeleteConfirmModal
+    },
+    hideDeleteConfirmModal () {
+      this.showDeleteConfirmModal = false
+    },
+    deleteJobPosting (id) {
+      var headers = {
+        Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
+      }
+      axios.delete(`http://localhost:3000/api/jobs/${id}`, {headers: headers})
+        .then(response => {
+          alert('Deleted')
+          this.hideDeleteConfirmModal()
+          this.getData()
+        })
+        .catch(err => {
+          alert(err.response.data)
+        })
     },
     getData () {
-      console.log('call')
       var headers = {
         Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
       }

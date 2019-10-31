@@ -5,7 +5,7 @@
       :max-height="150"
       tag-placeholder="Add this as new tag"
       placeholder="Search or add a tag"
-      label="name" track-by="name"
+      label="name" track-by="code"
       :options="options"
       :taggable="true"
       :multiple="true"
