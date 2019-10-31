@@ -3,7 +3,7 @@
     <NavBar/>
     <div class="mt-5 container p-5" style="border: 1px solid #cecece; border-radius: 8px; background-color: white">
       <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-info" @click="profileInputModal"><i class="ti-pencil"></i></button>
-      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-secondary mr-2"><i class="ti-settings"></i>
+      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-secondary mr-2" @click="profileSettingsModal"><i class="ti-settings"></i>
       </button>
 
       <div class="row">
@@ -150,6 +150,7 @@
     </div>
     <JobInputModal :showModal="showJobInputModal" @hideModal="hideJobInputModal" :user="user"/>
     <ProfileInputModal :showModal="showEditProfileModal" :user="user" @hideModal="hideEditProfileInputModal"/>
+    <ProfileSettingsModal :showModal="showProfileSettingsModal" :user="user" @hideModal="hideProfileSettingsModal" />
   </div>
 </template>
 
@@ -158,6 +159,7 @@ import axios from 'axios'
 import NavBar from './NavBar'
 import JobInputModal from './JobInputModal'
 import ProfileInputModal from './ProfileEditModal'
+import ProfileSettingsModal from './ProfileSettingsModal'
 
 import Gravatar from 'vue-gravatar';
 
@@ -167,7 +169,8 @@ export default {
     NavBar,
     Gravatar,
     JobInputModal,
-    ProfileInputModal
+    ProfileInputModal,
+    ProfileSettingsModal
   },
   data () {
     return {
@@ -176,7 +179,8 @@ export default {
       role: localStorage.role,
       show: true,
       showJobInputModal: false,
-      showEditProfileModal: false
+      showEditProfileModal: false,
+      showProfileSettingsModal: false
     }
   },
   watch: {
@@ -202,6 +206,12 @@ export default {
     },
     hideEditProfileInputModal () {
       this.showEditProfileModal = false
+    },
+    profileSettingsModal () {
+      this.showProfileSettingsModal = !this.showProfileSettingsModal
+    },
+    hideProfileSettingsModal () {
+      this.showProfileSettingsModal = false
     },
     deleteJobPosting () {
 

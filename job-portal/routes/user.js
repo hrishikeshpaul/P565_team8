@@ -39,7 +39,6 @@ router.get('/:id', function (req, res, next) {
 })
 
 router.patch('/:id', function (req, res, next) {
-
   User.updateOne({_id: req.params.id}, {$set: req.body}, function (err, success) {
     if (err) {
       return res.status(400).send('Error inn updating user')
@@ -48,5 +47,23 @@ router.patch('/:id', function (req, res, next) {
   })
 })
 
+router.patch('/changepassword/:id', function (req, res, next) {
+  User.findOne({_id: req.params.id}, function (err, user) {
+    if (err)
+      console.log(err)
+    user.comparePassword(req.body.oldPassword, function (err, isMatch) {
+      if (err)
+        return res.status(400).send('Could not reset password.')
+      if (isMatch) {
+        user.password = req.body.newPassword
+        user.save(function (err) {
+          if (err)
+            return res.status(400).send('Could not reset password.')
+          return res.status(200).send('Done')
+        })
+      }
+    })
+  })
+})
 
 module.exports = router
