@@ -6,44 +6,29 @@
         <div class="d-block text-center">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Title">
+            <label>Title</label>
+            <b-form-group>
               <b-form-input id="title" v-model.trim="newJob.title"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Position">
+            <label>Position</label>
+            <b-form-group>
               <b-form-input id="position" v-model.trim="newJob.position"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Location">
+            <label>Location</label>
+            <b-form-group>
               <b-form-input id="position" v-model.trim="newJob.location"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Description">
+            <label>Descriptionn</label>
+            <b-form-group>
               <b-form-textarea id="position" v-model.trim="newJob.description" rows="4"></b-form-textarea>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Preferred Skills">
+            <label>Preferred Skills</label>
+            <b-form-group>
               <SkillSelect @addSkills="addSkills" :recieved-values="newJob.skills"/>
             </b-form-group>
           </b-form>
         </div>
-        <b-button class="mt-3 btn btn-outline-warning" block @click="editJob">Edit Job</b-button>
+        <button class="mt-3 btn btn-outline-warning w-100" @click="editJob">Edit Job</button>
       </b-modal>
     </div>
   </div>
@@ -86,7 +71,6 @@ export default {
   },
   methods: {
     addSkills (skills) {
-
       this.newJob.skills = skills
     },
     editJob () {
@@ -116,5 +100,8 @@ export default {
 </script>
 
 <style scoped>
-
+  label {
+    font-size: 15px;
+    color: #6d6d6d;
+  }
 </style>

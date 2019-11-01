@@ -1,48 +1,33 @@
 <template>
   <div>
     <div>
-      <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false"
+      <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
                data-backdrop="static" :title="'Post a Job'">
         <div class="d-block text-center">
           <b-form class="text-left">
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Title of Job">
+            <label>Title</label>
+            <b-form-group>
               <b-form-input id="title" v-model.trim="job.title"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Position">
+            <label>Positionn</label>
+            <b-form-group>
               <b-form-input id="position" v-model.trim="job.position"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Location">
+            <label>Location</label>
+            <b-form-group>
               <b-form-input id="company" v-model.trim="job.location"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Job Description">
+            <label>Job Description</label>
+            <b-form-group>
               <b-form-textarea id="company" v-model.trim="job.description" rows="3"></b-form-textarea>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Preferred Skills">
+            <label>Preferred</label>
+            <b-form-group>
               <SkillSelect @addSkills="addSkills"/>
             </b-form-group>
           </b-form>
         </div>
-        <b-button class="mt-3 btn btn-outline-warning" block @click="postJob">Post</b-button>
+        <button class="mt-3 btn btn-outline-warning w-100" @click="postJob">Post</button>
       </b-modal>
     </div>
   </div>
@@ -112,5 +97,8 @@ export default {
 </script>
 
 <style scoped>
-
+  label {
+    font-size: 15px;
+    color: #6d6d6d;
+  }
 </style>

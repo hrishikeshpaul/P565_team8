@@ -2,8 +2,8 @@
   <div >
     <NavBar @logout="logout"/>
     <div class="mt-5 container p-5 shadow-sm p-3 mb-5 bg-white rounded" style="border: 1px solid #cecece; border-radius: 8px; background-color: white">
-      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-info" @click="profileInputModal"><i class="ti-pencil"></i></button>
-      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-secondary mr-2" @click="profileSettingsModal"><i class="ti-settings"></i>
+      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-outline-warning" @click="profileInputModal"><i class="ti-pencil"></i></button>
+      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-outline-secondary mr-2" @click="profileSettingsModal"><i class="ti-settings"></i>
       </button>
 
       <div class="row">
@@ -55,8 +55,8 @@
             <b-card-body>
               <div v-if="user.education.length > 0" v-for="edu in user.education" :id="edu.school">
                 <b-card class="mb-3">
-                  <button style="float: right;" class="btn btn-outline-danger ml-2" @click="deleteEducation(edu)"><i class="ti-close"></i></button>
-                  <button style="float: right;" class="btn btn-outline-secondary" @click="editEducationModal(edu)"><i class="ti-pencil"></i></button>
+                  <button style="float: right; border: none;" class="btn btn-outline-danger ml-2" @click="deleteEducation(edu)"><i class="ti-close"></i></button>
+                  <button style="float: right; border: none;" class="btn btn-outline-secondary" @click="editEducationModal(edu)"><i class="ti-pencil"></i></button>
                   <div><b>Name</b>
                     <p>{{edu.school}} </p></div>
                   <div><b>Degree</b>
@@ -82,8 +82,8 @@
             <b-card-body>
               <div v-if="user.experience.length > 0" v-for="exp in user.experience">
                 <b-card class="mb-3">
-                  <button style="float: right;" class="btn btn-outline-danger ml-2" @click="deleteExperience(exp)"><i class="ti-close"></i></button>
-                  <button style="float: right;" class="btn btn-outline-secondary" @click="editExperienceModal(exp)"><i class="ti-pencil"></i></button>
+                  <button style="float: right; border: none;" class="btn btn-outline-danger ml-2" @click="deleteExperience(exp)"><i class="ti-close"></i></button>
+                  <button style="float: right; border: none;" class="btn btn-outline-secondary" @click="editExperienceModal(exp)"><i class="ti-pencil"></i></button>
                   <div><b>Company/Organization</b>
                     <p>{{exp.company}} </p></div>
                   <div><b>Title</b>
@@ -137,8 +137,8 @@
               </b-input-group>
               <div v-for="(job, idx) in employerJobs">
                 <b-card class="text-left my-2" :title="job.title">
-                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="deleteConfirmModal(job)"><i class="ti-close"></i></button>
-                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-outline-info" @click="jobInfoModal(job)"><i class="ti-pencil"></i></button>
+                  <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="deleteConfirmModal(job)"><i class="ti-close"></i></button>
+                  <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 btn btn-outline-info" @click="jobInfoModal(job)"><i class="ti-pencil"></i></button>
                   <b>Location: </b><p>{{job.location}}</p>
                   <b>Position: </b><p>{{job.position}}</p>
                   <b>Description: </b><p style="white-space: pre-wrap">{{job.description}}</p>
@@ -161,8 +161,8 @@
               <div v-for="job in user.jobs">
                 <div v-for="user in job.confirmed_users">
                   <b-card class="text-left my-2" :title="user.name">
-                    <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
-                    <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i></button>
+                    <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
+                    <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i></button>
                     <b>Job:</b><p>{{job.title}}</p>
                     <b>University: </b><p>{{user.company}}</p>
                     <b>LinkedIn: </b><p>{{user.social.linkedin}}</p>
@@ -458,7 +458,5 @@ export default {
 </script>
 
 <style scoped>
-button {
-  border: none;
-}
+
 </style>

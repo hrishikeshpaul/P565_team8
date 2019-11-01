@@ -6,31 +6,23 @@
         <div class="d-block text-center">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
-            <label>Reset Password</label>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Old Password">
+            <label><b>Reset Password</b></label>
+            <hr />
+            <label>Old Password</label>
+            <b-form-group>
               <b-form-input id="title" v-model.trim="oldPassword" type="password"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="New Password">
+            <label>New Password</label>
+            <b-form-group>
               <b-form-input id="position" v-model.trim="newPassword" type="password"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Re-enter New Password">
+            <label>Re-Enter Password</label>
+            <b-form-group>
               <b-form-input id="position" v-model.trim="newPassword1" type="password"></b-form-input>
             </b-form-group>
           </b-form>
         </div>
-        <b-button class="mt-3 btn btn-outline-secondary" block @click="changePassword">Change Password</b-button>
+        <button class="mt-3 btn btn-outline-warning w-100" @click="changePassword">Change Password</button>
       </b-modal>
     </div>
   </div>
@@ -108,5 +100,8 @@ export default {
 </script>
 
 <style scoped>
-
+label {
+  font-size: 15px;
+  color: #6d6d6d;
+}
 </style>

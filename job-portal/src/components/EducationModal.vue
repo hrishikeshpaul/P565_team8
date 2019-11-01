@@ -3,7 +3,7 @@
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
                data-backdrop="static" :title="'Education'">
-        <div class="d-block text-center px-3">
+        <div class="d-block text-center">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
             <label>Name of School*</label>
@@ -151,6 +151,11 @@ export default {
 <style scoped>
 button {
   border-radius: 10px;
+}
+
+label {
+  font-size: 15px;
+  color: #6d6d6d;
 }
   .info-hover {
     cursor: pointer;

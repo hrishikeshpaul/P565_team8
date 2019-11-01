@@ -3,7 +3,7 @@
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
                data-backdrop="static" :title="'Experience'">
-        <div class="d-block text-center px-3">
+        <div class="d-block text-center">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
             <label>Organization/Company*</label>
@@ -158,5 +158,8 @@ export default {
 </script>
 
 <style scoped>
-
+  label {
+    font-size: 15px;
+    color: #6d6d6d;
+  }
 </style>

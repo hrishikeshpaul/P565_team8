@@ -6,60 +6,40 @@
         <div class="d-block text-center">
           <b-alert variant="danger" v-model="showAlert"> {{alertText}}</b-alert>
           <b-form class="text-left">
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Name">
+            <label>Name</label>
+            <b-form-group>
               <b-form-input id="title" v-model.trim="user.name"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Company">
+            <label>Company</label>
+            <b-form-group>
               <b-form-input id="position" v-model.trim="user.company"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Website">
+            <label>Website</label>
+            <b-form-group>
               <b-form-input id="company" v-model.trim="user.website"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          v-if="user.role == 'student'"
-                          label="Website">
+            <label>LinkedIn</label>
+            <b-form-group>
               <b-form-input id="company" v-model.trim="user.social.linkedin"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
+
+            <label>GitHub</label>
+            <b-form-group
                           v-if="user.role == 'student'"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Website">
+                          >
               <b-form-input id="company" v-model.trim="user.social.github"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Location">
+            <label>Location</label>
+            <b-form-group>
               <b-form-input id="location" v-model.trim="user.location" rows="3"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Bio">
+            <label>Bio</label>
+            <b-form-group>
               <b-form-textarea id="Bio" v-model.trim="user.bio" rows="4"></b-form-textarea>
             </b-form-group>
           </b-form>
         </div>
-        <b-button class="mt-3 btn btn-outline-warning" block @click="editUser">Edit</b-button>
+        <button class="mt-3 btn btn-outline-warning w-100"  @click="editUser">Edit</button>
       </b-modal>
     </div>
   </div>
