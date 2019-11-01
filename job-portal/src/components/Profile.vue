@@ -108,12 +108,17 @@
           </b-tab>
           <b-tab title="Skills" style="max-height: 1000px; overflow-y: auto; min-height: 500px;">
             <b-card-body>
-              <SkillSelect @addSkills="addSkills" :recievedValues="user.skills"/>
-              <button class="btn btn-outline-warning" @click="updateSkills" style="width: 100%; border-radius: 10px;">Save</button>
+              <b-form class="text-left">
+                <b-form-group id="fieldsetHorizontal"
+                              :label-cols="4"
+                              breakpoint="md"
+                              label-size="sm"
+                              label="Add/Remove Skills: ">
+                  <SkillSelect @addSkills="addSkills" :recievedValues="user.skills"/>
+                  <button class="btn btn-outline-warning" @click="updateSkills" style="width: 100%; border-radius: 10px;">Save</button>
+                </b-form-group>
+              </b-form>
               <hr />
-              <div v-if="user.skills.length > 0" v-for="skill in user.skills" style="display: inline-block; margin-bottom: 20px">
-                <span style="font-size: 25px;"><b-badge variant="warning" class="mr-2">{{skill.name}}</b-badge></span>
-              </div>
             </b-card-body>
           </b-tab>
         </b-tabs>
