@@ -396,18 +396,23 @@ export default {
         } else if (this.activeIndex === 2) {
           if (this.role === 'student') {
             if (this.experiences[0].company === '') {
-              resolve(true)
-            } else {
+              document.getElementById('company').style.borderColor = '#e52213';
+              reject("Please enter a company")
+            }
+            
+            else {
               var obj = {
                 data: this.experiences,
                 user: {id: id}
               }
+              console.log(obj.data[0])
+              console.log('rolfmao')
               // temporary solve of bug where the current is not working
               obj.data.forEach(exp => {
                 exp.current = false
               })
               axios.post(`http://localhost:3000/api/profile/experience`, obj, {headers: params})
-                .then(response => {
+                .then(response => {   
                   resolve(true)
                 })
                 .catch(e => {
