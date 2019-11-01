@@ -28,9 +28,6 @@ export default {
   components: {
     Multiselect
   },
-  watch: {
-
-  },
   data () {
     return {
       value: [

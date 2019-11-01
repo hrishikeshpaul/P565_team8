@@ -6,7 +6,7 @@
     </div>
 
     <div class="mx-5 px-5">
-      <div v-for="(job, key) in computedJobs" class="mb-3" v-if="someData === 'student'" >
+      <div v-for="(job, key) in computedJobs" class="mb-3" v-if="userRole === 'student'" >
         <div style="position: relative;">
           <h2><div class="mb-3">{{ key }}</div></h2>
           <div
@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div v-for="(user, key) in computedUsers" class="mb-3" v-if="someData === 'employer'">
+      <div v-for="(user, key) in computedUsers" class="mb-3" v-if="userRole === 'employer'">
 
         <div style="position: relative;">
           <h2><div class="mb-3">{{ key }}</div></h2>
@@ -74,9 +74,11 @@ export default {
       role: '',
       users: [],
       showClass: false,
+      computedJobs: {},
+      computedUsers: {},
       studentKeyToGroup: 'position',
       employerKeyToGroup: 'company',
-      someData: localStorage.getItem('role'),
+      userRole: localStorage.getItem('role'),
       filterOptions: [],
       studentFilterOptions: [
         { name: 'Position', code: 'position' },
@@ -89,21 +91,19 @@ export default {
       ]
     }
   },
-  computed: {
-    computedJobs: {
-      get: function () {
-        return this.reGroup(this.jobs, this.studentKeyToGroup)
-      },
-      set: function (newVal) {
-        return newVal
+  watch: {
+    jobs (newVal) {
+      if (newVal) {
+        if (this.userRole === 'student') {
+          this.computedJobs = this.reGroup(this.jobs, this.studentKeyToGroup)
+        }
       }
     },
-    computedUsers: {
-      get: function () {
-        return this.reGroup(this.users, this.employerKeyToGroup)
-      },
-      set: function (newVal) {
-        return newVal
+    users (newVal) {
+      if (newVal) {
+        if (this.userRole === 'employer') {
+          this.computedUsers = this.reGroup(this.users, this.employerKeyToGroup)
+        }
       }
     }
   },
@@ -123,11 +123,11 @@ export default {
 
       axios.get(`http://localhost:3000/api/jobs`, {params, headers})
         .then(response => {
-          if (this.someData === 'student')
+          if (this.userRole === 'student') {
             this.jobs = response.data
-          else
+          } else {
             this.users = response.data
-          // this.jobs = this.reGroup(response.data, 'position')
+          }
         })
         .catch(e => {
           if (e.response.status === 401) {
@@ -174,7 +174,7 @@ export default {
       axios.patch(`http://localhost:3000/api/jobs/accept`, {
         user: localStorage.getItem('user_id'),
         job: i,
-        role: this.someData
+        role: this.userRole
       }, {headers})
         .then(response => {
           this.$refs['card'].forEach(card => {
@@ -201,7 +201,7 @@ export default {
         user: localStorage.getItem('user_id'),
         userToAccept: i.id,
         job: i.job,
-        role: this.someData
+        role: this.userRole
       }, {headers})
         .then(response => {
           this.$refs['card'].forEach(card => {
@@ -228,7 +228,7 @@ export default {
         user: localStorage.getItem('user_id'),
         userToReject: i.id,
         job: i.job,
-        role: this.someData
+        role: this.userRole
       }, {headers})
         .then(response => {
           this.$refs['card'].forEach(card => {
@@ -254,9 +254,10 @@ export default {
       })
     },
     callReGroup (key) {
-      if (this.someData === 'student') {
+      if (this.userRole === 'student') {
         this.keyToGroup = key
-        this.computedJobs = this.reGroup(this.jobs, this.keyToGroup)
+        this.studentFilterOptions = key
+        this.computedJobs = this.reGroup(this.jobs, this.studentFilterOptions)
       } else {
         this.employerKeyToGroup = key
         this.computedUsers = this.reGroup(this.users, key)
@@ -271,9 +272,9 @@ export default {
         newGroup[item[key]].push(newItem)
       })
 
-      const ordered = {};
+      const ordered = {}
       Object.keys(newGroup).sort().forEach(function (key) {
-        ordered[key] = newGroup[key];
+        ordered[key] = newGroup[key]
       })
 
       for (var k in ordered) {
@@ -281,11 +282,8 @@ export default {
           job[this.keyToGroup] = k
         })
       }
-
       return ordered
-
     }
-
   }
 }
 

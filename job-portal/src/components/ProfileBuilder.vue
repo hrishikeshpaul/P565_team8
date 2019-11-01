@@ -21,66 +21,48 @@
                           :before-change="validateAsync"
              >
                <b-form>
-                 <b-form-group id="fieldsetHorizontal1"
-                               :label-cols="4"
-                               breakpoint="md"
-                               label-size="sm"
-                               :label="role === 'student' ? 'Full Name' : 'Name of Point of Contact'">
+                 <label>{{role === 'student' ? 'Full Name' : 'Name of Point of Contact'}}</label>
+                 <b-form-group id="fieldsetHorizontal1">
                    <b-form-input id="name" v-model.trim="user.name"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal2"
-                               :label-cols="4"
-                               breakpoint="md"
-                               label-size="sm"
-                               :label="role === 'student' ? 'University' : 'Company'"
-                 >
+
+                 <label>{{role === 'student' ? 'University' : 'Company'}}</label>
+                 <b-form-group id="fieldsetHorizontal2">
                    <b-form-input id="company" v-model.trim="user.company"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal3"
-                               :label-cols="4"
-                               breakpoint="md"
-                               label-size="sm"
-                               label="Website"
-                 >
+
+                 <label v-if="role === 'student'">Gender</label>
+                 <b-form-group>
+                   <b-form-select v-if="role === 'student'" v-model="user.gender" :options="['Male', 'Female', 'I don\'t wish to state']"></b-form-select>
+                 </b-form-group>
+
+                 <label>Website</label>
+                 <b-form-group id="fieldsetHorizontal3">
                    <b-form-input id="website" v-model.trim="user.website"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal4"
-                                              :label-cols="4"
-                                              breakpoint="md"
-                                              label-size="sm"
-                                              label="LinkedIn"
-               >
-                 <b-form-input id="linkedin" v-model.trim="user.social.linkedin"></b-form-input>
-               </b-form-group>
-                 <b-form-group id="fieldsetHorizontal5"
-                               :label-cols="4"
-                               breakpoint="md"
-                               label-size="sm"
-                               label="Location"
-                 >
-                   <b-form-input id="location" v-model.trim="user.location"></b-form-input>
+
+                 <label>LinkedIn</label>
+                 <b-form-group id="fieldsetHorizontal4">
+                  <b-form-input id="linkedin" v-model.trim="user.social.linkedin"></b-form-input>
                  </b-form-group>
+
+                 <label v-if="role === 'student'">Github</label>
                  <b-form-group id="fieldsetHorizontal6"
-                               :label-cols="4"
-                               breakpoint="md"
-                               label-size="sm"
-                               label="Github"
-                               v-if="role === 'student'"
-                 >
+                               v-if="role === 'student'">
                    <b-form-input id="github" v-model.trim="user.social.github"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal7"
-                               :label-cols="4"
-                               breakpoint="md"
-                               label-size="sm"
-                               label="Bio"
 
-                 >
-                   <b-form-input id="bio" v-model.trim="user.bio"></b-form-input>
+                 <label>Location</label>
+                 <b-form-group id="fieldsetHorizontal5">
+                   <b-form-input id="location" v-model.trim="user.location"></b-form-input>
+                 </b-form-group>
+
+                 <label>Bio</label>
+                 <b-form-group id="fieldsetHorizontal7">
+                   <b-form-textarea id="bio" v-model.trim="user.bio" rows="3"></b-form-textarea>
                  </b-form-group>
                </b-form>
              </tab-content>
-
 
              <tab-content :title="'Education'"
                           v-if="role === 'student'"
@@ -96,54 +78,32 @@
                    </div>
                  </div>
                  <b-form v-if="role === 'student'">
-                   <b-form-group id="fieldsetHorizontal"
-                                 :label-cols="4"
-                                 breakpoint="md"
-                                 label-size="sm"
-                                 label="Name of School">
+                   <label>Name of School</label>
+                   <b-form-group>
                      <b-form-input id="school" v-model.trim="education.school"></b-form-input>
                    </b-form-group>
-                   <b-form-group id="fieldsetHorizontal"
-                                 :label-cols="4"
-                                 breakpoint="md"
-                                 label-size="sm"
-                                 label="Degree">
+
+                   <label>Degree</label>
+                   <b-form-group>
                      <b-form-input id="degree" v-model.trim="education.degree"></b-form-input>
                    </b-form-group>
-                   <b-form-group id="fieldsetHorizontal"
-                                 :label-cols="4"
-                                 breakpoint="md"
-                                 label-size="sm"
-                                 label="Field Of Study">
+
+                   <label>Field of Study</label>
+                   <b-form-group>
                      <b-form-input id="fieldofstudy" v-model.trim="education.fieldofstudy"></b-form-input>
                    </b-form-group>
                    <div class="row">
-                     <div class="col-5">
-                       <b-form-group id="fieldsetHorizontal"
-                                     :label-cols="2"
-                                     breakpoint="md"
-                                     label-size="sm"
-                                     label="From">
+                     <div class="col-6">
+                       <label>From</label>
+                       <b-form-group>
                          <b-form-input id="from" v-model.trim="education.from" type="date"></b-form-input>
                        </b-form-group>
                      </div>
-                     <div class="col-5">
-                       <b-form-group id="fieldsetHorizontal"
-                                     :label-cols="2"
-                                     breakpoint="md"
-                                     label-size="sm"
-                                     label="To">
+                     <div class="col-6">
+                       <label>To</label>
+                       <b-form-group>
                          <b-form-input id="to" v-model.trim="education.to" type="date"></b-form-input>
                        </b-form-group>
-                     </div>
-                     <div class="col-2 mt-4 pt-2">
-                       <b-form-checkbox
-                         id="checkbox-1"
-                         v-model="education.current"
-                         name="checkbox-1"
-                       >
-                         Current
-                       </b-form-checkbox>
                      </div>
                    </div>
                  </b-form>
@@ -171,62 +131,35 @@
                    </div>
                  </div>
                  <b-form>
-                   <b-form-group id="fieldsetHorizontal"
-                                 :label-cols="4"
-                                 breakpoint="md"
-                                 label-size="sm"
-                                 label="Name of Organinsation">
+                   <label>Name of Organisation</label>
+                   <b-form-group>
                      <b-form-input id="company" v-model.trim="experience.company"></b-form-input>
                    </b-form-group>
-                   <b-form-group id="fieldsetHorizontal"
-                                 :label-cols="4"
-                                 breakpoint="md"
-                                 label-size="sm"
-                                 label="Title">
+                   <label>Title</label>
+                   <b-form-group>
                      <b-form-input id="title" v-model.trim="experience.title"></b-form-input>
                    </b-form-group>
-                   <b-form-group id="fieldsetHorizontal"
-                                 :label-cols="4"
-                                 breakpoint="md"
-                                 label-size="sm"
-                                 label="Location">
+                   <label>Location</label>
+                   <b-form-group>
                      <b-form-input id="location" v-model.trim="experience.location"></b-form-input>
                    </b-form-group>
                    <div class="row">
-                     <div class="col-5">
-                       <b-form-group id="fieldsetHorizontal"
-                                     :label-cols="2"
-                                     breakpoint="md"
-                                     label-size="sm"
-                                     label="From">
+                     <div class="col-6">
+                       <label>From</label>
+                       <b-form-group>
                          <b-form-input id="from" v-model.trim="experience.from" type="date"></b-form-input>
                        </b-form-group>
                      </div>
-                     <div class="col-5">
-                       <b-form-group id="fieldsetHorizontal"
-                                     :label-cols="2"
-                                     breakpoint="md"
-                                     label-size="sm"
-                                     label="To">
+                     <div class="col-6">
+                       <label>To</label>
+                       <b-form-group>
                          <b-form-input id="to" v-model.trim="experience.to" type="date"></b-form-input>
                        </b-form-group>
                      </div>
-                     <div class="col-2 mt-4 pt-2">
-                       <b-form-checkbox
-                         id="checkbox-1"
-                         v-model="experience.current"
-                         name="checkbox-1"
-                       >
-                         Current
-                       </b-form-checkbox>
-                     </div>
                    </div>
-                   <b-form-group id="fieldsetHorizontal"
-                                 :label-cols="4"
-                                 breakpoint="md"
-                                 label-size="sm"
-                                 label="Description">
-                     <b-form-input id="description" v-model.trim="experience.description"></b-form-input>
+                   <label>Description</label>
+                   <b-form-group>
+                     <b-form-textarea id="description" v-model.trim="experience.description" rows="3"></b-form-textarea>
                    </b-form-group>
                  </b-form>
                </div>
@@ -285,7 +218,6 @@ export default {
         location: '',
         from: '',
         to: '',
-        current: [true],
         description: ''
       }],
       educations: [{
@@ -293,8 +225,7 @@ export default {
         degree: '',
         fieldofstudy: '',
         from: '',
-        to: '',
-        current: false
+        to: ''
       }],
       skills: [],
       activeIndex: 0,
@@ -447,8 +378,7 @@ export default {
             degree: '',
             fieldofstudy: '',
             from: '',
-            to: '',
-            current: true
+            to: ''
           }
         )
       else if (array === 'experience')
@@ -458,7 +388,6 @@ export default {
           location: '',
           from: '',
           to: '',
-          current: [],
           description: ''
         })
     },

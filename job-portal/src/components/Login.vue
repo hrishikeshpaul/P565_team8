@@ -2,7 +2,7 @@
   <div>
       <div style="height: 100vh; position: relative; ">
       <div id="video_overlays"></div>
-      <video autoplay loop muted id="video" style="width: auto; height: auto; position: absolute; z-index: -2;">
+      <video autoplay loop muted id="video" style="width: 100%; height: auto; position: absolute; z-index: -2;">
         <source src="../assets/lv2.mp4" type="video/mp4">
       </video>
       <div class="container">
@@ -14,40 +14,34 @@
               </div>
               <p class="text-center mt-1" style="font-size: 15px; color: gray">Making Career Fairs Easier</p>
               <hr />
-              <div style="width: 350px;">
+              <div style="width: 400px;">
                 <b-tabs content-class="mt-3" v-model="tabIndex" >
                   <b-tab :title="forgotPassword ? 'Forgot Password' : 'Login'">
                     <div v-if="error">
                       <b-alert show :variant="variant" v-html="error"></b-alert>
                     </div>
-                      <div class="text-center mt-4">
+                      <div class="text-center mt-4" v-if="!forgotPassword">
                         <a class="btn btn-md light linkedin-btn" @click="linkedInLogin" style="background-color: #597ca0; color: white;">Linked <i class="ti-linkedin"></i></a>
                       </div>
-                      <div class="center-separator my-3 mt-4">
+                      <div class="center-separator my-3 mt-4" v-if="!forgotPassword">
                         or
                       </div>
                       <b-form>
-
-                        <b-form-group id="fieldsetHorizontal"
-                                      :label-cols="4"
-                                      breakpoint="md"
-                                      label-size="sm"
-                                      label="Email">
+                        <label>Email</label>
+                        <b-form-group id="fieldsetHorizontal">
                           <b-form-input id="username" v-model.trim="login.username"></b-form-input>
                         </b-form-group>
+                        <label>Password</label>
                         <b-form-group id="fieldsetHorizontal"
                                       v-if="!forgotPassword"
                                       class="mb-2"
-                                      :label-cols="4"
-                                      breakpoint="md"
-                                      label-size="sm"
-                                      label="Password">
+                                      >
                           <b-form-input type="password" id="password" v-model.trim="login.password" ></b-form-input>
                         </b-form-group>
                         <b-button type="submit" variant="warning" class="mt-3 mb-3" style="width: 100%" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
                         <b-button type="submit" variant="warning" class="mt-1 mb-3" style="width: 100%" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
                         <div class="align-content-center ">
-                          <div class="g-recaptcha" id="rcaptcha" style="margin-left: 25px;" data-sitekey="6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs"></div>
+                          <div class="g-recaptcha" id="rcaptcha" style="margin-left: 45px;" data-sitekey="6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs"></div>
                           <span id="captcha" style="color:red" />
                         </div>
                         <hr class="mb-2"/>
@@ -271,7 +265,6 @@ export default {
     },
     onSubmit (evt) {
       evt.preventDefault()
-      console.log(grecaptcha)
       if (grecaptcha.getResponse() == 0){
         this.error = 'Please verify captcha'
         this.variant = 'danger'

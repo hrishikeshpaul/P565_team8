@@ -21,7 +21,7 @@
             <button class=" mr-5 btn-lg btn-danger ml-4" @click="$emit('reject', {id: user._id, job: user.job})">Reject</button>
           </div>
           <div class="col-6">
-            <button @click="$emit('accept', {id: user._id, job: user.job})" class=" mr-4 btn-lg btn-success">Apply</button>
+            <button @click="$emit('accept', {id: user._id, job: user.job})" class=" mr-4 btn-lg btn-success">Accept</button>
           </div>
         </div>
       </div>
