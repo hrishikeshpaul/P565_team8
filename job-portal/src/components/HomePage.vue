@@ -17,6 +17,7 @@
               :job="j"
               ref="card"
               :id="j._id"
+              @showJobModal="homePageJobModal(j, key)"
               @accept="accept"
               @reject="reject"
               class="mb-3"
@@ -47,6 +48,8 @@
         </div>
       </div>
     </div>
+    <HomePageJobModal :showModal="showHomePageJobModal" @hideModal="hideHomePageJobModal" :job="homePageJobToSend"/>
+
   </div>
 </template>
 
@@ -58,6 +61,7 @@ import NavBar from './NavBar'
 import FilterBar from './FilterBar'
 import JobCard from './JobCard'
 import UserCard from './UserCard'
+import HomePageJobModal from './HomePageJobModal'
 
 export default {
   name: 'HomePage',
@@ -65,7 +69,8 @@ export default {
     NavBar,
     FilterBar,
     JobCard,
-    UserCard
+    UserCard,
+    HomePageJobModal
   },
   data () {
     return {
@@ -74,6 +79,7 @@ export default {
       role: '',
       users: [],
       showClass: false,
+      homePageJobToSend: {},
       computedJobs: {},
       computedUsers: {},
       studentKeyToGroup: 'position',
@@ -88,7 +94,9 @@ export default {
       employerFilterOptions: [
         { name: 'Company', code: 'company' },
         { name: 'Gender', code: 'gender' },
-      ]
+      ],
+      showHomePageJobModal: false,
+
     }
   },
   watch: {
@@ -112,6 +120,15 @@ export default {
     this.filterOptions = localStorage.getItem('role') == 'student' ? this.studentFilterOptions : this.employerFilterOptions
   },
   methods: {
+    homePageJobModal (job, key) {
+
+      this.homePageJobToSend = job
+      this.homePageJobToSend[this.studentKeyToGroup] = key
+      this.showHomePageJobModal = !this.showHomePageJobModal
+    },
+    hideHomePageJobModal () {
+      this.showHomePageJobModal = false
+    },
     getData () {
       var headers = {
         Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)

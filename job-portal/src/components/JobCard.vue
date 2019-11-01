@@ -6,13 +6,14 @@
           <img src="../assets/rui.jpg" class="card-img-top embed-responsive"
                style="max-height: 299px; height: 100%; border-radius: 10px;" />
       </b-card>
-      <div class="overlay">
+      <div class="overlay" @click="$emit('showJobModal')">
         <div class="text">
           <br />
           <span style="font-weight: bold">{{job.company}}</span>
           <br />
           <span>{{job.location}}</span>
           <br />
+          <span>{{displaySkills(job.skills)}}</span>
           <br />
           <br />
           <br />
@@ -34,6 +35,7 @@ export default {
   name: 'JobCard',
   data () {
     return {
+      skillsToShow: '',
       imgArray: [
         '../assets/rui.jpg',
         '../assets/samosa.jpg',
@@ -45,7 +47,23 @@ export default {
   props: {
     job: {
       type: Object,
-      required: true
+      required: true,
+      default: {
+        skills: []
+      }
+    }
+  },
+  methods: {
+    displaySkills (skills) {
+      if (skills.length > 0) {
+        if (skills.length > 2) {
+          return skills[0].name + ", " + skills[1].name + " & more"
+        } else {
+          return skills.map(s => s.name).join(', ')
+        }
+      } else {
+        return ''
+      }
     }
   }
 }
