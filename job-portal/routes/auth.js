@@ -31,7 +31,8 @@ router.post('/register', function (req, res) {
       var token = new Token({_userId: newUser._id, token: crypto.randomBytes(16).toString('hex')})
       token.save(function (err) {
         if (err) {
-          return res.status(500).send({msg: err.message})
+          console.log(err)
+          return res.status(501).send({msg: err.message})
         }
 
         var transporter = nodemailer.createTransport({
@@ -49,7 +50,7 @@ router.post('/register', function (req, res) {
         }
         transporter.sendMail(mailOptions, function (err) {
           if (err) {
-            return res.status(500).send({msg: err.message})
+            console.log(err)
           }
 
          return res.status(200).send({success: true, msg: 'A verification email has been sent to ' + newUser.email + '.'})

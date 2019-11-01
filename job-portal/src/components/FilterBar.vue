@@ -19,18 +19,22 @@ import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 export default {
   name: 'FilterBar',
+  props: {
+    options: {
+      type: Array,
+      required: true
+    }
+  },
   components: {
     Multiselect
+  },
+  watch: {
+
   },
   data () {
     return {
       value: [
-        { name: 'Position', code: 'position' }
-      ],
-      options: [
-        { name: 'Position', code: 'position' },
-        { name: 'Location', code: 'location' },
-        { name: 'Company', code: 'company' }
+        this.options[0]
       ]
     }
   },

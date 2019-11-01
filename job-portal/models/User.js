@@ -29,9 +29,13 @@ var UserSchema = new Schema({
     default: null
   },
   passed_jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}],
+  passed_applicants: [{type: Schema.Types.ObjectId, ref: 'User'}],
   first_time: {
     type: Boolean,
     default: true
+  },
+  gender: {
+    type: String
   },
   name: {
     type: String
@@ -49,7 +53,7 @@ var UserSchema = new Schema({
     type: String
   },
   skills: {
-    type: [String],
+    type: Array,
   },
   bio: {
     type: String

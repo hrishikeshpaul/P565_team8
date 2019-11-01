@@ -5,6 +5,8 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import NotFound from '@/components/NotFound'
 import ProfileBuilder from '@/components/ProfileBuilder'
+import Profile from '@/components/Profile'
+
 import axios from 'axios'
 
 Vue.use(Router)
@@ -43,6 +45,7 @@ export default new Router({
       name: 'HomePage',
       component: Home,
       beforeEnter (to, from, next) {
+        console.log(localStorage)
         if (localStorage.getItem('jwtToken')) {
           if (localStorage.getItem('user_first_time') === 'true') {
             next({name: 'ProfileBuilder'})
@@ -77,6 +80,11 @@ export default new Router({
       path: '*',
       name: '404',
       component: NotFound
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile
     },
     {
       path: '/build_profile',

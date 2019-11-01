@@ -13,30 +13,30 @@
              @on-validate="handleValidation"
              @on-error="handleErrorMessage"
            >
-             <h2 slot="title">Hi, let us get you started with your profile!</h2>
+             <h2 slot="title">Hi, let us get you started with your profile! {{role}}</h2>
              <div class="mb-2"><span v-if="errorMsg"  style="color: red;">{{errorMsg}}</span></div>
 
-             <tab-content title="Personal details"
+             <tab-content :title="role === 'student' ? 'Personal Details' : 'Organizational Details'"
                           icon="ti-user"
                           :before-change="validateAsync"
              >
                <b-form>
-                 <b-form-group id="fieldsetHorizontal"
+                 <b-form-group id="fieldsetHorizontal1"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
-                               label="Full Name">
+                               :label="role === 'student' ? 'Full Name' : 'Name of Point of Contact'">
                    <b-form-input id="name" v-model.trim="user.name"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal"
+                 <b-form-group id="fieldsetHorizontal2"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
                                :label="role === 'student' ? 'University' : 'Company'"
                  >
-                   <b-form-input id="name" v-model.trim="user.company"></b-form-input>
+                   <b-form-input id="company" v-model.trim="user.company"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal"
+                 <b-form-group id="fieldsetHorizontal3"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
@@ -44,34 +44,47 @@
                  >
                    <b-form-input id="website" v-model.trim="user.website"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal"
+                 <b-form-group id="fieldsetHorizontal4"
+                                              :label-cols="4"
+                                              breakpoint="md"
+                                              label-size="sm"
+                                              label="LinkedIn"
+               >
+                 <b-form-input id="linkedin" v-model.trim="user.social.linkedin"></b-form-input>
+               </b-form-group>
+                 <b-form-group id="fieldsetHorizontal5"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
-                               label="LinkedIn"
+                               label="Location"
                  >
-                   <b-form-input id="linkedin" v-model.trim="user.social.linkedin"></b-form-input>
+                   <b-form-input id="location" v-model.trim="user.location"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal"
+                 <b-form-group id="fieldsetHorizontal6"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
                                label="Github"
+                               v-if="role === 'student'"
                  >
                    <b-form-input id="github" v-model.trim="user.social.github"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal"
+                 <b-form-group id="fieldsetHorizontal7"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
                                label="Bio"
+
                  >
                    <b-form-input id="bio" v-model.trim="user.bio"></b-form-input>
                  </b-form-group>
                </b-form>
              </tab-content>
-             <tab-content :title="role === 'student' ? 'Education' : 'Orgainsational Information'"
-                          :icon="role === 'student' ? 'ti-book' : 'ti-bag'"
+
+
+             <tab-content :title="'Education'"
+                          v-if="role === 'student'"
+                          :icon="'ti-book'"
                           :before-change="validateAsync">
                <div v-for="(education,index) in educations" v-if="role === 'student'">
                  <div class="row" v-if="educations.length > 1">
@@ -141,24 +154,6 @@
                  class="btn-outline-warning mb-2 mt-1 "
                  @click.prevent="addItem('education')">
                  Add</button>
-               <div v-if="role === 'employer' ">
-                 <b-form>
-                   <b-form-group id="fieldsetHorizontal"
-                                 :label-cols="4"
-                                 breakpoint="md"
-                                 label-size="sm"
-                                 label="Name of Organinzation">
-                     <b-form-input id="name" v-model.trim="company.name"></b-form-input>
-                   </b-form-group>
-                   <b-form-group id="fieldsetHorizontal"
-                                 :label-cols="4"
-                                 breakpoint="md"
-                                 label-size="sm"
-                                 label="Location">
-                     <b-form-input id="name" v-model.trim="company.location"></b-form-input>
-                   </b-form-group>
-                 </b-form>
-               </div>
              </tab-content>
   <!--           EXPERIENCE TAB-->
              <tab-content
@@ -362,8 +357,8 @@ export default {
             },
             user: {id: id}
           }
-          if (!this.user.name)
-            reject('Please enter your name')
+          if (!this.user.name || !this.user.company || !this.user.website)
+            reject('Please enter the required details')
 
           axios.post(`http://localhost:3000/api/profile/personal`, obj, {headers: params})
             .then(response => {
@@ -420,14 +415,14 @@ export default {
           }
         } else if (this.activeIndex === 3) {
           if (this.skills.length > 0) {
-            console.log('not done')
-            var skillsArray = []
-            this.skills.forEach(skill => {
-              skillsArray.push(skill.name)
-            })
+            // console.log('not done')
+            // var skillsArray = []
+            // this.skills.forEach(skill => {
+            //   skillsArray.push(skill.name)
+            // })
 
             var obj = {
-              data: skillsArray,
+              data: this.skills,
               user: {id: id}
             }
 
