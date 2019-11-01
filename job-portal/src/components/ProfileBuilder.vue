@@ -284,7 +284,8 @@ export default {
               company: this.user.company,
               website: this.user.website,
               social: this.user.social,
-              bio: this.user.bio
+              bio: this.user.bio,
+              gender: this.user.gender
             },
             user: {id: id}
           }
