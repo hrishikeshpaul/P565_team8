@@ -5,6 +5,7 @@
       <div class="container main-container">
          <b-card style="max-height: 85vh; overflow-y: auto; min-height: 40vh">
            <form-wizard
+             v-if="role"
              @on-complete="onComplete"
              step-size="sm" color="orange"
              @on-change="handleTabChanged"
@@ -263,11 +264,12 @@
   import axios from 'axios'
   import NavBar from './NavBar'
   import SkillSelect from './SkillSelect'
+
 export default {
   name: 'ProfileBuilder',
   components: {
     NavBar,
-    SkillSelect
+    SkillSelect,
   },
   data () {
     return {
@@ -476,9 +478,52 @@ export default {
       })
     },
   },
+  created () {
+    console.log(typeof localStorage.getItem('role'))
+    if (localStorage.getItem('role') == 'null') {
+      const { value: role } = this.$swal({
+        title: 'Select Role',
+        input: 'select',
+        inputOptions: {
+          student: 'Student',
+          employer: 'Employer'
+        },
+        allowOutsideClick: false,
+        showCancelButton: false,
+        inputPlaceholder: 'Select role',
+        confirmButtonColor: '#f0ad4e',
+        inputValidator: (value) => {
+          return new Promise((resolve, reject) => {
+            if (value === 'student' || value === 'employer') {
+              var id = localStorage.getItem('user_id')
+              var params = {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
+                'Content-Type': 'application/json'
+              }
+              var obj = {
+                user: id,
+                role: value
+              }
+              axios.post('http://localhost:3000/api/profile/updateRole', obj, {headers: params})
+                .then(resposne => {
+                  localStorage.setItem('role', value)
+                  console.log(value)
+                  this.role = value
+                  resolve()
+                })
+                .catch(e => {
+                  reject('Error')
+                })
+            } else {
+              resolve('You need to select a role :)')
+            }
+          })
+        }
+      })
+    }
+  },
   mounted () {
     this.role = localStorage.role
-    console.log(this.role)
   }
 }
 </script>
@@ -490,5 +535,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .swal-title {
+    margin: 0px;
+    font-size: 25px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
+    margin-bottom: 28px;
   }
 </style>

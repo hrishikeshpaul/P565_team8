@@ -11,6 +11,7 @@ var home = require('./routes/home');
 var job = require('./routes/job')
 var profile = require('./routes/profile');
 var user = require('./routes/user')
+var oauth =require('./routes/oauth')
 
 
 var mongoose = require('mongoose');
@@ -29,18 +30,18 @@ app.engine('html', engine.mustache);
 app.set('view engine', 'html')
 
 app.use(logger('dev'));
-// app.use(function(req, res, next) {
-//   var allowedOrigins = ['http://localhost:8080'];
-//   var origin = req.headers.origin;
-//   if(allowedOrigins.indexOf(origin) > -1){
-//     res.setHeader('Access-Control-Allow-Origin', origin);
-//   }
-//   // res.header('Access-Control-Allow-Origin', 'http://localhost:8080/');
-//   res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   res.header('Access-Control-Allow-Credentials', true);
-//   return next();
-// });
+app.use(function(req, res, next) {
+  var allowedOrigins = ['http://localhost:8080'];
+  var origin = req.headers.origin;
+  if(allowedOrigins.indexOf(origin) > -1){
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  // res.header('Access-Control-Allow-Origin', origin);
+  res.header('Access-Control-Allow-Methods', "POST, PUT, GET, OPTIONS, DELETE");
+  res.header('Access-Control-Allow-Headers', "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With,observe");
+  res.header('Access-Control-Allow-Credentials', true);
+  return next();
+});
 app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ 'extended': 'false' }));
@@ -50,6 +51,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/auth', auth);
+app.use('/auth/linkedin', oauth)
 app.use('/api/user', user)
 app.use('/api/profile', profile);
 

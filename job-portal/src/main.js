@@ -11,14 +11,16 @@ import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import 'ti-icons/css/themify-icons.css'
 import VuePageTransition from 'vue-page-transition'
-import VueSidebarMenu from 'vue-sidebar-menu'
-import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueFormWizard)
 Vue.use(VuePageTransition)
+
 Vue.prototype.$moment = moment
+Vue.use(VueSweetalert2);
 
 /* eslint-disable no-new */
 new Vue({

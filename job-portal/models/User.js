@@ -8,9 +8,15 @@ var UserSchema = new Schema({
     unique: true,
     required: true
   },
+  oauth: {
+    type: Boolean,
+    default: false
+  },
+  oauthToken: {
+    type: String
+  },
   password: {
     type: String,
-    required: true
   },
   isVerified: {
     type: Boolean,
@@ -19,7 +25,8 @@ var UserSchema = new Schema({
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   role: {
-    type: String
+    type: String,
+    default: null
   },
   passed_jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}],
   passed_applicants: [{type: Schema.Types.ObjectId, ref: 'User'}],

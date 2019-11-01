@@ -6,13 +6,11 @@ require('../config/passport')(passport)
 var express = require('express')
 var jwt = require('jsonwebtoken')
 var router = express.Router()
-
 var User = require('../models/user')
 
 var crypto = require('crypto')
 var nodemailer = require('nodemailer')
 var Token = require('../models/Token')
-
 router.post('/register', function (req, res) {
 
   if (!req.body.username || !req.body.password) {
@@ -28,6 +26,8 @@ router.post('/register', function (req, res) {
       if (err) {
         return res.status(409).json({success: false, msg: 'Username already exists.'})
       }
+
+
       var token = new Token({_userId: newUser._id, token: crypto.randomBytes(16).toString('hex')})
       token.save(function (err) {
         if (err) {
@@ -36,9 +36,12 @@ router.post('/register', function (req, res) {
         }
 
         var transporter = nodemailer.createTransport({
-          service: 'Sendgrid',
-          auth: {user: 'hrishikeshpaul', pass: 'Keshpaul1996'}
-        })
+          service: 'gmail',
+          auth:{
+            user: 'colen81@gmail.com',
+            pass: 'Cassidy2011rip.'
+          }
+        });
         var mailOptions = {
           from: 'noq-reply@noq.com',
           to: newUser.email,
@@ -49,7 +52,8 @@ router.post('/register', function (req, res) {
           if (err) {
             console.log(err)
           }
-          res.status(200).send({success: true, msg: 'A verification email has been sent to ' + newUser.email + '.'})
+
+         return res.status(200).send({success: true, msg: 'A verification email has been sent to ' + newUser.email + '.'})
         })
       })
 
@@ -66,7 +70,14 @@ router.post('/login', function (req, res) {
     if (!user) {
       res.status(401).send({success: false, msg: 'Authentication failed. User not found.'})
     } else if (!user.isVerified) {
-      res.status(401).send({success: false, msg: 'User not verified.', link:true})
+      res.status(401).send({success: false, msg: 'User not verified.', link: true})
+    } else if (user.isVerified && user.oauth) {
+      if (user.oauthToken === req.body.token) {
+        var token = jwt.sign(user.toJSON(), settings.secret)
+        res.json({success: true, token: 'JWT ' + token, user: user})
+      } else {
+        res.status(401).send({success: false, msg: 'Unauthorized User.'})
+      }
     } else {
       // check if password matches
       user.comparePassword(req.body.password, function (err, isMatch) {

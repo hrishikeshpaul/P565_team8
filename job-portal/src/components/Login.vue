@@ -21,13 +21,11 @@
                       <b-alert show :variant="variant" v-html="error"></b-alert>
                     </div>
                       <div class="text-center mt-4">
-                        <a class="btn btn-md btn-info" @click="linkedInLogin">LinkedIn</a>
-                        <a class="btn btn-md btn-secondary" @click="githubLogin">GitHub</a>
+                        <a class="btn btn-md light linkedin-btn" @click="linkedInLogin" style="background-color: #597ca0; color: white;">Linked <i class="ti-linkedin"></i></a>
                       </div>
                       <div class="center-separator my-3 mt-4">
                         or
-
-                    </div>
+                      </div>
                       <b-form>
 
                         <b-form-group id="fieldsetHorizontal"
@@ -46,9 +44,12 @@
                                       label="Password">
                           <b-form-input type="password" id="password" v-model.trim="login.password" ></b-form-input>
                         </b-form-group>
-                        <b-button type="submit" variant="warning" class="mt-3" style="width: 100%" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
-                        <b-button type="submit" variant="warning" class="mt-1" style="width: 100%" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
-
+                        <b-button type="submit" variant="warning" class="mt-3 mb-3" style="width: 100%" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
+                        <b-button type="submit" variant="warning" class="mt-1 mb-3" style="width: 100%" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
+                        <div class="align-content-center ">
+                          <div class="g-recaptcha" id="rcaptcha" style="margin-left: 25px;" data-sitekey="6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs"></div>
+                          <span id="captcha" style="color:red" />
+                        </div>
                         <hr class="mb-2"/>
                         <a href="" class="text-muted mt-0" @click.prevent="forgotPassword = !forgotPassword">{{forgotPassword ? 'Back' : 'Forgot Password?'}}</a>
                         <br />
@@ -56,7 +57,7 @@
                       </b-form>
                   </b-tab>
                   <b-tab title="Register">
-                    <Register @registered="registration_completed"/>
+                    <Register @registered="registration_completed" @linkedin="linkedInLogin"/>
                   </b-tab>
                 </b-tabs>
               </div>
@@ -195,6 +196,7 @@
     <div style="background-color: #6c757d;" class="p-3 text-center">
       <span style="color: white;">A Project by students from Indiana University, Bloomington</span>
     </div>
+
   </div>
 
 </template>
@@ -203,6 +205,7 @@
 
 import axios from 'axios'
 import Register from './Register'
+import Recaptcha from './Recaptcha'
 
 export default {
   name: 'Login',
@@ -216,7 +219,8 @@ export default {
     }
   },
   components: {
-    Register
+    Register,
+    Recaptcha
   },
   watch: {
     tabIndex (val) {
@@ -229,21 +233,12 @@ export default {
     }
   },
   methods: {
-    githubLogin () {
-      axios.get(`http://localhost:3000/api/auth/github/`)
-        .then(response => {
-          console.log(response)
-        })
-        .catch(e => {
-          this.error = e.response.data.msg
-        })
-    },
     linkedInLogin () {
-      axios.get(`http://localhost:3000/api/auth/linkedin/`, {
+      axios.get(`http://localhost:3000/auth/linkedin`, {
         headers: {
           'Access-Control-Allow-Origin': '*'}
         }).then(response => {
-          console.log(response)
+          window.location.href = response.data
         })
         .catch(e => {
           this.error = e.response.data.msg
@@ -254,7 +249,6 @@ export default {
         .then(response => {
           this.error = 'Further Instructions has been send sent to the email id.'
           this.variant = 'success'
-          console.log(response)
         })
         .catch(e => {
           this.error = e.response.data.msg
@@ -274,6 +268,11 @@ export default {
     },
     onSubmit (evt) {
       evt.preventDefault()
+      if (grecaptcha.getResponse() == 0){
+        this.error = 'Please verify captcha'
+        this.variant = 'danger'
+        return false
+      }
       axios.post(`http://localhost:3000/api/auth/login/`, this.login)
         .then(response => {
           localStorage.setItem('jwtToken', response.data.token)
@@ -282,7 +281,6 @@ export default {
           localStorage.setItem('role', response.data.user.role)
 
           if (response.data.user.first_time) {
-            console.log('loginn')
             this.$router.push({
               name: 'ProfileBuilder'
             })
@@ -306,6 +304,9 @@ export default {
       this.$router.push({
         name: 'Register'
       })
+    },
+    submit (response){
+      console.log(response)
     }
   }
 }
@@ -375,6 +376,14 @@ export default {
     height: 1px;
     margin-right: 10px;
     margin-left: 10px;
+  }
+
+  .linkedin-btn {
+    cursor: pointer;
+  }
+
+  .linkedin-btn:hover{
+    background-color: #6c9ccb !important;
   }
 
 </style>
