@@ -3,70 +3,45 @@
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
                data-backdrop="static" :title="'Experience'">
-        <div class="d-block text-center">
+        <div class="d-block text-center px-3">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Company/Organisation">
+            <label>Organization/Company*</label>
+            <b-form-group>
               <b-form-input id="title" v-model.trim="newExperience.company"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Title">
+            <label>Title*</label>
+            <b-form-group>
               <b-form-input id="position" v-model.trim="newExperience.title"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Location">
+            <label>Position*</label>
+            <b-form-group>
               <b-form-input id="position" v-model.trim="newExperience.location"></b-form-input>
             </b-form-group>
             <div class="row">
-              <div class="col-5">
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="2"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="From">
+              <div class="col-6">
+                <label>From*</label>
+                <b-form-group>
                   <b-form-input id="from" v-model="newExperience.from" type="date" required></b-form-input>
                 </b-form-group>
               </div>
-              <div class="col-5">
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="2"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="To">
+              <div class="col-6">
+                <label>To</label><span style="background-color: #b4b4b4; color: white; border-radius: 50%; margin-left: 5px;" class="px-2 info-hover" data-toggle="tooltip" data-placement="top" title="If you are currently enrolled, leave this blank">i</span>
+                <b-form-group>
                   <b-form-input id="to" v-model="newExperience.to" type="date"></b-form-input>
                 </b-form-group>
               </div>
-              <div class="col-2 mt-4 pt-2">
-                <b-form-checkbox
-                  v-model="newExperience.current"
-                >
-                  Current
-                </b-form-checkbox>
-              </div>
             </div>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Description">
+            <label>Description</label>
+            <b-form-group>
               <b-form-textarea id="position" v-model.trim="newExperience.description" rows="4"></b-form-textarea>
             </b-form-group>
           </b-form>
         </div>
-        <b-button class="mt-3 btn btn-outline-warning" type="submit" block v-if="buttonText === 'Edit Experience'"
+        <b-button class="mt-3" variant="outline-warning" type="submit" block v-if="buttonText === 'Edit Experience'"
                   @click="editExperience ">{{buttonText}}
         </b-button>
-        <b-button class="mt-3 btn btn-outline-warning" type="submit" block v-else @click="addExperience ">
+        <b-button class="mt-3" variant="outline-warning" type="submit" block v-else @click="addExperience ">
           {{buttonText}}
         </b-button>
       </b-modal>

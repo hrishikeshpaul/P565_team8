@@ -67,14 +67,15 @@
                     <p>{{$moment(edu.from).format('MMM Do YY') }} - {{edu.to !== null ? $moment(edu.to).format('MMM Do YY') : 'Present'}} </p></div>
                 </b-card>
               </div>
-              <button
+              <b-button
                 v-if="role === 'student'"
                 style="width: 100%; border-radius: 10px;"
-                class="btn-outline-warning mb-2 mt-1 "
+                variant="outline-warning"
+                class="mb-2 mt-1 "
                 @click="addEducationModal"
               >
                 Add
-              </button>
+              </b-button>
             </b-card-body>
           </b-tab>
           <b-tab title="Experiences" style="max-height: 1000px; overflow-y: auto;">
@@ -96,26 +97,24 @@
                     <p>{{exp.description}}</p></div>
                 </b-card>
               </div>
-              <button
+              <b-button
                 v-if="role === 'student'"
                 style="width: 100%; border-radius: 10px;"
-                class="btn-outline-warning mb-2 mt-1 "
+                variant="outline-warning"
+                class="mb-2 mt-1 "
                 @click="addExperienceModal"
               >
                 Add
-              </button>
+              </b-button>
             </b-card-body>
           </b-tab>
           <b-tab title="Skills" style="max-height: 1000px; overflow-y: auto; min-height: 400px;">
             <b-card-body>
               <b-form class="text-left">
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="4"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="Add/Remove Skills: ">
+                <label>Add/Remove Skills:</label>
+                <b-form-group>
                   <SkillSelect @addSkills="addSkills" :recievedValues="user.skills"/>
-                  <button class="btn btn-outline-warning" @click="updateSkills" style="width: 100%; border-radius: 10px;">Save</button>
+                  <button class="btn btn-outline-warning" @click.stop="updateSkills" style="width: 100%; border-radius: 10px;">Save</button>
                 </b-form-group>
               </b-form>
               <hr />
