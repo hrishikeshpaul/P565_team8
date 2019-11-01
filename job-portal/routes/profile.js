@@ -94,7 +94,7 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), fun
   req.body.data.forEach(experience => {
     new Experience(experience).save(function (err, exp) {
       if (err)
-        return res.status(400).send('Could not save education')
+        return res.status(400).send('Could not save experience')
       User.updateOne({_id: req.body.user.id}, {$addToSet: {experience: exp._id}}, function (err, success) {
         if (err)
           return res.status(400).send('Could not be sent')
@@ -102,6 +102,26 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), fun
     })
   })
   return res.status(201).send('Saved')
+})
+
+router.patch('/experience/:id', passport.authenticate('jwt', { session: false }), function (req, res, next) {
+  Experience.findOneAndUpdate({_id: req.params.id}, {$set: req.body}, function (err, succ) {
+    if (err)
+      return res.status(400).send('Error')
+    else return res.status(200).send('Done')
+  })
+})
+
+/**
+ * Does not cascade DELETE
+ **/
+
+router.delete('/experience/:id', passport.authenticate('jwt', { session: false }), function (req, res, next) {
+  Experience.remove({_id: req.params.id}, function (err, succ) {
+    if (err)
+      return res.status(400).send('Error')
+    else return res.status(200).send('Done')
+  })
 })
 
 /*

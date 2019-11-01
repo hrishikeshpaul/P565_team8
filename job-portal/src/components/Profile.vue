@@ -80,7 +80,8 @@
             <b-card-body>
               <div v-if="user.experience.length > 0" v-for="exp in user.experience">
                 <b-card class="mb-3">
-                  <button style="float: right;"><i class="ti-pencil"></i></button>
+                  <button style="float: right;" class="btn btn-outline-danger ml-2" @click="deleteExperience(exp)"><i class="ti-close"></i></button>
+                  <button style="float: right;" class="btn btn-outline-secondary" @click="editExperienceModal(exp)"><i class="ti-pencil"></i></button>
                   <div><b>Company/Organization</b>
                     <p>{{exp.company}} </p></div>
                   <div><b>Title</b>
@@ -88,7 +89,7 @@
                   <div><b>Location</b>
                     <p>{{exp.location}} </p></div>
                   <div><b>Duration</b>
-                    <p>{{$moment(exp.from).format('MMM Do YY') }} - {{$moment(exp.to).format('MMM Do YY') }} </p>
+                    <p>{{$moment(exp.from).format('MMM Do YY') }} - {{formatDate(exp.to)}} </p>
                   </div>
                   <div><b>Description</b>
                     <p>{{exp.description}}</p></div>
@@ -98,6 +99,7 @@
                 v-if="role === 'student'"
                 style="width: 100%; border-radius: 10px;"
                 class="btn-outline-warning mb-2 mt-1 "
+                @click="addExperienceModal"
               >
                 Add
               </button>
@@ -164,6 +166,7 @@
     <JobInfoModal :showModal="showJobInfoModal" :job="jobInfoToBePassed" @hideModal="hideJobInfoModal"/>
     <DeleteConfirmModal :showModal="showDeleteConfirmModal" @hideModal="hideDeleteConfirmModal" @delete="deleteJobPosting" :job="jobInfoToBePassed"/>
     <EducationModal :show-modal="showEducationModal" @hideModal="hideEducationModal" :education="educationToBePassed" :buttonText="educationButtonText" :user="user"/>
+    <ExperienceModal :show-modal="showExperienceModal" @hideModal="hideExperienceModal" :experience="experienceToBePassed" :button-text="experienceButtonText" :user="user" />
   </div>
 </template>
 
@@ -178,6 +181,7 @@ import ProfileSettingsModal from './ProfileSettingsModal'
 import JobInfoModal from './JobInfoModal'
 import DeleteConfirmModal from './DeleteConfirmModal'
 import EducationModal from './EducationModal'
+import ExperienceModal from './ExperienceModal'
 
 import Gravatar from 'vue-gravatar'
 
@@ -191,7 +195,8 @@ export default {
     ProfileSettingsModal,
     JobInfoModal,
     DeleteConfirmModal,
-    EducationModal
+    EducationModal,
+    ExperienceModal
   },
   data () {
     return {
@@ -203,12 +208,16 @@ export default {
         maxPatternLength: 32,
         minMatchCharLength: 1,
         keys: [
-          "title"
+          'title'
         ]
       },
+      showToast: false,
+      toastContent: '',
       jobInfoToBePassed: {},
       educationToBePassed: {},
+      experienceToBePassed: {},
       educationButtonText: '',
+      experienceButtonText: '',
       user_id: localStorage.getItem('user_id'),
       user: {},
       role: localStorage.role,
@@ -219,15 +228,14 @@ export default {
       showJobInfoModal: false,
       showDeleteConfirmModal: false,
       showEducationModal: false,
+      showExperienceModal: false,
       employerSearchJob: ''
     }
   },
   computed: {
     employerJobs: {
       get: function (s) {
-        if (!this.employerSearchJob)
-          return this.user.jobs
-        else {
+        if (!this.employerSearchJob) { return this.user.jobs } else {
           var fuse = new Fuse(this.user.jobs, this.fuseOptions)
           return fuse.search(this.employerSearchJob)
         }
@@ -248,6 +256,11 @@ export default {
       this.$router.push({
         name: 'Login'
       })
+    },
+    formatDate (date) {
+      if (date)
+        return this.$moment(date).format('MMM Do YY')
+      else return 'Present'
     },
     jobInputModal () {
       this.showJobInputModal = !this.showJobInputModal
@@ -290,6 +303,15 @@ export default {
       this.showEducationModal = false
       this.getData()
     },
+    editExperienceModal (experience) {
+      this.experienceToBePassed = experience
+      this.experienceButtonText = 'Edit Experience'
+      this.showExperienceModal = !this.showExperienceModal
+    },
+    hideExperienceModal () {
+      this.showExperienceModal = false
+      this.getData()
+    },
     addEducationModal () {
       this.educationToBePassed = {
         to: null,
@@ -302,14 +324,42 @@ export default {
       this.educationButtonText = 'Add Education'
       this.showEducationModal = !this.showEducationModal
     },
+    addExperienceModal () {
+      this.experienceToBePassed = {
+        to: null,
+        from: null,
+        company: '',
+        title: '',
+        location: '',
+        description: '',
+        current: true
+      }
+      this.experienceButtonText = 'Add Education'
+      this.showExperienceModal = !this.showExperienceModal
+    },
+    deleteExperience (exp) {
+      var headers = {
+        Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
+      }
+
+      axios.delete(`http://localhost:3000/api/profile/experience/${exp._id}`, {headers: headers})
+        .then(response => {
+          this.showToast = true
+          this.toastContent = 'Deleted Successfully'
+          this.getData()
+        })
+        .catch(err => {
+          alert(err.response.data)
+        })
+    },
     deleteEducation (edu) {
       var headers = {
         Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
       }
-      console.log(edu)
       axios.delete(`http://localhost:3000/api/profile/education/${edu._id}`, {headers: headers})
         .then(response => {
-          alert('Deleted')
+          this.showToast = true
+          this.toastContent = 'Deleted Successfully'
           this.getData()
         })
         .catch(err => {
@@ -322,7 +372,9 @@ export default {
       }
       axios.delete(`http://localhost:3000/api/jobs/${id}`, {headers: headers})
         .then(response => {
-          alert('Deleted')
+          this.showToast = true
+          this.toastContent = 'Deleted Successfully'
+          this.getData()
           this.hideDeleteConfirmModal()
           this.getData()
         })
@@ -337,12 +389,14 @@ export default {
 
       axios.patch(`http://localhost:3000/api/jobs/rejectconfirmedapplicant`, {job: job_id, user: user_id}, {headers: headers})
         .then(response => {
+          this.showToast = true
+          this.toastContent = 'Rejected Successfully'
+          this.getData()
           this.getData()
         })
         .catch(err => {
           alert('Delete could not happen.')
         })
-
     },
     getData () {
       var headers = {
