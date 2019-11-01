@@ -218,6 +218,9 @@ export default {
       forgotPassword: false
     }
   },
+  mounted: {
+
+  },
   components: {
     Register,
     Recaptcha
@@ -268,6 +271,7 @@ export default {
     },
     onSubmit (evt) {
       evt.preventDefault()
+      console.log(grecaptcha)
       if (grecaptcha.getResponse() == 0){
         this.error = 'Please verify captcha'
         this.variant = 'danger'

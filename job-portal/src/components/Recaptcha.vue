@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
   id="g-recaptcha"
   class="g-recaptcha"
   data-sitekey="sitekey">
@@ -19,6 +19,7 @@ export default {
       window.grecaptcha.execute(this.widgetId)
     },
     reset () {
+      console.log('hi')
       window.grecaptcha.reset(this.widgetId)
     },
     render () {
@@ -29,10 +30,10 @@ export default {
           // the callback executed when the user solve the recaptcha
           callback: (response) => {
             // emit an event called verify with the response as payload
-            
+
             this.$emit('verify', response)
             // reset the recaptcha widget so you can execute it again
-            this.reset() 
+            this.reset()
           }
         })
       }

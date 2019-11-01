@@ -106,7 +106,7 @@
               </button>
             </b-card-body>
           </b-tab>
-          <b-tab title="Skills" style="max-height: 1000px; overflow-y: auto; min-height: 500px;">
+          <b-tab title="Skills" style="max-height: 1000px; overflow-y: auto; min-height: 400px;">
             <b-card-body>
               <b-form class="text-left">
                 <b-form-group id="fieldsetHorizontal"
