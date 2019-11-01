@@ -25,14 +25,13 @@ export default {
   },
   props: {
     recievedValues: {
-      type: Array
+      type: Array,
+      default: () => []
     }
   },
   data () {
     return {
-      value: [
-
-      ],
+      value: this.recievedValues,
       options: [
         { name: 'Java', code: 'java' },
         { name: 'Python', code: 'python' },

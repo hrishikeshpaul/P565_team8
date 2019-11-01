@@ -36,21 +36,22 @@
     <div class="my-5 container px-0 shadow-sm mb-5 bg-white rounded" v-if="role === 'student'">
       <b-card no-body >
         <b-tabs card>
-          <b-tab title="Acceptances" active>
+          <b-tab title="Acceptances" active style="max-height: 1000px; overflow-y: auto;">
             <b-card-body>
               <span v-if="user.acceptances.length === 0">You don't have any acceptances! Start applying!</span>
               <div v-for="(job, idx) in user.acceptances" class="text-left mt-2">
                 <b-card :title="job.title">
-                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
-                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-info"><i class="ti-comment-alt"></i></button>
+                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
+                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i></button>
                   <b>Company:</b><p>{{job.company}}</p>
                   <b>Recruiter: </b><p>{{job.employer.name}}</p>
                   <b>Position:</b><p>{{job.position}}</p>
+                  <b>Description:</b><p>{{job.description}}</p>
                 </b-card>
               </div>
             </b-card-body>
           </b-tab>
-          <b-tab title="Education">
+          <b-tab title="Education" style="max-height: 1000px; overflow-y: auto;">
             <b-card-body>
               <div v-if="user.education.length > 0" v-for="edu in user.education" :id="edu.school">
                 <b-card class="mb-3">
@@ -76,7 +77,7 @@
               </button>
             </b-card-body>
           </b-tab>
-          <b-tab title="Experiences">
+          <b-tab title="Experiences" style="max-height: 1000px; overflow-y: auto;">
             <b-card-body>
               <div v-if="user.experience.length > 0" v-for="exp in user.experience">
                 <b-card class="mb-3">
@@ -105,9 +106,20 @@
               </button>
             </b-card-body>
           </b-tab>
+          <b-tab title="Skills" style="max-height: 1000px; overflow-y: auto; min-height: 500px;">
+            <b-card-body>
+              <SkillSelect @addSkills="addSkills" :recievedValues="user.skills"/>
+              <button class="btn btn-outline-warning" @click="updateSkills" style="width: 100%; border-radius: 10px;">Save</button>
+              <hr />
+              <div v-if="user.skills.length > 0" v-for="skill in user.skills" style="display: inline-block; margin-bottom: 20px">
+                <span style="font-size: 25px;"><b-badge variant="warning" class="mr-2">{{skill.name}}</b-badge></span>
+              </div>
+            </b-card-body>
+          </b-tab>
         </b-tabs>
       </b-card>
     </div>
+
     <div class="my-5 container px-0 shadow-sm mb-5 bg-white rounded" v-if="role === 'employer'">
       <b-card no-body>
         <b-tabs card>
@@ -121,8 +133,8 @@
               </b-input-group>
               <div v-for="(job, idx) in employerJobs">
                 <b-card class="text-left my-2" :title="job.title">
-                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="deleteConfirmModal(job)"><i class="ti-close"></i></button>
-                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-secondary" @click="jobInfoModal(job)"><i class="ti-pencil"></i></button>
+                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="deleteConfirmModal(job)"><i class="ti-close"></i></button>
+                  <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-outline-info" @click="jobInfoModal(job)"><i class="ti-pencil"></i></button>
                   <b>Location: </b><p>{{job.location}}</p>
                   <b>Position: </b><p>{{job.position}}</p>
                   <b>Description: </b><p style="white-space: pre-wrap">{{job.description}}</p>
@@ -145,8 +157,8 @@
               <div v-for="job in user.jobs">
                 <div v-for="user in job.confirmed_users">
                   <b-card class="text-left my-2" :title="user.name">
-                    <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
-                    <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-info"><i class="ti-comment-alt"></i></button>
+                    <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
+                    <button href="#" style="float: right; margin-top: -37px !important;" class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i></button>
                     <b>Job:</b><p>{{job.title}}</p>
                     <b>University: </b><p>{{user.company}}</p>
                     <b>LinkedIn: </b><p>{{user.social.linkedin}}</p>
@@ -184,10 +196,12 @@ import EducationModal from './EducationModal'
 import ExperienceModal from './ExperienceModal'
 
 import Gravatar from 'vue-gravatar'
+import SkillSelect from './SkillSelect'
 
 export default {
   name: 'Profile',
   components: {
+    SkillSelect,
     NavBar,
     Gravatar,
     JobInputModal,
@@ -220,6 +234,7 @@ export default {
       experienceButtonText: '',
       user_id: localStorage.getItem('user_id'),
       user: {},
+      skillsToUpdate: [],
       role: localStorage.role,
       show: true,
       showJobInputModal: false,
@@ -396,6 +411,22 @@ export default {
         })
         .catch(err => {
           alert('Delete could not happen.')
+        })
+    },
+    addSkills (skills) {
+      this.skillsToUpdate = skills
+    },
+    updateSkills () {
+      var headers = {
+        Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
+      }
+
+      axios.post(`http://localhost:3000/api/profile/skills`, {data: this.skillsToUpdate, user: {id: this.user._id}}, {headers: headers})
+        .then(response => {
+          this.getData()
+        })
+        .catch(e => {
+          console.log(e)
         })
     },
     getData () {

@@ -129,22 +129,19 @@ router.delete('/experience/:id', passport.authenticate('jwt', { session: false }
 * PUT route to come after profile page is made!
 */
 router.post('/skills', passport.authenticate('jwt', { session: false }), function (req, res, err) {
-
+  console.log(req.body.data)
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({errors: errors.array()})
   }
 
   if (req.body.data.length > 0) {
-    req.body.data.forEach(skill => {
-      User.updateOne({_id: req.body.user.id}, {$addToSet: {skills: skill}}, function (err, success) {
-        if (err) {
-          console.log(err)
-          // return res.status(400).send('Could not be sent')
-        }
-      })
+    User.updateOne({_id: req.body.user.id}, {$set: {skills: req.body.data}}, function (err, succc) {
+      if (err)
+        console.log(err)
+      else return res.status(201).send('Saved')
     })
-    return res.status(201).send('Saved')
+
   } else {
     return res.status(200).send('Nothing added')
   }
