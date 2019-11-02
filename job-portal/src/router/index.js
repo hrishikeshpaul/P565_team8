@@ -6,6 +6,7 @@ import Register from '@/components/Register'
 import NotFound from '@/components/NotFound'
 import ProfileBuilder from '@/components/ProfileBuilder'
 import Profile from '@/components/Profile'
+import ProfileSettings from '@/components/ProfileSettings'
 
 import axios from 'axios'
 
@@ -39,14 +40,12 @@ export default new Router({
           })
       }
 
-
     },
     {
       path: '/',
       name: 'HomePage',
       component: Home,
       beforeEnter (to, from, next) {
-        console.log(localStorage)
         if (localStorage.getItem('jwtToken')) {
           if (localStorage.getItem('user_first_time') === 'true') {
             next({name: 'ProfileBuilder'})
@@ -85,7 +84,38 @@ export default new Router({
     {
       path: '/profile',
       name: 'Profile',
-      component: Profile
+      component: Profile,
+      beforeEnter (to, from, next) {
+        if (localStorage.getItem('jwtToken')) {
+          if (localStorage.getItem('user_first_time') === 'true') {
+            next({name: 'ProfileBuilder'})
+          } else {
+            next()
+          }
+        } else {
+          next({
+            name: 'Login'
+          })
+        }
+      }
+    },
+    {
+      path: '/settings',
+      name: 'ProfileSettings',
+      component: ProfileSettings,
+      beforeEnter (to, from, next) {
+        if (localStorage.getItem('jwtToken')) {
+          if (localStorage.getItem('user_first_time') === 'true') {
+            next({name: 'ProfileBuilder'})
+          } else {
+            next()
+          }
+        } else {
+          next({
+            name: 'Login'
+          })
+        }
+      }
     },
     {
       path: '/build_profile',

@@ -5,8 +5,6 @@
     <p class="px-5" style="color: grey; margin-top: -20px; margin-left: 55px;">{{role === 'student' ? 'Edit your profile detials and check your acceptances!' : 'Add job postings, and message applicants!'}}</p>
     <div class="mt-5 container p-5 shadow-sm p-3 mb-5 bg-white rounded" style="border: 1px solid #cecece; border-radius: 8px; background-color: white">
       <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-outline-warning" @click="profileInputModal"><i class="ti-pencil"></i></button>
-      <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-outline-secondary mr-2" @click="profileSettingsModal"><i class="ti-settings"></i>
-      </button>
 
       <div class="row">
         <div class="col-lg-3 col-sm-12" style="border-right: 1px solid #b8b8b8">
@@ -177,7 +175,6 @@
     <HomePageUserModal :showModal="showApplicantData" @hideModal="hideHomePageUserModal" :user="applicantData" />
     <JobInputModal :showModal="showJobInputModal" @hideModal="hideJobInputModal" :user="user" @getData="getData"/>
     <ProfileInputModal :showModal="showEditProfileModal" :user="user" @hideModal="hideEditProfileInputModal"/>
-    <ProfileSettingsModal :showModal="showProfileSettingsModal" :user="user" @hideModal="hideProfileSettingsModal" />
     <JobInfoModal :showModal="showJobInfoModal" :job="jobInfoToBePassed" @hideModal="hideJobInfoModal"/>
     <DeleteConfirmModal :showModal="showDeleteConfirmModal" @hideModal="hideDeleteConfirmModal" @delete="deleteJobPosting" :job="jobInfoToBePassed"/>
     <EducationModal :show-modal="showEducationModal" @hideModal="hideEducationModal" :education="educationToBePassed" :buttonText="educationButtonText" :user="user"/>
@@ -246,7 +243,6 @@ export default {
       show: true,
       showJobInputModal: false,
       showEditProfileModal: false,
-      showProfileSettingsModal: false,
       showJobInfoModal: false,
       showDeleteConfirmModal: false,
       showEducationModal: false,
@@ -307,12 +303,6 @@ export default {
     },
     hideEditProfileInputModal () {
       this.showEditProfileModal = false
-    },
-    profileSettingsModal () {
-      this.showProfileSettingsModal = !this.showProfileSettingsModal
-    },
-    hideProfileSettingsModal () {
-      this.showProfileSettingsModal = false
     },
     jobInfoModal (job) {
       this.jobInfoToBePassed = job

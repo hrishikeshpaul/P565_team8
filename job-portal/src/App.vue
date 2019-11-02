@@ -52,6 +52,14 @@
           </router-link>
         </a>
         <a href="#">
+          <router-link to="/settings" :class="{'sidenav-item-active': $route.name === 'ProfileSettings'}">
+            <div :class="{'text-center': navBarCollapsed, 'text-left': !navBarCollapsed, 'py-3': true}">
+              <span v-if="!navBarCollapsed" class="px-4">Settings</span>
+              <span v-else><i class="ti-settings"></i></span>
+            </div>
+          </router-link>
+        </a>
+        <a href="#">
           <router-link to="/">
             <div :class="{'text-center': navBarCollapsed, 'text-left': !navBarCollapsed, 'py-3': true}" @click="logout">
               <span v-if="!navBarCollapsed" class="px-4">Logout</span>
