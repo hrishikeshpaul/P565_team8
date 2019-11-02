@@ -1,6 +1,6 @@
 <template>
   <div >
-    <NavBar @logout="logout"/>
+<!--    <NavBar @logout="logout"/>-->
     <div class="mt-5 container p-5 shadow-sm p-3 mb-5 bg-white rounded" style="border: 1px solid #cecece; border-radius: 8px; background-color: white">
       <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-outline-warning" @click="profileInputModal"><i class="ti-pencil"></i></button>
       <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-outline-secondary mr-2" @click="profileSettingsModal"><i class="ti-settings"></i>

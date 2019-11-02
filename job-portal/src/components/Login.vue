@@ -2,7 +2,7 @@
   <div>
       <div style="height: 100vh; position: relative; ">
       <div id="video_overlays"></div>
-      <video autoplay loop muted id="video" style="width: 100%; height: auto; position: absolute; z-index: -2;">
+      <video autoplay loop muted id="video" style="width: auto; height: auto; position: absolute; z-index: -2;">
         <source src="../assets/lv2.mp4" type="video/mp4">
       </video>
       <div class="container">
@@ -276,6 +276,7 @@ export default {
           localStorage.setItem('user_first_time', response.data.user.first_time)
           localStorage.setItem('user_id', response.data.user._id)
           localStorage.setItem('role', response.data.user.role)
+          localStorage.setItem('email', response.data.user.email)
 
           if (response.data.user.first_time) {
             this.$router.push({

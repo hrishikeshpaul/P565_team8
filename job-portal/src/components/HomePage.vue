@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar @logout="logout"/>
+<!--    <NavBar @logout="logout"/>-->
     <div class="container">
       <FilterBar @group="callReGroup" :options="filterOptions"/>
     </div>
@@ -28,7 +28,6 @@
       </div>
 
       <div v-for="(user, key) in computedUsers" class="mb-3" v-if="userRole === 'employer'">
-
         <div style="position: relative;">
           <h2><div class="mb-3">{{ key }}</div></h2>
           <div
@@ -325,6 +324,16 @@ export default {
     -webkit-transition: all 0.5s ease-in-out; /** Chrome & Safari **/
     -moz-transition: all 0.5s ease-in-out; /** Firefox **/
     -o-transition: all 0.5s ease-in-out; /** Opera **/
+  }
+  .logo-noq {
+    background-color: #f7c141;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px #b4b4b4;
+  }
+
+  .big-title{
+    font-size: 50px;
+    color: white;
   }
 
 </style>
