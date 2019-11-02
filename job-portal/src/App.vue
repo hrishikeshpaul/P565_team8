@@ -59,6 +59,8 @@
             </div>
           </router-link>
         </a>
+
+        <hr style="background-color: #7e868a; margin-bottom: 0px; padding-bottom: 0px;"/>
         <a href="#">
           <router-link to="/">
             <div :class="{'text-center': navBarCollapsed, 'text-left': !navBarCollapsed, 'py-3': true}" @click="logout">
