@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="mySidenav" class="sidenav" v-if="$route.path !== '/login'">
+    <div id="mySidenav" class="sidenav" v-if="$route.path !== '/login' && $route.path !== '/build_profile' ">
       <div style="display: flex; justify-content: space-between" class="px-4 text-center">
           <div class="big-title text-center" style="display: inline; margin-left: -13px;" v-if="!navBarCollapsed">
             <span class="px-2 logo-noq">noQ</span>
@@ -21,15 +21,11 @@
                 <div v-if="!navBarCollapsed" class="px-4">
                   <div class="row">
                     <div class="col-3">
-                      <gravatar
-                        :email="email"
-                        alt="Nobody"
-                        :size="60"
-                        default-img="mm"
-                        style="border-radius: 50%; "/>
+                      <img :src="getImage(email)" style="height: 60px; width: 60px; border-radius: 50%;"/>
+
                     </div>
                     <div class="col-9">
-                      <span style="font-size: 20px;">{{email}}</span>
+                      <span style="font-size: 17px;">{{email}}</span>
                       <p style="font-size: 15px; margin-top: -10px;">{{role}}</p>
                     </div>
                   </div>
@@ -76,6 +72,9 @@
 
 <script>
 import Gravatar from 'vue-gravatar'
+import gravatar from 'gravatar'
+import AvatarGenerator from 'initials-avatar-generator'
+
 export default {
   name: 'App',
   components: {
@@ -88,15 +87,18 @@ export default {
       role: ''
     }
   },
-  created() {
+  mounted() {
     this.email = localStorage.getItem('email')
     this.role = localStorage.getItem('role')
   },
   methods: {
+    getImage (email) {
+      return gravatar.url(email)
+    },
     openNav () {
       this.navBarCollapsed = false
-      document.getElementById("mySidenav").style.width = "320px";
-      document.getElementById("main").style.marginLeft = "320px";
+      document.getElementById("mySidenav").style.width = "330px";
+      document.getElementById("main").style.marginLeft = "330px";
     },
     closeNav () {
       this.navBarCollapsed = true
@@ -123,7 +125,7 @@ export default {
 }
 .sidenav {
   height: 100%;
-  width: 320px;
+  width: 330px;
   position: fixed;
   z-index: 100;
   top: 0;
@@ -167,7 +169,7 @@ export default {
 }
 
 .marginLeft {
-  margin-left: 320px;
+  margin-left: 330px;
 }
 
 .noMargin {

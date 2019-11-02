@@ -22,12 +22,9 @@
 
 <script>
 
-import SkillSelect from './SkillSelect'
-
 export default {
   name: 'JobInfoModal',
   components: {
-    SkillSelect
   },
   props: {
     showModal: {

@@ -40,6 +40,7 @@
               :user="u"
               ref="card"
               :id="u._id"
+              @showUserModal="homePageUserModal(u, key)"
               @accept="acceptUser"
               @reject="rejectUser"
               class="mb-3"
@@ -50,7 +51,7 @@
       </div>
     </div>
     <HomePageJobModal :showModal="showHomePageJobModal" @hideModal="hideHomePageJobModal" :job="homePageJobToSend"/>
-
+    <HomePageUserModal :showModal="showHomePageUserModal" @hideModal="hideHomePageUserModal" :user="homePageUserToSend" />
   </div>
 </template>
 
@@ -63,6 +64,7 @@ import FilterBar from './FilterBar'
 import JobCard from './JobCard'
 import UserCard from './UserCard'
 import HomePageJobModal from './HomePageJobModal'
+import HomePageUserModal from './HomePageUserModal'
 
 export default {
   name: 'HomePage',
@@ -71,7 +73,8 @@ export default {
     FilterBar,
     JobCard,
     UserCard,
-    HomePageJobModal
+    HomePageJobModal,
+    HomePageUserModal
   },
   data () {
     return {
@@ -81,6 +84,7 @@ export default {
       users: [],
       showClass: false,
       homePageJobToSend: {},
+      homePageUserToSend: {},
       computedJobs: {},
       computedUsers: {},
       studentKeyToGroup: 'position',
@@ -97,7 +101,7 @@ export default {
         { name: 'Gender', code: 'gender' },
       ],
       showHomePageJobModal: false,
-
+      showHomePageUserModal: false
     }
   },
   watch: {
@@ -118,11 +122,18 @@ export default {
   },
   created () {
     this.getData()
-    this.filterOptions = localStorage.getItem('role') == 'student' ? this.studentFilterOptions : this.employerFilterOptions
+    this.filterOptions = localStorage.getItem('role') === 'student' ? this.studentFilterOptions : this.employerFilterOptions
   },
   methods: {
+    homePageUserModal (user, key) {
+      this.homePageUserToSend = user
+      this.homePageUserToSend[this.employerKeyToGroup] = key
+      this.showHomePageUserModal = !this.showHomePageUserModal
+    },
+    hideHomePageUserModal () {
+      this.showHomePageUserModal = false
+    },
     homePageJobModal (job, key) {
-
       this.homePageJobToSend = job
       this.homePageJobToSend[this.studentKeyToGroup] = key
       this.showHomePageJobModal = !this.showHomePageJobModal
@@ -277,6 +288,7 @@ export default {
         this.studentFilterOptions = key
         this.computedJobs = this.reGroup(this.jobs, this.studentFilterOptions)
       } else {
+        this.keyToGroup = key
         this.employerKeyToGroup = key
         this.computedUsers = this.reGroup(this.users, key)
       }

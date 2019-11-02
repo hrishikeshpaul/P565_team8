@@ -10,12 +10,7 @@
 
       <div class="row">
         <div class="col-lg-3 col-sm-12" style="border-right: 1px solid #b8b8b8">
-          <gravatar
-            email="hrishikeshpaul12@gmail.com"
-            alt="Nobody"
-            :size="200"
-            default-img="mm"
-            style="border-radius: 50%; "/>
+          <img :src="gravatarImage(user.email)" style="height: 200px; width: 200px; border-radius: 50%;"/>
         </div>
         <div class="col-8">
           <div>
@@ -162,13 +157,14 @@
             <b-card-body>
               <div v-for="job in user.jobs">
                 <div v-for="user in job.confirmed_users">
-                  <b-card class="text-left my-2" :title="user.name">
+                  <b-card class="text-left my-2">
+                    <h4 class="card-title user-hover" style="cursor: pointer;" @click="applicantDataModal(user)">{{user.name}}</h4>
                     <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
                     <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i></button>
                     <b>Job:</b><p>{{job.title}}</p>
                     <b>University: </b><p>{{user.company}}</p>
                     <b>LinkedIn: </b><p>{{user.social.linkedin}}</p>
-                    <b>Skills: </b><p>{{user.skills.join(', ')}}</p>
+                    <b>Skills: </b><p>{{user.skills.map(s => s.name).join(', ')}}</p>
                   </b-card>
                 </div>
               </div>
@@ -178,6 +174,7 @@
       </b-card>
     </div>
 
+    <HomePageUserModal :showModal="showApplicantData" @hideModal="hideHomePageUserModal" :user="applicantData" />
     <JobInputModal :showModal="showJobInputModal" @hideModal="hideJobInputModal" :user="user" @getData="getData"/>
     <ProfileInputModal :showModal="showEditProfileModal" :user="user" @hideModal="hideEditProfileInputModal"/>
     <ProfileSettingsModal :showModal="showProfileSettingsModal" :user="user" @hideModal="hideProfileSettingsModal" />
@@ -191,6 +188,7 @@
 <script>
 import axios from 'axios'
 import Fuse from 'fuse.js'
+import gravatar from 'gravatar'
 
 import NavBar from './NavBar'
 import JobInputModal from './JobInputModal'
@@ -200,6 +198,7 @@ import JobInfoModal from './JobInfoModal'
 import DeleteConfirmModal from './DeleteConfirmModal'
 import EducationModal from './EducationModal'
 import ExperienceModal from './ExperienceModal'
+import HomePageUserModal from './HomePageUserModal'
 
 import Gravatar from 'vue-gravatar'
 import SkillSelect from './SkillSelect'
@@ -216,7 +215,8 @@ export default {
     JobInfoModal,
     DeleteConfirmModal,
     EducationModal,
-    ExperienceModal
+    ExperienceModal,
+    HomePageUserModal
   },
   data () {
     return {
@@ -236,6 +236,7 @@ export default {
       jobInfoToBePassed: {},
       educationToBePassed: {},
       experienceToBePassed: {},
+      applicantData: {},
       educationButtonText: '',
       experienceButtonText: '',
       user_id: localStorage.getItem('user_id'),
@@ -250,7 +251,9 @@ export default {
       showDeleteConfirmModal: false,
       showEducationModal: false,
       showExperienceModal: false,
-      employerSearchJob: ''
+      showApplicantData: false,
+      employerSearchJob: '',
+      gravatarIcon: null
     }
   },
   computed: {
@@ -278,10 +281,20 @@ export default {
         name: 'Login'
       })
     },
+    gravatarImage (email) {
+      return gravatar.url(email)
+    },
     formatDate (date) {
       if (date)
         return this.$moment(date).format('MMM Do YY')
       else return 'Present'
+    },
+    applicantDataModal (user) {
+      this.applicantData = user
+      this.showApplicantData = !this.showApplicantData
+    },
+    hideHomePageUserModal () {
+      this.showApplicantData = false
     },
     jobInputModal () {
       this.showJobInputModal = !this.showJobInputModal
@@ -460,5 +473,11 @@ export default {
 </script>
 
 <style scoped>
+.user-hover {
+  color: black;
+}
 
+.user-hover:hover {
+  color: grey
+}
 </style>

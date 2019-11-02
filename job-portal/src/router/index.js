@@ -25,6 +25,7 @@ export default new Router({
             localStorage.setItem('user_first_time', response.data.user.first_time)
             localStorage.setItem('user_id', response.data.user._id)
             localStorage.setItem('role', response.data.user.role)
+            localStorage.setItem('email', response.data.user.email)
 
             if (response.data.user.first_time) {
               next({

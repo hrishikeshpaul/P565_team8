@@ -6,13 +6,14 @@
       <img src="../assets/rui.jpg" class="card-img-top embed-responsive"
            style="max-height: 299px; height: 100%; border-radius: 10px;" />
     </b-card>
-    <div class="overlay">
+    <div class="overlay"  @click="$emit('showUserModal')">
       <div class="text">
         <br />
         <span style="font-weight: bold">{{user.name}}</span>
         <br />
-        <span>{{user.location}}</span>
+        <span>{{user.email}}</span>
         <br />
+        <span>{{displaySkills(user.skills)}}</span>
         <br />
         <br />
         <br />
@@ -45,7 +46,24 @@ export default {
   props: {
     user: {
       type: Object,
-      required: true
+      required: true,
+      default: {
+        skills: []
+      }
+    }
+  },
+  methods: {
+    displaySkills (skills) {
+      console.log(this.user)
+      if (skills.length > 0) {
+        if (skills.length > 2) {
+          return skills[0].name + ", " + skills[1].name + " & more"
+        } else {
+          return skills.map(s => s.name).join(', ')
+        }
+      } else {
+        return ''
+      }
     }
   }
 }
