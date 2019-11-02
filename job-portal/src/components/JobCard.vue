@@ -72,6 +72,9 @@ export default {
 <style scoped>
   .wrapper {
     position: relative;
+    border-radius: 10px;
+    box-shadow: 1px 3px 7px #6c757d;
+
   }
 
   .overlay {

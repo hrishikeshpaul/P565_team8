@@ -130,6 +130,7 @@ export default {
   left: 0;
   box-shadow: 1px 1px 5px #6c757d;
   background-color: rgba(28, 16, 15, 0.85);
+  /*background-color: #fec10f;*/
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 20px;

@@ -1,6 +1,8 @@
 <template>
   <div >
 <!--    <NavBar @logout="logout"/>-->
+    <span style="font-size: 80px;" class="mx-5 px-5 mb-0">Profile</span>
+    <p class="px-5" style="color: grey; margin-top: -20px; margin-left: 55px;">{{role === 'student' ? 'Edit your profile detials and check your acceptances!' : 'Add job postings, and message applicants!'}}</p>
     <div class="mt-5 container p-5 shadow-sm p-3 mb-5 bg-white rounded" style="border: 1px solid #cecece; border-radius: 8px; background-color: white">
       <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-outline-warning" @click="profileInputModal"><i class="ti-pencil"></i></button>
       <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-outline-secondary mr-2" @click="profileSettingsModal"><i class="ti-settings"></i>
@@ -220,7 +222,7 @@ export default {
     return {
       fuseOptions: {
         shouldSort: true,
-        threshold: 0.2,
+        threshold: 0.4,
         location: 0,
         distance: 100,
         maxPatternLength: 32,
