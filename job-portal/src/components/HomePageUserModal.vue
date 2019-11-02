@@ -3,7 +3,7 @@
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
                data-backdrop="static" :title="newUser.name">
-        <div class="d-block px-3">
+        <div class="d-block px-3 nice-font">
           <b>Email: </b>
           <p>{{newUser.email}}</p>
           <b>University: </b>
@@ -67,5 +67,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .nice-font {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif !important;
+  }
 </style>

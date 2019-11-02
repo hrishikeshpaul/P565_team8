@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div>
+    <div >
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
-               data-backdrop="static" :title="newJob.title">
-        <div class="d-block px-3">
+               data-backdrop="static" :title="newJob.title" class="nice-font">
+        <div class="d-block px-3 nice-font">
           <b>Company: </b>
           <p>{{newJob.company}}</p>
           <b>Location: </b>
@@ -60,5 +60,7 @@ export default {
 </script>
 
 <style scoped>
-
+.nice-font {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif !important;
+}
 </style>

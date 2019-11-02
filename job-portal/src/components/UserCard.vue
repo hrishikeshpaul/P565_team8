@@ -3,7 +3,7 @@
     <b-card
       style="height: 300px; border-radius: 10px;"
     >
-      <img src="../assets/rui.jpg" class="card-img-top embed-responsive"
+      <img src="../assets/blank_profile.png" class="card-img-top embed-responsive"
            style="max-height: 299px; height: 100%; border-radius: 10px;" />
     </b-card>
     <div class="overlay"  @click="$emit('showUserModal')">
@@ -36,10 +36,7 @@ export default {
   data () {
     return {
       imgArray: [
-        '../assets/rui.jpg',
-        '../assets/samosa.jpg',
-        '../assets/ramen.jpg',
-        '../assets/paul.jpeg'
+        '../assets/blank_profile.png'
       ]
     }
   },

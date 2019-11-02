@@ -73,7 +73,6 @@
 <script>
 import Gravatar from 'vue-gravatar'
 import gravatar from 'gravatar'
-import AvatarGenerator from 'initials-avatar-generator'
 
 export default {
   name: 'App',
