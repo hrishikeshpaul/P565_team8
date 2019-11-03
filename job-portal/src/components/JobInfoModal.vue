@@ -2,7 +2,13 @@
   <div>
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
-               data-backdrop="static" :title="'Job Posting Settings'">
+               data-backdrop="static" :title="'Job Posting Settings'" header-bg-variant="warning">
+        <template v-slot:modal-title>
+          <div style="font-size: 40px;" class="nice-font">
+            Job Posting Settings
+          </div>
+          <p style="font-size: 17px; color: #575e65; margin-top: -3px; padding-left: 2px;" class="mb-0 nice-font">Describe your job opening!</p>
+        </template>
         <div class="d-block text-center">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
@@ -18,7 +24,7 @@
             <b-form-group>
               <b-form-input id="position" v-model.trim="newJob.location"></b-form-input>
             </b-form-group>
-            <label>Descriptionn</label>
+            <label>Description</label>
             <b-form-group>
               <b-form-textarea id="position" v-model.trim="newJob.description" rows="4"></b-form-textarea>
             </b-form-group>
@@ -28,7 +34,7 @@
             </b-form-group>
           </b-form>
         </div>
-        <button class="mt-3 btn btn-outline-warning w-100" @click="editJob">Edit Job</button>
+        <button class="mt-1 btn btn-outline-warning w-100" @click="editJob">Edit Job</button>
       </b-modal>
     </div>
   </div>
@@ -103,5 +109,9 @@ export default {
   label {
     font-size: 15px;
     color: #6d6d6d;
+  }
+  .nice-font {
+    font-weight: 100;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif !important;
   }
 </style>

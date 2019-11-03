@@ -2,7 +2,13 @@
   <div>
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
-               data-backdrop="static" :title="'Education'">
+               data-backdrop="static" :title="'Education'" header-bg-variant='warning'>
+        <template v-slot:modal-title>
+          <div style="font-size: 40px;" class="nice-font">
+            Education
+          </div>
+          <p style="font-size: 17px; color: #575e65; margin-top: -7px; padding-left: 2px;" class="mb-0 nice-font">Give some details to describe your education!</p>
+        </template>
         <div class="d-block text-center">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
@@ -163,4 +169,9 @@ label {
   .info-hover:hover {
     background-color: #6c757d;
   }
+
+.nice-font {
+  font-weight: 100;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif !important;
+}
 </style>

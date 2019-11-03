@@ -4,7 +4,11 @@
     <span style="font-size: 80px;" class="mx-5 px-5 mb-0">Profile</span>
     <p class="px-5" style="color: grey; margin-top: -20px; margin-left: 55px;">{{role === 'student' ? 'Edit your profile detials and check your acceptances!' : 'Add job postings, and message applicants!'}}</p>
     <div class="mt-5 container p-5 shadow-sm p-3 mb-5 bg-white rounded" style="border: 1px solid #cecece; border-radius: 8px; background-color: white">
+
       <button href="#" style="float: right;" class="mt-3 pt-2 btn btn-outline-warning" @click="profileInputModal"><i class="ti-pencil"></i></button>
+      <button href="#" style="float: right;" class="mt-3 pt-2 mr-2 btn btn-outline-secondary" v-if="user.role === 'student'" @click="showWindow(user.social.github)"><i class="ti-github"></i></button>
+
+      <button href="#" style="float: right;" class="mt-3 pt-2 mr-2 btn btn-outline-secondary" v-if="user.social.linkedin" @click="showWindow(user.social.linkedin)"><i class="ti-linkedin"></i></button>
 
       <div class="row">
         <div class="col-lg-3 col-sm-12" style="border-right: 1px solid #b8b8b8">
@@ -12,15 +16,13 @@
         </div>
         <div class="col-8">
           <div>
-            <span style="font-size: 40px;" >{{user.name}}</span>
+            <span style="font-size: 45px;" >{{user.name}}</span>
           </div>
           <div>
-            <span style="font-size: 20px; color: grey;">{{user.company}}</span>
+            <span style="font-size: 22px; color: grey;">{{user.company}}</span>
           </div>
           <div>
             <a style="font-size: 20px;" href="#">{{user.website}}</a>
-
-            <!--            <span style="font-size: 20px;" v-html="user.social.linkedin.length > 0 ? user.social.linkedin : null">{{user.social.linkedin.length > 0 ? user.social.linkedin : null}} {{user.social.github ? ' | ' + user.social.github : null}} | {{user.website ? ' | ' + user.website : null}}</span>-->
           </div>
           <div style="justify-content: center; text-align: justify;">
             <span style="font-size: 20px; font-style: italic;">{{user.bio.length > 40 ? user.bio.substring(0, 150) + ' ...' : user.bio}}</span>
@@ -29,8 +31,8 @@
       </div>
     </div>
     <div class="my-5 container px-0 shadow-sm mb-5 bg-white rounded" v-if="role === 'student'">
-      <b-card no-body >
-        <b-tabs card>
+      <b-card no-body>
+        <b-tabs card style="font-size: 22px;">
           <b-tab title="Acceptances" active style="max-height: 1000px; overflow-y: auto;">
             <b-card-body>
               <span v-if="user.acceptances.length === 0">You don't have any acceptances! Start applying!</span>
@@ -47,7 +49,7 @@
             </b-card-body>
           </b-tab>
           <b-tab title="Education" style="max-height: 1000px; overflow-y: auto;">
-            <b-card-body>
+            <b-card-body style="font-size: 22px;">
               <div v-if="user.education.length > 0" v-for="edu in user.education" :id="edu.school">
                 <b-card class="mb-3">
                   <button style="float: right; border: none;" class="btn btn-outline-danger ml-2" @click="deleteEducation(edu)"><i class="ti-close"></i></button>
@@ -74,7 +76,7 @@
             </b-card-body>
           </b-tab>
           <b-tab title="Experiences" style="max-height: 1000px; overflow-y: auto;">
-            <b-card-body>
+            <b-card-body style="font-size: 22px;">
               <div v-if="user.experience.length > 0" v-for="exp in user.experience">
                 <b-card class="mb-3">
                   <button style="float: right; border: none;" class="btn btn-outline-danger ml-2" @click="deleteExperience(exp)"><i class="ti-close"></i></button>
@@ -104,7 +106,7 @@
             </b-card-body>
           </b-tab>
           <b-tab title="Skills" style="max-height: 1000px; overflow-y: auto; min-height: 400px;">
-            <b-card-body>
+            <b-card-body style="font-size: 22px;">
               <b-form class="text-left">
                 <label>Add/Remove Skills:</label>
                 <b-form-group>
@@ -121,7 +123,7 @@
 
     <div class="my-5 container px-0 shadow-sm mb-5 bg-white rounded" v-if="role === 'employer'">
       <b-card no-body>
-        <b-tabs card>
+        <b-tabs card style="font-size: 22px;">
           <b-tab title="Job Posting" active style="max-height: 1000px; overflow-y: auto;">
             <b-card-body>
               <b-input-group class="mb-3">
@@ -134,7 +136,7 @@
                 <b-card class="text-left my-2" :title="job.title">
                   <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="deleteConfirmModal(job)"><i class="ti-close"></i></button>
                   <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 btn btn-outline-info" @click="jobInfoModal(job)"><i class="ti-pencil"></i></button>
-                  <b>Location: </b><p>{{job.location}}</p>
+                  <b class="mt-5">Location: </b><p>{{job.location}}</p>
                   <b>Position: </b><p>{{job.position}}</p>
                   <b>Description: </b><p style="white-space: pre-wrap">{{job.description}}</p>
                   <b>Skills Required: </b><p>{{job.skills.length > 0 ? job.skills.map(s => s.name).join(', ') : 'None'}}</p>
@@ -156,9 +158,9 @@
               <div v-for="job in user.jobs">
                 <div v-for="user in job.confirmed_users">
                   <b-card class="text-left my-2">
-                    <h4 class="card-title user-hover" style="cursor: pointer;" @click="applicantDataModal(user)">{{user.name}}</h4>
-                    <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
-                    <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i></button>
+                    <button href="#" style="float: right; margin-top: 5px !important; border: none;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
+                    <button href="#" style="float: right; margin-top: 5px !important; border: none;" class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i></button>
+                    <h3 class="card-title user-hover mt-2" style="cursor: pointer;" @click="applicantDataModal(user)">{{user.name}}</h3>
                     <b>Job:</b><p>{{job.title}}</p>
                     <b>University: </b><p>{{user.company}}</p>
                     <b>LinkedIn: </b><p>{{user.social.linkedin}}</p>
@@ -276,6 +278,9 @@ export default {
       this.$router.push({
         name: 'Login'
       })
+    },
+    showWindow (ref) {
+      window.open(ref)
     },
     gravatarImage (email) {
       return gravatar.url(email)

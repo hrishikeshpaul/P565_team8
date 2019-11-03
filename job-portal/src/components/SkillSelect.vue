@@ -1,6 +1,7 @@
 <template>
   <div class="pb-2">
     <multiselect
+      style="font-size: 20px;"
       v-model="value"
       :max-height="150"
       tag-placeholder="Add this as new tag"
@@ -67,6 +68,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>

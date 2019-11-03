@@ -332,7 +332,9 @@ export default {
   }
 
   .logo-noq {
-    background-color: #f7c141;
+    /*background-color: #f7c141;*/
+    background-color: rgba(28, 16, 15, 0.85);
+    padding-bottom: 8px;
     border-radius: 10px;
     box-shadow: 2px 2px 2px #b4b4b4;
   }

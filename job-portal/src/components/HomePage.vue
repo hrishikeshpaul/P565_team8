@@ -127,6 +127,7 @@ export default {
   methods: {
     homePageUserModal (user, key) {
       this.homePageUserToSend = user
+      console.log(this.homePageUserToSend)
       this.homePageUserToSend[this.employerKeyToGroup] = key
       this.showHomePageUserModal = !this.showHomePageUserModal
     },

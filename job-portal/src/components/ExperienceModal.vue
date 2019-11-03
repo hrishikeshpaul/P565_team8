@@ -2,7 +2,13 @@
   <div>
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
-               data-backdrop="static" :title="'Experience'">
+               data-backdrop="static" :title="'Experience'" header-bg-variant="warnning">
+        <template v-slot:modal-title>
+          <div style="font-size: 40px;" class="nice-font">
+            Experience
+          </div>
+          <p style="font-size: 17px; color: #575e65; margin-top: -7px; padding-left: 2px;" class="mb-0 nice-font">In a few words, describe your work experience!</p>
+        </template>
         <div class="d-block text-center">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
@@ -161,5 +167,9 @@ export default {
   label {
     font-size: 15px;
     color: #6d6d6d;
+  }
+  .nice-font {
+    font-weight: 100;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif !important;
   }
 </style>
