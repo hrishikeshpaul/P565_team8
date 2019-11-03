@@ -3,63 +3,46 @@
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
                data-backdrop="static" :title="'Education'">
-        <div class="d-block text-center">
+        <template v-slot:modal-title>
+          <div style="font-size: 40px;" class="nice-font px-3">
+            Education
+          </div>
+          <p style="font-size: 17px; color: #575e65; margin-top: -7px; padding-left: 2px;" class="mb-0 nice-font px-3">Give some details to describe your education!</p>
+        </template>
+        <div class="d-block text-center px-3 nice-font pb-2">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Name of School">
-              <b-form-input id="title" v-model.trim="newEducation.school"></b-form-input>
+            <label class="mb-0 smaller-font">Name of School*</label>
+            <b-form-group>
+              <b-form-input id="title" v-model.trim="newEducation.school" class="input-field"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Degree">
-              <b-form-input id="position" v-model.trim="newEducation.degree"></b-form-input>
+            <label class="mb-0 smaller-font">Degree*</label>
+            <b-form-group>
+              <b-form-input id="position" v-model.trim="newEducation.degree" class="input-field"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Field Of Study">
-              <b-form-input id="position" v-model.trim="newEducation.fieldofstudy"></b-form-input>
+            <label class="mb-0 smaller-font">Field Of Study*</label>
+            <b-form-group>
+              <b-form-input id="position" v-model.trim="newEducation.fieldofstudy" class="input-field"></b-form-input>
             </b-form-group>
             <div class="row">
-              <div class="col-5">
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="2"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="From">
-                  <b-form-input id="from" v-model="newEducation.from" type="date" required></b-form-input>
+              <div class="col-6">
+                <label class="mb-0 smaller-font">From*</label>
+                <b-form-group>
+                  <b-form-input id="from" v-model="newEducation.from" type="date" required class="input-field"></b-form-input>
                 </b-form-group>
               </div>
-              <div class="col-5">
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="2"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="To">
-                  <b-form-input id="to" v-model="newEducation.to" type="date"></b-form-input>
+              <div class="col-6">
+                <label class="mb-0 smaller-font">To</label>
+                <span style="background-color: #b4b4b4; color: white; border-radius: 50%; margin-left: 5px;" class="px-2 info-hover" data-toggle="tooltip" data-placement="top" title="If you are currently enrolled, leave this blank">i</span>
+                <b-form-group>
+                  <b-form-input id="to" v-model="newEducation.to" type="date" class="input-field"></b-form-input>
                 </b-form-group>
-              </div>
-              <div class="col-2 mt-4 pt-2">
-                <b-form-checkbox
-                  id="checkbox-1"
-                  v-model="newEducation.current"
-                  name="checkbox-1"
-                >
-                  Current
-                </b-form-checkbox>
               </div>
             </div>
           </b-form>
+          <button class="mt-2 btn btn-outline-warning w-100" v-if="buttonText === 'Edit Education'" @click="editEducation ">{{buttonText}}</button>
+          <button class="mt-2 btn-outline-warning w-100 py-1" type="submit" v-else @click="addEducation ">{{buttonText}}</button>
         </div>
-        <b-button class="mt-3 btn btn-outline-warning" type="submit" block v-if="buttonText === 'Edit Education'" @click="editEducation ">{{buttonText}}</b-button>
-        <b-button class="mt-3 btn btn-outline-warning" type="submit" block v-else @click="addEducation ">{{buttonText}}</b-button>
       </b-modal>
     </div>
   </div>
@@ -172,5 +155,39 @@ export default {
 </script>
 
 <style scoped>
+button {
+  border-radius: 10px;
+}
 
+label {
+  font-size: 15px;
+  color: #6d6d6d;
+}
+  .info-hover {
+    cursor: pointer;
+  }
+  .info-hover:hover {
+    background-color: #6c757d;
+  }
+.nice-font {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 200;
+}
+.input-field {
+  border: 0;
+  border-radius: 2px;
+  outline: none;
+  box-shadow: none;
+  margin-top: 1px;
+  background-color: #f6f6f6;
+}
+.input-field:hover {
+  background-color: #f1f1f1;
+}
+.input-field:focus {
+  background-color: #eaeaea;
+}
+.smaller-font {
+  font-size: 13px;
+}
 </style>

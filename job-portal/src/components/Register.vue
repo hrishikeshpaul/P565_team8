@@ -12,41 +12,33 @@
       or
     </div>
     <b-form @submit="onSubmit" class="p3">
+      <label>Email</label>
       <b-form-group id="fieldsetHorizontal"
-                    :label-cols="1"
-                    label-size="sm"
-                    breakpoint="md"
-                    label="Email">
+                    >
         <b-form-input id="username" v-model.trim="register.username" class="no-border"></b-form-input>
       </b-form-group>
-
+      <label>Password</label><span></span>
       <b-form-group id="fieldsetHorizontal"
-                    :label-cols="4"
-                    label-size="sm"
-                    breakpoint="md"
-                    label="Password">
+                    >
         <b-form-input type="password" id="password" :state="state" v-model.trim="register.password" class="no-border"></b-form-input>
       </b-form-group>
-      <b-form-group id="fieldsetHorizontal"
-                    :label-cols="4"
-                    label-size="sm"
-                    breakpoint="md"
-                    label="Re-Enter Password">
-        <b-form-input type="password" id="password2" :state="state" v-model.trim="register.password2" class="no-border"></b-form-input>
-      </b-form-group>
-      <b-form-group
-        id="fieldsetHorizontal"
-        label-size="sm"
-        breakpoint="md"
-        label="Select Role">
-        <b-form-select v-model="register.role" :options="options" size="md" id="role"></b-form-select>
-      </b-form-group>
-      <ul class="helper-text">
+      <ul class="helper-text" style="font-size: 12px;">
         <li class="length">Must be at least 8 characters long</li>
         <li class="uppercase">Must contain an uppercase letter</li>
         <li class="special">Must contain a special character</li>
-    </ul>
-      <b-button type="submit" variant="warning" class="mt-2" style="width: 100%">Register</b-button>
+      </ul>
+      <label>Re-Enter Password</label>
+      <b-form-group id="fieldsetHorizontal"
+                    >
+        <b-form-input type="password" id="password2" :state="state" v-model.trim="register.password2" class="no-border"></b-form-input>
+      </b-form-group>
+
+      <label>Select Role</label>
+      <b-form-group
+        id="fieldsetHorizontal">
+        <b-form-select v-model="register.role" :options="options" size="md" id="role"></b-form-select>
+      </b-form-group>
+      <button type="submit" class="mt-2 btn-outline-warning" style="width: 100%; height: 35px; border-radius: 10px">Register</button>
       <br />
     </b-form>
   </div>
@@ -54,20 +46,19 @@
 
 <script>
 import axios from 'axios'
-  function validate(pass){
-        var counter = 0
-        if (pass.length >= 8){
-          counter++;
-        }
-        if (/[A-Z]/.test(pass)){
-          counter++
-        }
-        if (/[!@#$&*]/.test(pass)) {
-          counter++;
-      }
-        return counter == 3;
-
-    }
+function validate (pass) {
+  var counter = 0
+  if (pass.length >= 8) {
+    counter++
+  }
+  if (/[A-Z]/.test(pass)) {
+    counter++
+  }
+  if (/[!@#$&*]/.test(pass)) {
+    counter++
+  }
+  return counter == 3
+}
 export default {
   name: 'Register',
   data () {
@@ -104,19 +95,14 @@ export default {
             this.error = e.response.data.msg
             this.state = false
           })
-      }
-      else if (this.register.password != this.register.password2) {
+      } else if (this.register.password != this.register.password2) {
         this.error = 'Passwords do not match'
         this.state = false
-      }
-      else if (validate(this.register.password) === false){
-        this.error = "Password requirements not met"
+      } else if (validate(this.register.password) === false) {
+        this.error = 'Password requirements not met'
         this.state = false
       }
-
-
     }
-
 
   }
 }

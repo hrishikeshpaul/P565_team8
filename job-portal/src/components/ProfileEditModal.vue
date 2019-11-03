@@ -3,63 +3,48 @@
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false"
                data-backdrop="static" :title="'Edit Profile'" size="lg">
-        <div class="d-block text-center">
+        <template v-slot:modal-title>
+          <div style="font-size: 40px;" class="nice-font px-3">
+            Edit Profile
+          </div>
+          <p style="font-size: 17px; color: #7f8993; margin-top: -7px; padding-left: 5px;" class="mb-0 px-3 nice-font">Make changes to some basic details of your profile!</p>
+        </template>
+        <div class="d-block text-center px-3 nice-font mb-2" style="max-height: 600px; overflow-y: auto;">
           <b-alert variant="danger" v-model="showAlert"> {{alertText}}</b-alert>
           <b-form class="text-left">
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Name">
-              <b-form-input id="title" v-model.trim="user.name"></b-form-input>
+            <label class="mb-0 smaller-font">Name</label>
+            <b-form-group>
+              <b-form-input id="title" v-model.trim="user.name" class="input-field"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Company">
-              <b-form-input id="position" v-model.trim="user.company"></b-form-input>
+            <label class="mb-0 smaller-font">Company</label>
+            <b-form-group>
+              <b-form-input id="position" v-model.trim="user.company" class="input-field"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Website">
-              <b-form-input id="company" v-model.trim="user.website"></b-form-input>
+            <label class="mb-0 smaller-font">Website</label>
+            <b-form-group>
+              <b-form-input id="company" v-model.trim="user.website" class="input-field"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          v-if="user.role == 'student'"
-                          label="Website">
-              <b-form-input id="company" v-model.trim="user.social.linkedin"></b-form-input>
+            <label class="mb-0 smaller-font">LinkedIn</label>
+            <b-form-group>
+              <b-form-input id="company" v-model.trim="user.social.linkedin" class="input-field"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          v-if="user.role == 'student'"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Website">
-              <b-form-input id="company" v-model.trim="user.social.github"></b-form-input>
+
+            <label class="mb-0 smaller-font" v-if="user.role == 'student'">GitHub</label>
+            <b-form-group v-if="user.role == 'student'">
+              <b-form-input id="company" v-model.trim="user.social.github" class="input-field"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Location">
-              <b-form-input id="location" v-model.trim="user.location" rows="3"></b-form-input>
+
+            <label class="mb-0 smaller-font">Location</label>
+            <b-form-group>
+              <b-form-input id="location" v-model.trim="user.location" class="input-field"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Bio">
-              <b-form-textarea id="Bio" v-model.trim="user.bio" rows="4"></b-form-textarea>
+            <label class="mb-0 smaller-font">Bio</label>
+            <b-form-group>
+              <b-form-textarea id="Bio" v-model.trim="user.bio" rows="4" class="input-field"></b-form-textarea>
             </b-form-group>
           </b-form>
+          <button class="mt-3 btn btn-outline-warning w-100" @click="editUser">Edit</button>
         </div>
-        <b-button class="mt-3 btn btn-outline-warning" block @click="editUser">Edit</b-button>
       </b-modal>
     </div>
   </div>
@@ -138,5 +123,27 @@ export default {
 </script>
 
 <style scoped>
+  .nice-font {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 200;
+    /*font-family: 'Avenir', Helvetica, Arial, sans-serif !important;*/
+  }
+  .input-field {
+    border: 0;
+    border-radius: 2px;
+    outline: none;
+    box-shadow: none;
+    margin-top: 1px;
+    background-color: #f6f6f6;
+  }
+  .input-field:hover {
+    background-color: #f1f1f1;
+  }
+  .input-field:focus {
+    background-color: #eaeaea;
+  }
+  .smaller-font {
+    font-size: 13px;
+  }
 
 </style>

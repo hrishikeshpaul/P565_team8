@@ -3,16 +3,17 @@
     <b-card
       style="height: 300px; border-radius: 10px;"
     >
-      <img src="../assets/rui.jpg" class="card-img-top embed-responsive"
+      <img src="../assets/blank_profile.png" class="card-img-top embed-responsive"
            style="max-height: 299px; height: 100%; border-radius: 10px;" />
     </b-card>
-    <div class="overlay">
+    <div class="overlay"  @click="$emit('showUserModal')">
       <div class="text">
         <br />
         <span style="font-weight: bold">{{user.name}}</span>
         <br />
-        <span>{{user.location}}</span>
+        <span>{{user.email}}</span>
         <br />
+        <span>{{displaySkills(user.skills)}}</span>
         <br />
         <br />
         <br />
@@ -21,7 +22,7 @@
             <button class=" mr-5 btn-lg btn-danger ml-4" @click="$emit('reject', {id: user._id, job: user.job})">Reject</button>
           </div>
           <div class="col-6">
-            <button @click="$emit('accept', {id: user._id, job: user.job})" class=" mr-4 btn-lg btn-success">Apply</button>
+            <button @click="$emit('accept', {id: user._id, job: user.job})" class=" mr-4 btn-lg btn-success">Accept</button>
           </div>
         </div>
       </div>
@@ -35,17 +36,31 @@ export default {
   data () {
     return {
       imgArray: [
-        '../assets/rui.jpg',
-        '../assets/samosa.jpg',
-        '../assets/ramen.jpg',
-        '../assets/paul.jpeg'
+        '../assets/blank_profile.png'
       ]
     }
   },
   props: {
     user: {
       type: Object,
-      required: true
+      required: true,
+      default: {
+        skills: []
+      }
+    }
+  },
+  methods: {
+    displaySkills (skills) {
+      console.log(this.user)
+      if (skills.length > 0) {
+        if (skills.length > 2) {
+          return skills[0].name + ", " + skills[1].name + " & more"
+        } else {
+          return skills.map(s => s.name).join(', ')
+        }
+      } else {
+        return ''
+      }
     }
   }
 }

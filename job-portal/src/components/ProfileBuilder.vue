@@ -13,30 +13,35 @@
              @on-validate="handleValidation"
              @on-error="handleErrorMessage"
            >
-             <h2 slot="title">Hi, let us get you started with your profile! {{role}}</h2>
+             <h2 slot="title">Hi, let us get you started with your profile!</h2>
              <div class="mb-2"><span v-if="errorMsg"  style="color: red;">{{errorMsg}}</span></div>
 
-             <tab-content :title="role === 'student' ? 'Personal Details' : 'Organizational Details'"
+             <tab-content title="Personal details"
                           icon="ti-user"
                           :before-change="validateAsync"
              >
                <b-form>
-                 <b-form-group id="fieldsetHorizontal1"
+                 <b-form-group id="fieldsetHorizontal"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
-                               :label="role === 'student' ? 'Full Name' : 'Name of Point of Contact'">
-                   <b-form-input id="name" v-model.trim="user.name"></b-form-input>
+                               label="* Full Name"
+                               :class="{'error-label': invalidName}">
+                   <b-form-input id="name_input" :class="{'error-border': invalidName}" v-model.trim="user.name"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal2"
+
+                 <b-form-group id="fieldsetHorizontal"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
-                               :label="role === 'student' ? 'University' : 'Company'"
+                               :label="role === 'student' ? '* University' : '* Company'"
+                               :class="{'error-label': invalidOrganization}"
                  >
-                   <b-form-input id="company" v-model.trim="user.company"></b-form-input>
+                   <SkillSelect @addSkills="addSkills"/>
+
+                   <b-form-input id="name"  :class="{'error-border': invalidOrganization}" v-model.trim="user.company"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal3"
+                 <b-form-group id="fieldsetHorizontal"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
@@ -44,47 +49,34 @@
                  >
                    <b-form-input id="website" v-model.trim="user.website"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal4"
-                                              :label-cols="4"
-                                              breakpoint="md"
-                                              label-size="sm"
-                                              label="LinkedIn"
-               >
-                 <b-form-input id="linkedin" v-model.trim="user.social.linkedin"></b-form-input>
-               </b-form-group>
-                 <b-form-group id="fieldsetHorizontal5"
+                 <b-form-group id="fieldsetHorizontal"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
-                               label="Location"
+                               label="LinkedIn"
                  >
-                   <b-form-input id="location" v-model.trim="user.location"></b-form-input>
+                   <b-form-input id="linkedin" v-model.trim="user.social.linkedin"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal6"
+                 <b-form-group id="fieldsetHorizontal"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
                                label="Github"
-                               v-if="role === 'student'"
                  >
                    <b-form-input id="github" v-model.trim="user.social.github"></b-form-input>
                  </b-form-group>
-                 <b-form-group id="fieldsetHorizontal7"
+                 <b-form-group id="fieldsetHorizontal"
                                :label-cols="4"
                                breakpoint="md"
                                label-size="sm"
                                label="Bio"
-
                  >
                    <b-form-input id="bio" v-model.trim="user.bio"></b-form-input>
                  </b-form-group>
                </b-form>
              </tab-content>
-
-
-             <tab-content :title="'Education'"
-                          v-if="role === 'student'"
-                          :icon="'ti-book'"
+             <tab-content :title="role === 'student' ? 'Education' : 'Orgainsational Information'"
+                          :icon="role === 'student' ? 'ti-book' : 'ti-bag'"
                           :before-change="validateAsync">
                <div v-for="(education,index) in educations" v-if="role === 'student'">
                  <div class="row" v-if="educations.length > 1">
@@ -154,6 +146,24 @@
                  class="btn-outline-warning mb-2 mt-1 "
                  @click.prevent="addItem('education')">
                  Add</button>
+               <div v-if="role === 'employer' ">
+                 <b-form>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Name of Organization">
+                     <b-form-input id="name" v-model.trim="company.name"></b-form-input>
+                   </b-form-group>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Location">
+                     <b-form-input id="name" v-model.trim="company.location"></b-form-input>
+                   </b-form-group>
+                 </b-form>
+               </div>
              </tab-content>
   <!--           EXPERIENCE TAB-->
              <tab-content
@@ -175,7 +185,7 @@
                                  :label-cols="4"
                                  breakpoint="md"
                                  label-size="sm"
-                                 label="Name of Organinsation">
+                                 label="Name of Organization">
                      <b-form-input id="company" v-model.trim="experience.company"></b-form-input>
                    </b-form-group>
                    <b-form-group id="fieldsetHorizontal"
@@ -264,15 +274,20 @@
   import axios from 'axios'
   import NavBar from './NavBar'
   import SkillSelect from './SkillSelect'
+  // import UniversitySelect from './UniversitySelect'
 
 export default {
   name: 'ProfileBuilder',
   components: {
     NavBar,
     SkillSelect,
+      // UniversitySelect,
   },
   data () {
     return {
+        isError:false,
+        invalidName: false,
+        invalidOrganization: false,
       name: '',
       user: {
         social: {}
@@ -313,10 +328,11 @@ export default {
         'Content-Type': 'application/json'
       }
       var id = localStorage.getItem('user_id')
-
-      axios.patch(`http://localhost:3000/api/user/${id}`, {first_time: false}, {headers: params})
+        console.log(id)
+        console.log("onCOmplete"+localStorage.getItem('user_name'))
+        axios.patch(`http://localhost:3000/api/user/${id}`, {first_time: false}, {headers: params})
         .then(response => {
-          console.log('hi')
+          console.log('-----------hi')
           localStorage.setItem('user_first_time', 'false')
           this.$router.push({
             name: 'HomePage'
@@ -357,8 +373,15 @@ export default {
             },
             user: {id: id}
           }
-          if (!this.user.name || !this.user.company || !this.user.website)
-            reject('Please enter the required details')
+          if (!this.user.name|| !this.user.company) {
+              this.invalidName=false;
+              this.invalidOrganization = false;
+              if (!this.user.name)
+                  this.invalidName=true;
+              if (!this.user.company)
+                  this.invalidOrganization = true;
+              reject('Please enter required fields');
+          }
 
           axios.post(`http://localhost:3000/api/profile/personal`, obj, {headers: params})
             .then(response => {
@@ -389,40 +412,59 @@ export default {
             console.log('put the employer code here')
           }
         } else if (this.activeIndex === 2) {
+
           if (this.role === 'student') {
-            if (this.experiences[0].company === '') {
-              resolve(true)
-            } else {
+            let vals = new Set()
+            for (let i = 0; i < this.experiences.length; i++){
+              vals.add(this.experiences[i].company === '')
+              vals.add(this.experiences[i].title === '')
+              vals.add(this.experiences[i].location === '')
+              vals.add(this.experiences[i].from === '')
+              vals.add(this.experiences[i].to === '')
+              vals.add(this.experiences[i].description === '')
+              if (this.experiences[i].from != '' && this.experiences[i].to != ''){
+                let from= new Date(this.experiences[i].from)
+                let to= new Date(this.experiences[i].to)
+                if (from >to){
+                  reject('Please make sure the to date appears after the from date')
+                }}
+          }
+
+            if (vals.size == 1) {
               var obj = {
                 data: this.experiences,
                 user: {id: id}
               }
+
               // temporary solve of bug where the current is not working
               obj.data.forEach(exp => {
                 exp.current = false
               })
               axios.post(`http://localhost:3000/api/profile/experience`, obj, {headers: params})
-                .then(response => {
+                .then(response => {   
                   resolve(true)
                 })
                 .catch(e => {
                   reject(e.response.data)
                 })
             }
+            else{
+              reject('Please complete all fields, or return to this section later.')
+            }
           }
           else {
-            console.log('put employer code')
+            console.log('pt employer code')
           }
         } else if (this.activeIndex === 3) {
           if (this.skills.length > 0) {
-            // console.log('not done')
-            // var skillsArray = []
-            // this.skills.forEach(skill => {
-            //   skillsArray.push(skill.name)
-            // })
+            console.log('not done')
+            var skillsArray = []
+            this.skills.forEach(skill => {
+              skillsArray.push(skill.name)
+            })
 
             var obj = {
-              data: this.skills,
+              data: skillsArray,
               user: {id: id}
             }
 
@@ -479,48 +521,53 @@ export default {
     },
   },
   created () {
-    console.log(typeof localStorage.getItem('role'))
-    if (localStorage.getItem('role') == 'null') {
-      const { value: role } = this.$swal({
-        title: 'Select Role',
-        input: 'select',
-        inputOptions: {
-          student: 'Student',
-          employer: 'Employer'
-        },
-        allowOutsideClick: false,
-        showCancelButton: false,
-        inputPlaceholder: 'Select role',
-        confirmButtonColor: '#f0ad4e',
-        inputValidator: (value) => {
-          return new Promise((resolve, reject) => {
-            if (value === 'student' || value === 'employer') {
-              var id = localStorage.getItem('user_id')
-              var params = {
-                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
-                'Content-Type': 'application/json'
+      console.log("onCOmplete"+localStorage.getItem('user_name'))
+
+      console.log("--------------\n"+typeof localStorage.getItem('role'))
+
+      if (localStorage.getItem('role') == 'null') {
+          const {value: role} = this.$swal({
+              title: 'Select Role',
+              input: 'select',
+              inputOptions: {
+                  student: 'Student',
+                  employer: 'Employer'
+              },
+              allowOutsideClick: false,
+              showCancelButton: false,
+              inputPlaceholder: 'Select role',
+              confirmButtonColor: '#f0ad4e',
+              inputValidator: (value) => {
+                  return new Promise((resolve, reject) => {
+                      if (value === 'student' || value === 'employer') {
+                          var id = localStorage.getItem('user_id')
+                          var params = {
+                              'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
+                              'Content-Type': 'application/json'
+                          }
+                          var obj = {
+                              user: id,
+                              role: value
+                          }
+                          axios.post('http://localhost:3000/api/profile/updateRole', obj, {headers: params})
+                              .then(resposne => {
+                                  localStorage.setItem('role', value)
+                                  console.log(value)
+                                  this.role = value
+                                  resolve()
+                              })
+                              .catch(e => {
+                                  reject('Error')
+                              })
+                      } else {
+                          resolve('You need to select a role :)')
+                      }
+                  })
               }
-              var obj = {
-                user: id,
-                role: value
-              }
-              axios.post('http://localhost:3000/api/profile/updateRole', obj, {headers: params})
-                .then(resposne => {
-                  localStorage.setItem('role', value)
-                  console.log(value)
-                  this.role = value
-                  resolve()
-                })
-                .catch(e => {
-                  reject('Error')
-                })
-            } else {
-              resolve('You need to select a role :)')
-            }
           })
-        }
-      })
-    }
+
+
+      }
   },
   mounted () {
     this.role = localStorage.role
@@ -541,5 +588,12 @@ export default {
     font-size: 25px;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
     margin-bottom: 28px;
+  }
+
+  .error-border {
+    border-color: red;
+  }
+  .error-label {
+    color: red;
   }
 </style>

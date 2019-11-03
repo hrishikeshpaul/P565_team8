@@ -10,6 +10,7 @@
       :taggable="true"
       :multiple="true"
       :option-height="104"
+      @search-change="searchQuery"
       @tag="addTag"></multiselect>
   </div>
 </template>
@@ -17,6 +18,7 @@
 <script>
 import Multiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
+import axios from 'axios'
 
 export default {
   name: 'SkillSelect',
@@ -32,15 +34,22 @@ export default {
   data () {
     return {
       value: this.recievedValues,
-      options: [
-        { name: 'Java', code: 'java' },
-        { name: 'Python', code: 'python' },
-        { name: 'Javascript', code: 'js' },
-        { name: 'Node.js', code: 'node.js' },
-        { name: 'React.js', code: 'react.js' },
-        { name: 'Flask', code: 'flask' }
-      ]
+      options: [],
     }
+  },
+  mounted () {
+    axios({
+      method: 'GET',
+      'url': 'https://cors-anywhere.herokuapp.com/' +
+                    'https://trendyskills.com/service?q=keywords&like=' +
+                    '' +
+                    '&key=ULkph5viBzDWhvnh'
+    })
+      .then(result => {
+        result.data.keywords.forEach(skill => {
+          this.options.push({'name': skill.keyName, 'code': skill.id})
+        })
+      })
   },
   watch: {
     recievedValues (newVal) {
@@ -49,16 +58,31 @@ export default {
       }
     },
     value (newVal) {
-      if (typeof newVal.hasOwnProperty('name') !== null) {
+      if (typeof newVal.hasOwnProperty('keyName') !== null) {
         this.$emit('addSkills', newVal)
       }
     }
   },
   methods: {
+    searchQuery (newVal) {
+      axios({
+        method: 'GET',
+        'url': 'https://cors-anywhere.herokuapp.com/' +
+                        'https://trendyskills.com/service?q=keywords&like=' +
+                        newVal +
+                        '&key=ULkph5viBzDWhvnh'
+      })
+        .then(result => {
+          // this.options = result.data.keywords
+          result.data.keywords.forEach(skill => {
+            this.options.push({'name': skill.keyName, 'code': skill.id})
+          })
+        })
+    },
     addTag (newTag) {
       const tag = {
         name: newTag,
-        code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+        id: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
       }
       this.options.push(tag)
       this.value.push(tag)

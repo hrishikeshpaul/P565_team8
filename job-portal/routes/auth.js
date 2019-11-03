@@ -74,7 +74,7 @@ router.post('/login', function (req, res) {
     } else if (user.isVerified && user.oauth) {
       if (user.oauthToken === req.body.token) {
         var token = jwt.sign(user.toJSON(), settings.secret)
-        res.json({success: true, token: 'JWT ' + token, user: user})
+        return res.send({success: true, token: 'JWT ' + token, user: user})
       } else {
         res.status(401).send({success: false, msg: 'Unauthorized User.'})
       }
@@ -253,7 +253,6 @@ router.get('/linkedin',
   passport.authenticate('linkedin', { scope: ['r_emailaddress', 'r_liteprofile', ''] }))
 
 router.get('/linkedin/callback', passport.authenticate('linkedin', function (err, user, info) {
-  console.log(user)
   var token = jwt.sign(user.toJSON(), settings.secret)
   // return the information including token as JSON
   return res.json({success: true, token: 'JWT ' + token})

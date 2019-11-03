@@ -7,48 +7,41 @@
       </video>
       <div class="container">
         <div style="display: block;">
-          <div>
-            <b-card style="border-radius: 8px !important;">
+          <div class="mt-5">
+            <b-card style="border-radius: 8px !important; background-color: rgb(252,252,252); max-height: 700px; overflow-y: auto">
               <div class="text-center big-title">
                 <span class="px-2 logo-noq">noQ</span>
               </div>
               <p class="text-center mt-1" style="font-size: 15px; color: gray">Making Career Fairs Easier</p>
               <hr />
-              <div style="width: 350px;">
+              <div style="width: 400px;">
                 <b-tabs content-class="mt-3" v-model="tabIndex" >
                   <b-tab :title="forgotPassword ? 'Forgot Password' : 'Login'">
                     <div v-if="error">
                       <b-alert show :variant="variant" v-html="error"></b-alert>
                     </div>
-                      <div class="text-center mt-4">
+                      <div class="text-center mt-4" v-if="!forgotPassword">
                         <a class="btn btn-md light linkedin-btn" @click="linkedInLogin" style="background-color: #597ca0; color: white;">Linked <i class="ti-linkedin"></i></a>
                       </div>
-                      <div class="center-separator my-3 mt-4">
+                      <div class="center-separator my-3 mt-4" v-if="!forgotPassword">
                         or
                       </div>
                       <b-form>
-
-                        <b-form-group id="fieldsetHorizontal"
-                                      :label-cols="4"
-                                      breakpoint="md"
-                                      label-size="sm"
-                                      label="Email">
+                        <label>Email</label>
+                        <b-form-group id="fieldsetHorizontal">
                           <b-form-input id="username" v-model.trim="login.username"></b-form-input>
                         </b-form-group>
+                        <label>Password</label>
                         <b-form-group id="fieldsetHorizontal"
                                       v-if="!forgotPassword"
                                       class="mb-2"
-                                      :label-cols="4"
-                                      breakpoint="md"
-                                      label-size="sm"
-                                      label="Password">
+                                      >
                           <b-form-input type="password" id="password" v-model.trim="login.password" ></b-form-input>
                         </b-form-group>
-                        <b-button type="submit" variant="warning" class="mt-3 mb-3" style="width: 100%" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
-                        <b-button type="submit" variant="warning" class="mt-1 mb-3" style="width: 100%" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
+                        <button type="submit" class="mt-3 mb-3 btn-outline-warning" style="width: 100%; height: 35px; border-radius: 10px" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</button>
+                        <button type="submit" class="mt-1 mb-3 btn-outline-warning" style="width: 100%; height: 35px; border-radius: 10px" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</button>
                         <div class="align-content-center ">
-                          <div class="g-recaptcha" id="rcaptcha" style="margin-left: 25px;" data-sitekey="6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs"></div>
-                          <span id="captcha" style="color:red" />
+                          <div class="g-recaptcha" id="recaptcha" style="margin-left: 45px;" data-sitekey="6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs"></div>
                         </div>
                         <hr class="mb-2"/>
                         <a href="" class="text-muted mt-0" @click.prevent="forgotPassword = !forgotPassword">{{forgotPassword ? 'Back' : 'Forgot Password?'}}</a>
@@ -202,11 +195,8 @@
 </template>
 
 <script>
-
 import axios from 'axios'
 import Register from './Register'
-import Recaptcha from './Recaptcha'
-
 export default {
   name: 'Login',
   data () {
@@ -218,12 +208,15 @@ export default {
       forgotPassword: false
     }
   },
-  mounted: {
-
+  mounted () {
+    document.getElementById("main").style.marginLeft = "0";
+    grecaptcha.render("recaptcha", {
+            sitekey: '6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs',
+        })
   },
   components: {
     Register,
-    Recaptcha
+    // Recaptcha
   },
   watch: {
     tabIndex (val) {
@@ -271,10 +264,10 @@ export default {
     },
     onSubmit (evt) {
       evt.preventDefault()
-      console.log(grecaptcha)
       if (grecaptcha.getResponse() == 0){
         this.error = 'Please verify captcha'
         this.variant = 'danger'
+        grecaptcha.reset()
         return false
       }
       axios.post(`http://localhost:3000/api/auth/login/`, this.login)
@@ -283,6 +276,7 @@ export default {
           localStorage.setItem('user_first_time', response.data.user.first_time)
           localStorage.setItem('user_id', response.data.user._id)
           localStorage.setItem('role', response.data.user.role)
+          localStorage.setItem('email', response.data.user.email)
 
           if (response.data.user.first_time) {
             this.$router.push({
@@ -338,7 +332,9 @@ export default {
   }
 
   .logo-noq {
-    background-color: #f7c141;
+    /*background-color: #f7c141;*/
+    background-color: rgba(28, 16, 15, 0.85);
+    padding-bottom: 8px;
     border-radius: 10px;
     box-shadow: 2px 2px 2px #b4b4b4;
   }
