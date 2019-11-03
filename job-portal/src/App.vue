@@ -72,7 +72,7 @@
       </div>
     </div>
 
-    <div id="main" :class="{'marginLeft': $route.path !== '/login', 'noMargin': $route.path === '/login'}">
+    <div id="main" :class="{'marginLeft': $route.path !== '/login', 'noMargin': $route.path === '/login' || $route.path === 'build_profile'}">
       <vue-page-transition name="fade">
         <router-view></router-view>
       </vue-page-transition>
@@ -96,9 +96,14 @@ export default {
       role: ''
     }
   },
-  created () {
+  mounted () {
     this.email = localStorage.getItem('email')
     this.role = localStorage.getItem('role')
+    if (this.$route.path === '/build_profile') {
+      document.getElementById("main").style.marginLeft = "0";
+      var element = document.getElementById("main");
+      element.classList.remove("marginLeft");
+    }
   },
   methods: {
     getImage (email) {
@@ -112,7 +117,7 @@ export default {
     closeNav () {
       this.navBarCollapsed = true
       document.getElementById("mySidenav").style.width = "80px";
-      document.getElementById("main").style.marginLeft= "80px";
+      document.getElementById("main").style.marginLeft = "80px";
     },
     logout () {
       localStorage.removeItem('jwtToken')
