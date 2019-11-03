@@ -321,29 +321,43 @@ export default {
             console.log('put the employer code here')
           }
         } else if (this.activeIndex === 2) {
+
           if (this.role === 'student') {
-            if (this.experiences[0].company === '') {
-              resolve(true)
-            } else {
+            let vals = new Set()
+            for (let i = 0; i < this.experiences.length; i++){
+              vals.add(this.experiences[i].company === '')
+              vals.add(this.experiences[i].title === '')
+              vals.add(this.experiences[i].location === '')
+              vals.add(this.experiences[i].from === '')
+              vals.add(this.experiences[i].to === '')
+              vals.add(this.experiences[i].description === '')
+          }
+            console.log(vals)
+            if (vals.size == 1) {
               var obj = {
                 data: this.experiences,
                 user: {id: id}
               }
+              console.log(obj.data[0])
+              console.log('rolfmao')
               // temporary solve of bug where the current is not working
               obj.data.forEach(exp => {
                 exp.current = false
               })
               axios.post(`http://localhost:3000/api/profile/experience`, obj, {headers: params})
-                .then(response => {
+                .then(response => {   
                   resolve(true)
                 })
                 .catch(e => {
                   reject(e.response.data)
                 })
             }
+            else{
+              reject('Please complete all fields, or return to this section later.')
+            }
           }
           else {
-            console.log('put employer code')
+            console.log('pt employer code')
           }
         } else if (this.activeIndex === 3) {
           if (this.skills.length > 0) {
