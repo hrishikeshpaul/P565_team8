@@ -331,15 +331,20 @@ export default {
               vals.add(this.experiences[i].from === '')
               vals.add(this.experiences[i].to === '')
               vals.add(this.experiences[i].description === '')
+              if (this.experiences[i].from != '' && this.experiences[i].to != ''){
+                let from= new Date(this.experiences[i].from)
+                let to= new Date(this.experiences[i].to)
+                if (from >to){
+                  reject('Please make sure the to date appears after the from date')
+                }}
           }
-            console.log(vals)
+
             if (vals.size == 1) {
               var obj = {
                 data: this.experiences,
                 user: {id: id}
               }
-              console.log(obj.data[0])
-              console.log('rolfmao')
+
               // temporary solve of bug where the current is not working
               obj.data.forEach(exp => {
                 exp.current = false
