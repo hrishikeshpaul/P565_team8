@@ -212,8 +212,8 @@ export default {
       forgotPassword: false
     }
   },
-  mounted: {
-
+  mounted () {
+    document.getElementById("main").style.marginLeft = "0";
   },
   components: {
     Register,

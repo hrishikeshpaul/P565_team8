@@ -120,6 +120,10 @@ export default {
       }
     }
   },
+  mounted () {
+    document.getElementById("main").style.marginLeft = "330px";
+
+  },
   created () {
     this.getData()
     this.filterOptions = localStorage.getItem('role') === 'student' ? this.studentFilterOptions : this.employerFilterOptions
