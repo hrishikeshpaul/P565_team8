@@ -1,6 +1,7 @@
 <template>
   <div class="pb-2">
     <multiselect
+      style="font-size: 20px;"
       v-model="value"
       :max-height="150"
       tag-placeholder="Add this as new tag"
@@ -68,5 +69,11 @@ export default {
 </script>
 
 <style scoped>
-
+  /deep/ .multiselect__content-wrapper {
+    font-size: 15px !important;
+    z-index: 1000;
+  }
+  /deep/ .multiselect {
+    background-color: #f6f6f6 !important;
+  }
 </style>

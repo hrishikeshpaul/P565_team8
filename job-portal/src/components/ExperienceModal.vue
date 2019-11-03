@@ -2,73 +2,55 @@
   <div>
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
-               data-backdrop="static" :title="'Experience'">
-        <div class="d-block text-center">
+               data-backdrop="static" :title="'Experience'" header-bg-variant="warnning">
+        <template v-slot:modal-title>
+          <div style="font-size: 40px;" class="nice-font px-3">
+            Experience
+          </div>
+          <p style="font-size: 17px; color: #575e65; margin-top: -7px; padding-left: 2px;" class="mb-0 nice-font px-3">In a few words, describe your work experience!</p>
+        </template>
+        <div class="d-block text-center nice-font px-3 pb-2" style="max-height: 600px; overflow-y: auto;">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
-            <b-form-group id="fieldsetHorizontal"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Company/Organisation">
-              <b-form-input id="title" v-model.trim="newExperience.company"></b-form-input>
+            <label>Organization/Company*</label>
+            <b-form-group>
+              <b-form-input id="title" v-model.trim="newExperience.company" class="input-field"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Title">
-              <b-form-input id="position" v-model.trim="newExperience.title"></b-form-input>
+            <label class="mb-0 smaller-font">Title*</label>
+            <b-form-group>
+              <b-form-input id="position" v-model.trim="newExperience.title" class="input-field"></b-form-input>
             </b-form-group>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Location">
-              <b-form-input id="position" v-model.trim="newExperience.location"></b-form-input>
+            <label> class="mb-0 smaller-font"Position*</label>
+            <b-form-group>
+              <b-form-input id="position" v-model.trim="newExperience.location" class="input-field"></b-form-input>
             </b-form-group>
             <div class="row">
-              <div class="col-5">
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="2"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="From">
-                  <b-form-input id="from" v-model="newExperience.from" type="date" required></b-form-input>
+              <div class="col-6">
+                <label class="mb-0 smaller-font">From*</label>
+                <b-form-group>
+                  <b-form-input id="from" v-model="newExperience.from" type="date" required class="input-field"></b-form-input>
                 </b-form-group>
               </div>
-              <div class="col-5">
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="2"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="To">
-                  <b-form-input id="to" v-model="newExperience.to" type="date"></b-form-input>
+              <div class="col-6">
+                <label class="mb-0 smaller-font">To</label><span style="background-color: #b4b4b4; color: white; border-radius: 50%; margin-left: 5px;" class="px-2 info-hover" data-toggle="tooltip" data-placement="top" title="If you are currently enrolled, leave this blank">i</span>
+                <b-form-group>
+                  <b-form-input id="to" v-model="newExperience.to" type="date" class="input-field"></b-form-input>
                 </b-form-group>
-              </div>
-              <div class="col-2 mt-4 pt-2">
-                <b-form-checkbox
-                  v-model="newExperience.current"
-                >
-                  Current
-                </b-form-checkbox>
               </div>
             </div>
-            <b-form-group id="fieldsetHorizontal1"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label-size="sm"
-                          label="Description">
-              <b-form-textarea id="position" v-model.trim="newExperience.description" rows="4"></b-form-textarea>
+            <label class="mb-0 smaller-font">Description</label>
+            <b-form-group>
+              <b-form-textarea id="position" v-model.trim="newExperience.description" rows="4" class="input-field"></b-form-textarea>
             </b-form-group>
           </b-form>
+          <b-button class="mt-3" variant="outline-warning" type="submit" block v-if="buttonText === 'Edit Experience'"
+                    @click="editExperience ">{{buttonText}}
+          </b-button>
+          <b-button class="mt-3" variant="outline-warning" type="submit" block v-else @click="addExperience ">
+            {{buttonText}}
+          </b-button>
         </div>
-        <b-button class="mt-3 btn btn-outline-warning" type="submit" block v-if="buttonText === 'Edit Experience'"
-                  @click="editExperience ">{{buttonText}}
-        </b-button>
-        <b-button class="mt-3 btn btn-outline-warning" type="submit" block v-else @click="addExperience ">
-          {{buttonText}}
-        </b-button>
+
       </b-modal>
     </div>
   </div>
@@ -183,5 +165,29 @@ export default {
 </script>
 
 <style scoped>
-
+  label {
+    font-size: 15px;
+    color: #6d6d6d;
+  }
+  .nice-font {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 200;
+  }
+  .input-field {
+    border: 0;
+    border-radius: 2px;
+    outline: none;
+    box-shadow: none;
+    margin-top: 1px;
+    background-color: #f6f6f6;
+  }
+  .input-field:hover {
+    background-color: #f1f1f1;
+  }
+  .input-field:focus {
+    background-color: #eaeaea;
+  }
+  .smaller-font {
+    font-size: 13px;
+  }
 </style>

@@ -409,7 +409,6 @@ export default {
     },
   },
   created () {
-    console.log(typeof localStorage.getItem('role'))
     if (localStorage.getItem('role') == 'null') {
       const { value: role } = this.$swal({
         title: 'Select Role',

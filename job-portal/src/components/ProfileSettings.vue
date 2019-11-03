@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div>
-      <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
-        data-backdrop="static" :title="'Profile Settings'">
-        <div class="d-block text-center">
+    <span style="font-size: 80px;" class="mx-5 px-5 mb-0 mt-2">Profile Settings</span>
+    <p class="px-5" style="color: grey; margin-top: -18px; margin-left: 55px; margin-bottom: 50px !important;">{{'Change various profile settings'}}</p>
+    <div class="px-5 mx-5">
+      <div class="card px-4 py-3 shadow-sm">
+        <div class="d-block text-center card-body">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
+          <b-alert variant="success" v-if="showAlert2" :show="10">{{alertText2}}</b-alert>
           <b-form class="text-left">
-            <label><b>Reset Password</b></label>
+            <div class="card-title" style="font-size: 35px; margin-top: -10px;">Reset Password</div>
             <hr />
             <label>Old Password</label>
             <b-form-group>
@@ -21,9 +23,9 @@
               <b-form-input id="position" v-model.trim="newPassword1" type="password"></b-form-input>
             </b-form-group>
           </b-form>
+          <button class="mt-2 btn btn-outline-warning w-100" @click="changePassword">Change Password</button>
         </div>
-        <button class="mt-3 btn btn-outline-warning w-100" @click="changePassword">Change Password</button>
-      </b-modal>
+      </div>
     </div>
   </div>
 </template>
@@ -32,10 +34,7 @@
 import axios from 'axios'
 
 export default {
-  name: 'ProfileSettingsModal',
-  components: {
-
-  },
+  name: 'ProfileSettings',
   props: {
     showModal: {
       type: Boolean,
@@ -53,7 +52,9 @@ export default {
       newPassword: '',
       newPassword1: '',
       alertText: '',
-      showAlert: false
+      showAlert: false,
+      alertText2: '',
+      showAlert2: false
     }
   },
   watch: {
@@ -82,6 +83,8 @@ export default {
               this.oldPassword = ''
               this.newPassword = ''
               this.newPassword1 = ''
+              this.showAlert2 = true
+              this.alertText2 = 'Password Reset Successful'
             }
           })
           .catch(e => {
@@ -100,8 +103,5 @@ export default {
 </script>
 
 <style scoped>
-label {
-  font-size: 15px;
-  color: #6d6d6d;
-}
+
 </style>

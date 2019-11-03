@@ -1,6 +1,7 @@
 <template>
-  <div class="py-5">
+  <div class="pb-4 pt-3">
     <multiselect
+      style="height: 40px;"
       v-model="value"
       :max-height="150"
       tag-placeholder="Add this as new tag"

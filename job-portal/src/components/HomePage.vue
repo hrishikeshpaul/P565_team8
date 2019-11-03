@@ -1,11 +1,13 @@
 <template>
   <div>
-    <NavBar @logout="logout"/>
+<!--    <NavBar @logout="logout"/>-->
+    <span style="font-size: 80px;" class="mx-5 mb-0">Home</span>
+    <p class="" style="color: grey; margin-top: -20px; margin-left: 55px;">{{role === 'student' ? 'Apply to companies that are are a perfect fit for you!' : 'Accept candidates that are a perfect fir for your organisation'}}</p>
     <div class="container">
       <FilterBar @group="callReGroup" :options="filterOptions"/>
     </div>
 
-    <div class="mx-5 px-5">
+    <div class="mx-5">
       <div v-for="(job, key) in computedJobs" class="mb-3" v-if="userRole === 'student'" >
         <div style="position: relative;">
           <h2><div class="mb-3">{{ key }}</div></h2>
@@ -17,6 +19,7 @@
               :job="j"
               ref="card"
               :id="j._id"
+              @showJobModal="homePageJobModal(j, key)"
               @accept="accept"
               @reject="reject"
               class="mb-3"
@@ -27,7 +30,6 @@
       </div>
 
       <div v-for="(user, key) in computedUsers" class="mb-3" v-if="userRole === 'employer'">
-
         <div style="position: relative;">
           <h2><div class="mb-3">{{ key }}</div></h2>
           <div
@@ -38,6 +40,7 @@
               :user="u"
               ref="card"
               :id="u._id"
+              @showUserModal="homePageUserModal(u, key)"
               @accept="acceptUser"
               @reject="rejectUser"
               class="mb-3"
@@ -47,6 +50,8 @@
         </div>
       </div>
     </div>
+    <HomePageJobModal :showModal="showHomePageJobModal" @hideModal="hideHomePageJobModal" :job="homePageJobToSend"/>
+    <HomePageUserModal :showModal="showHomePageUserModal" @hideModal="hideHomePageUserModal" :user="homePageUserToSend" />
   </div>
 </template>
 
@@ -58,6 +63,8 @@ import NavBar from './NavBar'
 import FilterBar from './FilterBar'
 import JobCard from './JobCard'
 import UserCard from './UserCard'
+import HomePageJobModal from './HomePageJobModal'
+import HomePageUserModal from './HomePageUserModal'
 
 export default {
   name: 'HomePage',
@@ -65,7 +72,9 @@ export default {
     NavBar,
     FilterBar,
     JobCard,
-    UserCard
+    UserCard,
+    HomePageJobModal,
+    HomePageUserModal
   },
   data () {
     return {
@@ -74,6 +83,8 @@ export default {
       role: '',
       users: [],
       showClass: false,
+      homePageJobToSend: {},
+      homePageUserToSend: {},
       computedJobs: {},
       computedUsers: {},
       studentKeyToGroup: 'position',
@@ -88,7 +99,9 @@ export default {
       employerFilterOptions: [
         { name: 'Company', code: 'company' },
         { name: 'Gender', code: 'gender' },
-      ]
+      ],
+      showHomePageJobModal: false,
+      showHomePageUserModal: false
     }
   },
   watch: {
@@ -107,11 +120,32 @@ export default {
       }
     }
   },
+  mounted () {
+    document.getElementById("main").style.marginLeft = "330px";
+
+  },
   created () {
     this.getData()
-    this.filterOptions = localStorage.getItem('role') == 'student' ? this.studentFilterOptions : this.employerFilterOptions
+    this.filterOptions = localStorage.getItem('role') === 'student' ? this.studentFilterOptions : this.employerFilterOptions
   },
   methods: {
+    homePageUserModal (user, key) {
+      this.homePageUserToSend = user
+      console.log(this.homePageUserToSend)
+      this.homePageUserToSend[this.employerKeyToGroup] = key
+      this.showHomePageUserModal = !this.showHomePageUserModal
+    },
+    hideHomePageUserModal () {
+      this.showHomePageUserModal = false
+    },
+    homePageJobModal (job, key) {
+      this.homePageJobToSend = job
+      this.homePageJobToSend[this.studentKeyToGroup] = key
+      this.showHomePageJobModal = !this.showHomePageJobModal
+    },
+    hideHomePageJobModal () {
+      this.showHomePageJobModal = false
+    },
     getData () {
       var headers = {
         Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
@@ -259,6 +293,7 @@ export default {
         this.studentFilterOptions = key
         this.computedJobs = this.reGroup(this.jobs, this.studentFilterOptions)
       } else {
+        this.keyToGroup = key
         this.employerKeyToGroup = key
         this.computedUsers = this.reGroup(this.users, key)
       }
@@ -308,6 +343,16 @@ export default {
     -webkit-transition: all 0.5s ease-in-out; /** Chrome & Safari **/
     -moz-transition: all 0.5s ease-in-out; /** Firefox **/
     -o-transition: all 0.5s ease-in-out; /** Opera **/
+  }
+  .logo-noq {
+    background-color: #f7c141;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px #b4b4b4;
+  }
+
+  .big-title{
+    font-size: 50px;
+    color: white;
   }
 
 </style>

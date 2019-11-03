@@ -2,13 +2,13 @@
   <div>
       <div style="height: 100vh; position: relative; ">
       <div id="video_overlays"></div>
-      <video autoplay loop muted id="video" style="width: 100%; height: auto; position: absolute; z-index: -2;">
+      <video autoplay loop muted id="video" style="width: auto; height: auto; position: absolute; z-index: -2;">
         <source src="../assets/lv2.mp4" type="video/mp4">
       </video>
       <div class="container">
         <div style="display: block;">
-          <div>
-            <b-card style="border-radius: 8px !important;">
+          <div class="mt-5">
+            <b-card style="border-radius: 8px !important; background-color: rgb(252,252,252); max-height: 700px; overflow-y: auto">
               <div class="text-center big-title">
                 <span class="px-2 logo-noq">noQ</span>
               </div>
@@ -38,8 +38,8 @@
                                       >
                           <b-form-input type="password" id="password" v-model.trim="login.password" ></b-form-input>
                         </b-form-group>
-                        <b-button type="submit" variant="warning" class="mt-3 mb-3" style="width: 100%" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
-                        <b-button type="submit" variant="warning" class="mt-1 mb-3" style="width: 100%" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
+                        <button type="submit" class="mt-3 mb-3 btn-outline-warning" style="width: 100%; height: 35px; border-radius: 10px" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</button>
+                        <button type="submit" class="mt-1 mb-3 btn-outline-warning" style="width: 100%; height: 35px; border-radius: 10px" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</button>
                         <div class="align-content-center ">
                           <div class="g-recaptcha" id="rcaptcha" style="margin-left: 45px;" data-sitekey="6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs"></div>
                           <span id="captcha" style="color:red" />
@@ -212,8 +212,8 @@ export default {
       forgotPassword: false
     }
   },
-  mounted: {
-
+  mounted () {
+    document.getElementById("main").style.marginLeft = "0";
   },
   components: {
     Register,
@@ -276,6 +276,7 @@ export default {
           localStorage.setItem('user_first_time', response.data.user.first_time)
           localStorage.setItem('user_id', response.data.user._id)
           localStorage.setItem('role', response.data.user.role)
+          localStorage.setItem('email', response.data.user.email)
 
           if (response.data.user.first_time) {
             this.$router.push({
@@ -331,7 +332,9 @@ export default {
   }
 
   .logo-noq {
-    background-color: #f7c141;
+    /*background-color: #f7c141;*/
+    background-color: rgba(28, 16, 15, 0.85);
+    padding-bottom: 8px;
     border-radius: 10px;
     box-shadow: 2px 2px 2px #b4b4b4;
   }
