@@ -394,13 +394,19 @@ export default {
             console.log('put the employer code here')
           }
         } else if (this.activeIndex === 2) {
+
           if (this.role === 'student') {
-            if (this.experiences[0].company === '') {
-              document.getElementById('company').style.borderColor = '#e52213';
-              reject("Please enter a company")
-            }
-            
-            else {
+            let vals = new Set()
+            for (let i = 0; i < this.experiences.length; i++){
+              vals.add(this.experiences[i].company === '')
+              vals.add(this.experiences[i].title === '')
+              vals.add(this.experiences[i].location === '')
+              vals.add(this.experiences[i].from === '')
+              vals.add(this.experiences[i].to === '')
+              vals.add(this.experiences[i].description === '')
+          }
+            console.log(vals)
+            if (vals.size == 1) {
               var obj = {
                 data: this.experiences,
                 user: {id: id}
@@ -419,9 +425,12 @@ export default {
                   reject(e.response.data)
                 })
             }
+            else{
+              reject('Please complete all fields, or return to this section later.')
+            }
           }
           else {
-            console.log('put employer code')
+            console.log('pt employer code')
           }
         } else if (this.activeIndex === 3) {
           if (this.skills.length > 0) {
