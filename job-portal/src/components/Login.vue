@@ -195,10 +195,8 @@
 </template>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
-
 import axios from 'axios'
 import Register from './Register'
-import Recaptcha from './Recaptcha'
 export default {
   name: 'Login',
   data () {
