@@ -215,7 +215,7 @@ export default {
   },
   components: {
     Register,
-    Recaptcha
+    // Recaptcha
   },
   watch: {
     tabIndex (val) {
