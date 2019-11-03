@@ -81,7 +81,7 @@ export default {
     },
     addTag (newTag) {
       const tag = {
-        keyName: newTag,
+        name: newTag,
         id: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
       }
       this.options.push(tag)
