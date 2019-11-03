@@ -226,7 +226,7 @@
                       <label>Add/Remove Skills:</label>
                       <b-form-group>
                         <SkillSelect @addSkills="addSkills" :recievedValues="user.skills"/>
-                        <button class="btn btn-outline-warning" @click.stop="updateSkills"
+                        <button class="btn btn-outline-warning" @click.prevent="updateSkills"
                                 style="width: 100%; border-radius: 10px;">Save
                         </button>
                       </b-form-group>
@@ -664,6 +664,17 @@ export default {
 
       axios.post(`http://localhost:3000/api/profile/skills`, {data: this.skillsToUpdate, user: {id: this.user._id}}, {headers: headers})
         .then(response => {
+          this.$swal({
+            position: 'top-right',
+            backdrop: false,
+            showConfirmButton: false,
+            timer: 2500,
+            width: '300px',
+            imageHeight: 20,
+            imageWidth: 20,
+            background: 'rgba(92,184,92,0.93)',
+            title: '<span style="  font-family: \'Raleway\', sans-serif; font-size: 16px; font-weight: 200; color: white; padding-top: 10px;">Successful!</span>'
+          })
           this.getData()
         })
         .catch(e => {

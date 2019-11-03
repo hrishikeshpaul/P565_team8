@@ -25,10 +25,16 @@ export default {
   components: {
     Multiselect
   },
+  props: {
+    recievedValues: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
-      value: [],
-      options: []
+      value: this.recievedValues,
+      options: [],
     }
   },
   mounted () {
@@ -46,6 +52,11 @@ export default {
       })
   },
   watch: {
+    recievedValues (newVal) {
+      if (newVal.length > 0) {
+        this.value = newVal
+      }
+    },
     value (newVal) {
       if (typeof newVal.hasOwnProperty('keyName') !== null) {
         this.$emit('addSkills', newVal)
