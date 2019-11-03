@@ -41,8 +41,7 @@
                         <button type="submit" class="mt-3 mb-3 btn-outline-warning" style="width: 100%; height: 35px; border-radius: 10px" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</button>
                         <button type="submit" class="mt-1 mb-3 btn-outline-warning" style="width: 100%; height: 35px; border-radius: 10px" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</button>
                         <div class="align-content-center ">
-                          <div class="g-recaptcha" id="rcaptcha" style="margin-left: 45px;" data-sitekey="6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs"></div>
-                          <span id="captcha" style="color:red" />
+                          <div class="g-recaptcha" id="recaptcha" style="margin-left: 45px;" data-sitekey="6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs"></div>
                         </div>
                         <hr class="mb-2"/>
                         <a href="" class="text-muted mt-0" @click.prevent="forgotPassword = !forgotPassword">{{forgotPassword ? 'Back' : 'Forgot Password?'}}</a>
@@ -194,13 +193,10 @@
   </div>
 
 </template>
-
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
-
 import axios from 'axios'
 import Register from './Register'
-import Recaptcha from './Recaptcha'
-
 export default {
   name: 'Login',
   data () {
@@ -212,12 +208,17 @@ export default {
       forgotPassword: false
     }
   },
+
+
   mounted () {
     document.getElementById("main").style.marginLeft = "0";
+    grecaptcha.render("recaptcha", {
+            sitekey: '6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs',
+        })
   },
   components: {
     Register,
-    Recaptcha
+    // Recaptcha
   },
   watch: {
     tabIndex (val) {
@@ -268,6 +269,7 @@ export default {
       if (grecaptcha.getResponse() == 0){
         this.error = 'Please verify captcha'
         this.variant = 'danger'
+        grecaptcha.reset()
         return false
       }
       axios.post(`http://localhost:3000/api/auth/login/`, this.login)
