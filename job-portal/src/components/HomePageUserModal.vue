@@ -29,9 +29,9 @@
               <div class="col-lg-11 col-md-11 col-sm-11 pl-0" style="font-size: 20px">
                 <div v-for="exp in newUser.experience">
                   <div style="float: right; font-size: 15px; color: gray; margin-top: 5px;">{{getDate(exp.from)}} - {{getDate(exp.to)}}</div>
-                  <div style="font-size: 22px;">{{exp.company}}</div>
+                  <div style="font-size: 22px; font-weight: 300">{{exp.company}}</div>
                   <div style="color: gray; font-size: 15px; margin-top: -3px; margin-bottom: 7px">{{exp.location}}</div>
-                  <div style="color: rgb(98,98,98); font-size: 20px; text-align: justify">{{exp.description}}</div>
+                  <div style="color: rgb(116,116,116); font-size: 20px; text-align: justify">{{exp.description}}</div>
                 </div>
               </div>
             </div>
@@ -45,9 +45,9 @@
               <div class="col-lg-11 col-md-11 col-sm-11 pl-0" style="font-size: 20px">
                 <div v-for="edu in newUser.education">
                   <div style="float: right; font-size: 15px; color: gray; margin-top: 5px;">{{getDate(edu.from)}} - {{getDate(edu.to)}}</div>
-                  <div style="font-size: 22px;">{{edu.school}}</div>
+                  <div style="font-size: 22px; font-weight: 300">{{edu.school}}</div>
                   <div style="color: gray; font-size: 15px; margin-top: -3px; margin-bottom: 0px">{{edu.location}}</div>
-                  <div style="color: rgb(98,98,98); font-size: 20px;">{{edu.degree}} - {{edu.fieldofstudy}}</div>
+                  <div style="color: rgb(120,120,120); font-size: 20px;">{{edu.degree}} - {{edu.fieldofstudy}}</div>
                   <p></p>
                 </div>
               </div>

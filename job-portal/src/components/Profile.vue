@@ -32,7 +32,7 @@
     </div>
     <div class="my-5 container px-0 shadow-sm mb-5 bg-white rounded" v-if="role === 'student'">
       <b-card no-body>
-        <b-tabs card style="font-size: 22px;">
+        <b-tabs card style="font-size: 17px;">
           <b-tab title="Acceptances" active style="max-height: 1000px; overflow-y: auto;">
             <b-card-body>
               <span v-if="user.acceptances.length === 0">You don't have any acceptances! Start applying!</span>
@@ -123,7 +123,7 @@
 
     <div class="my-5 container px-0 shadow-sm mb-5 bg-white rounded" v-if="role === 'employer'">
       <b-card no-body>
-        <b-tabs card style="font-size: 22px;">
+        <b-tabs card style="font-size: 18px;">
           <b-tab title="Job Posting" active style="max-height: 1000px; overflow-y: auto;">
             <b-card-body>
               <b-input-group class="mb-3">
@@ -133,14 +133,42 @@
                 </b-input-group-append>
               </b-input-group>
               <div v-for="(job, idx) in employerJobs">
-                <b-card class="text-left my-2" :title="job.title">
-                  <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="deleteConfirmModal(job)"><i class="ti-close"></i></button>
-                  <button href="#" style="float: right; margin-top: -37px !important; border: none;" class="mt-3 pt-2 btn btn-outline-info" @click="jobInfoModal(job)"><i class="ti-pencil"></i></button>
-                  <b class="mt-5">Location: </b><p>{{job.location}}</p>
-                  <b>Position: </b><p>{{job.position}}</p>
-                  <b>Description: </b><p style="white-space: pre-wrap">{{job.description}}</p>
-                  <b>Skills Required: </b><p>{{job.skills.length > 0 ? job.skills.map(s => s.name).join(', ') : 'None'}}</p>
-                  <b>Total Applications: </b><p>{{job.applicants.length}}</p>
+                <b-card class="text-left my-2">
+                  <button href="#" style="float: right; margin-top: 5px !important; border: none;"
+                          class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="deleteConfirmModal(job)"><i
+                    class="ti-close"></i></button>
+                  <button href="#" style="float: right; margin-top: 5px !important; border: none;"
+                          class="mt-3 pt-2 btn btn-outline-info" @click="jobInfoModal(job)"><i class="ti-pencil"></i>
+                  </button>
+                  <div class="row">
+                    <div style="" class="col-lg-2 col-mg-2 col-sm-12 pr-0">
+                      <img style="height: 100px; width: 100px; object-fit: cover;" src="../assets/company.jpg">
+                    </div>
+                    <div style="text-align: justify" class="col-lg-10 col-md-8 col-sm-12 px-0">
+                      <h3 class="card-title">{{job.title}}</h3>
+                      <span class="mt-5" style="margin-right: 4px"><i class="ti-location-pin"></i></span>
+                      <span>{{job.location}}</span>
+                      <p></p>
+                      <span style="font-weight: bold; margin-right: 5px"><i class="ti-briefcase"></i></span>
+                      <span>{{job.position}}</span>
+                      <p></p>
+                      <div class="row">
+                        <div class="col-lg-1 pr-0" style="width: 10px !important;">
+                          <span style="font-weight: bold;"><i class="ti-receipt"></i></span>
+                        </div>
+                        <div class="col-lg-11 px-0" style="margin-left: -22px !important;">
+                          <span style="white-space: pre-wrap;">{{job.description}}</span>
+                        </div>
+                      </div>
+                      <p></p>
+                      <span style="font-weight: bold; margin-right: 9px"><i class="ti-star"></i></span>
+                      <span>{{job.skills.length > 0 ? job.skills.map(s => s.name).join(', ') : 'None'}}</span>
+                      <p></p>
+                      <span style="font-weight: 400; margin-right: 9px !important;"><i class="ti-stats-up"></i></span>
+                      <span>{{job.applicants.length}}</span>
+                      <p></p>
+                    </div>
+                  </div>
                 </b-card>
               </div>
               <button
@@ -158,8 +186,8 @@
               <div v-for="job in user.jobs">
                 <div v-for="user in job.confirmed_users">
                   <b-card class="text-left my-2">
-                    <button href="#" style="float: right; margin-top: 5px !important; border: none;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
-                    <button href="#" style="float: right; margin-top: 5px !important; border: none;" class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i></button>
+                    <button href="#" style="float: right; margin-top: 8px !important; border: none;" class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
+                    <button href="#" style="float: right; margin-top: 8px !important; border: none;" class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i></button>
                     <h3 class="card-title user-hover mt-2" style="cursor: pointer;" @click="applicantDataModal(user)">{{user.name}}</h3>
                     <b>Job:</b><p>{{job.title}}</p>
                     <b>University: </b><p>{{user.company}}</p>
