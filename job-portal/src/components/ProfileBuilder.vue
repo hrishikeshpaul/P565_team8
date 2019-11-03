@@ -13,60 +13,70 @@
              @on-validate="handleValidation"
              @on-error="handleErrorMessage"
            >
-             <h2 slot="title">Hi, let us get you started with your profile! {{role}}</h2>
+             <h2 slot="title">Hi, let us get you started with your profile!</h2>
              <div class="mb-2"><span v-if="errorMsg"  style="color: red;">{{errorMsg}}</span></div>
 
-             <tab-content :title="role === 'student' ? 'Personal Details' : 'Organizational Details'"
+             <tab-content title="Personal details"
                           icon="ti-user"
                           :before-change="validateAsync"
              >
                <b-form>
-                 <label>{{role === 'student' ? 'Full Name' : 'Name of Point of Contact'}}</label>
-                 <b-form-group id="fieldsetHorizontal1">
-                   <b-form-input id="name" v-model.trim="user.name"></b-form-input>
+                 <b-form-group id="fieldsetHorizontal"
+                               :label-cols="4"
+                               breakpoint="md"
+                               label-size="sm"
+                               label="* Full Name"
+                               :class="{'error-label': invalidName}">
+                   <b-form-input id="name_input" :class="{'error-border': invalidName}" v-model.trim="user.name"></b-form-input>
                  </b-form-group>
 
-                 <label>{{role === 'student' ? 'University' : 'Company'}}</label>
-                 <b-form-group id="fieldsetHorizontal2">
-                   <b-form-input id="company" v-model.trim="user.company"></b-form-input>
-                 </b-form-group>
+                 <b-form-group id="fieldsetHorizontal"
+                               :label-cols="4"
+                               breakpoint="md"
+                               label-size="sm"
+                               :label="role === 'student' ? '* University' : '* Company'"
+                               :class="{'error-label': invalidOrganization}"
+                 >
+                   <SkillSelect @addSkills="addSkills"/>
 
-                 <label v-if="role === 'student'">Gender</label>
-                 <b-form-group>
-                   <b-form-select v-if="role === 'student'" v-model="user.gender" :options="['Male', 'Female', 'I don\'t wish to state']"></b-form-select>
+                   <b-form-input id="name"  :class="{'error-border': invalidOrganization}" v-model.trim="user.company"></b-form-input>
                  </b-form-group>
-
-                 <label>Website</label>
-                 <b-form-group id="fieldsetHorizontal3">
+                 <b-form-group id="fieldsetHorizontal"
+                               :label-cols="4"
+                               breakpoint="md"
+                               label-size="sm"
+                               label="Website"
+                 >
                    <b-form-input id="website" v-model.trim="user.website"></b-form-input>
                  </b-form-group>
-
-                 <label>LinkedIn</label>
-                 <b-form-group id="fieldsetHorizontal4">
-                  <b-form-input id="linkedin" v-model.trim="user.social.linkedin"></b-form-input>
+                 <b-form-group id="fieldsetHorizontal"
+                               :label-cols="4"
+                               breakpoint="md"
+                               label-size="sm"
+                               label="LinkedIn"
+                 >
+                   <b-form-input id="linkedin" v-model.trim="user.social.linkedin"></b-form-input>
                  </b-form-group>
-
-                 <label v-if="role === 'student'">Github</label>
-                 <b-form-group id="fieldsetHorizontal6"
-                               v-if="role === 'student'">
+                 <b-form-group id="fieldsetHorizontal"
+                               :label-cols="4"
+                               breakpoint="md"
+                               label-size="sm"
+                               label="Github"
+                 >
                    <b-form-input id="github" v-model.trim="user.social.github"></b-form-input>
                  </b-form-group>
-
-                 <label>Location</label>
-                 <b-form-group id="fieldsetHorizontal5">
-                   <b-form-input id="location" v-model.trim="user.location"></b-form-input>
-                 </b-form-group>
-
-                 <label>Bio</label>
-                 <b-form-group id="fieldsetHorizontal7">
-                   <b-form-textarea id="bio" v-model.trim="user.bio" rows="3"></b-form-textarea>
+                 <b-form-group id="fieldsetHorizontal"
+                               :label-cols="4"
+                               breakpoint="md"
+                               label-size="sm"
+                               label="Bio"
+                 >
+                   <b-form-input id="bio" v-model.trim="user.bio"></b-form-input>
                  </b-form-group>
                </b-form>
              </tab-content>
-
-             <tab-content :title="'Education'"
-                          v-if="role === 'student'"
-                          :icon="'ti-book'"
+             <tab-content :title="role === 'student' ? 'Education' : 'Orgainsational Information'"
+                          :icon="role === 'student' ? 'ti-book' : 'ti-bag'"
                           :before-change="validateAsync">
                <div v-for="(education,index) in educations" v-if="role === 'student'">
                  <div class="row" v-if="educations.length > 1">
@@ -78,32 +88,54 @@
                    </div>
                  </div>
                  <b-form v-if="role === 'student'">
-                   <label>Name of School</label>
-                   <b-form-group>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Name of School">
                      <b-form-input id="school" v-model.trim="education.school"></b-form-input>
                    </b-form-group>
-
-                   <label>Degree</label>
-                   <b-form-group>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Degree">
                      <b-form-input id="degree" v-model.trim="education.degree"></b-form-input>
                    </b-form-group>
-
-                   <label>Field of Study</label>
-                   <b-form-group>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Field Of Study">
                      <b-form-input id="fieldofstudy" v-model.trim="education.fieldofstudy"></b-form-input>
                    </b-form-group>
                    <div class="row">
-                     <div class="col-6">
-                       <label>From</label>
-                       <b-form-group>
+                     <div class="col-5">
+                       <b-form-group id="fieldsetHorizontal"
+                                     :label-cols="2"
+                                     breakpoint="md"
+                                     label-size="sm"
+                                     label="From">
                          <b-form-input id="from" v-model.trim="education.from" type="date"></b-form-input>
                        </b-form-group>
                      </div>
-                     <div class="col-6">
-                       <label>To</label>
-                       <b-form-group>
+                     <div class="col-5">
+                       <b-form-group id="fieldsetHorizontal"
+                                     :label-cols="2"
+                                     breakpoint="md"
+                                     label-size="sm"
+                                     label="To">
                          <b-form-input id="to" v-model.trim="education.to" type="date"></b-form-input>
                        </b-form-group>
+                     </div>
+                     <div class="col-2 mt-4 pt-2">
+                       <b-form-checkbox
+                         id="checkbox-1"
+                         v-model="education.current"
+                         name="checkbox-1"
+                       >
+                         Current
+                       </b-form-checkbox>
                      </div>
                    </div>
                  </b-form>
@@ -114,6 +146,24 @@
                  class="btn-outline-warning mb-2 mt-1 "
                  @click.prevent="addItem('education')">
                  Add</button>
+               <div v-if="role === 'employer' ">
+                 <b-form>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Name of Organization">
+                     <b-form-input id="name" v-model.trim="company.name"></b-form-input>
+                   </b-form-group>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Location">
+                     <b-form-input id="name" v-model.trim="company.location"></b-form-input>
+                   </b-form-group>
+                 </b-form>
+               </div>
              </tab-content>
   <!--           EXPERIENCE TAB-->
              <tab-content
@@ -131,35 +181,62 @@
                    </div>
                  </div>
                  <b-form>
-                   <label>Name of Organisation</label>
-                   <b-form-group>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Name of Organization">
                      <b-form-input id="company" v-model.trim="experience.company"></b-form-input>
                    </b-form-group>
-                   <label>Title</label>
-                   <b-form-group>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Title">
                      <b-form-input id="title" v-model.trim="experience.title"></b-form-input>
                    </b-form-group>
-                   <label>Location</label>
-                   <b-form-group>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Location">
                      <b-form-input id="location" v-model.trim="experience.location"></b-form-input>
                    </b-form-group>
                    <div class="row">
-                     <div class="col-6">
-                       <label>From</label>
-                       <b-form-group>
+                     <div class="col-5">
+                       <b-form-group id="fieldsetHorizontal"
+                                     :label-cols="2"
+                                     breakpoint="md"
+                                     label-size="sm"
+                                     label="From">
                          <b-form-input id="from" v-model.trim="experience.from" type="date"></b-form-input>
                        </b-form-group>
                      </div>
-                     <div class="col-6">
-                       <label>To</label>
-                       <b-form-group>
+                     <div class="col-5">
+                       <b-form-group id="fieldsetHorizontal"
+                                     :label-cols="2"
+                                     breakpoint="md"
+                                     label-size="sm"
+                                     label="To">
                          <b-form-input id="to" v-model.trim="experience.to" type="date"></b-form-input>
                        </b-form-group>
                      </div>
+                     <div class="col-2 mt-4 pt-2">
+                       <b-form-checkbox
+                         id="checkbox-1"
+                         v-model="experience.current"
+                         name="checkbox-1"
+                       >
+                         Current
+                       </b-form-checkbox>
+                     </div>
                    </div>
-                   <label>Description</label>
-                   <b-form-group>
-                     <b-form-textarea id="description" v-model.trim="experience.description" rows="3"></b-form-textarea>
+                   <b-form-group id="fieldsetHorizontal"
+                                 :label-cols="4"
+                                 breakpoint="md"
+                                 label-size="sm"
+                                 label="Description">
+                     <b-form-input id="description" v-model.trim="experience.description"></b-form-input>
                    </b-form-group>
                  </b-form>
                </div>
@@ -197,15 +274,20 @@
   import axios from 'axios'
   import NavBar from './NavBar'
   import SkillSelect from './SkillSelect'
+  // import UniversitySelect from './UniversitySelect'
 
 export default {
   name: 'ProfileBuilder',
   components: {
     NavBar,
     SkillSelect,
+      // UniversitySelect,
   },
   data () {
     return {
+        isError:false,
+        invalidName: false,
+        invalidOrganization: false,
       name: '',
       user: {
         social: {}
@@ -218,6 +300,7 @@ export default {
         location: '',
         from: '',
         to: '',
+        current: [true],
         description: ''
       }],
       educations: [{
@@ -225,7 +308,8 @@ export default {
         degree: '',
         fieldofstudy: '',
         from: '',
-        to: ''
+        to: '',
+        current: false
       }],
       skills: [],
       activeIndex: 0,
@@ -244,10 +328,11 @@ export default {
         'Content-Type': 'application/json'
       }
       var id = localStorage.getItem('user_id')
-
-      axios.patch(`http://localhost:3000/api/user/${id}`, {first_time: false}, {headers: params})
+        console.log(id)
+        console.log("onCOmplete"+localStorage.getItem('user_name'))
+        axios.patch(`http://localhost:3000/api/user/${id}`, {first_time: false}, {headers: params})
         .then(response => {
-          console.log('hi')
+          console.log('-----------hi')
           localStorage.setItem('user_first_time', 'false')
           this.$router.push({
             name: 'HomePage'
@@ -284,13 +369,19 @@ export default {
               company: this.user.company,
               website: this.user.website,
               social: this.user.social,
-              bio: this.user.bio,
-              gender: this.user.gender
+              bio: this.user.bio
             },
             user: {id: id}
           }
-          if (!this.user.name || !this.user.company || !this.user.website)
-            reject('Please enter the required details')
+          if (!this.user.name|| !this.user.company) {
+              this.invalidName=false;
+              this.invalidOrganization = false;
+              if (!this.user.name)
+                  this.invalidName=true;
+              if (!this.user.company)
+                  this.invalidOrganization = true;
+              reject('Please enter required fields');
+          }
 
           axios.post(`http://localhost:3000/api/profile/personal`, obj, {headers: params})
             .then(response => {
@@ -366,14 +457,14 @@ export default {
           }
         } else if (this.activeIndex === 3) {
           if (this.skills.length > 0) {
-            // console.log('not done')
-            // var skillsArray = []
-            // this.skills.forEach(skill => {
-            //   skillsArray.push(skill.name)
-            // })
+            console.log('not done')
+            var skillsArray = []
+            this.skills.forEach(skill => {
+              skillsArray.push(skill.name)
+            })
 
             var obj = {
-              data: this.skills,
+              data: skillsArray,
               user: {id: id}
             }
 
@@ -398,7 +489,8 @@ export default {
             degree: '',
             fieldofstudy: '',
             from: '',
-            to: ''
+            to: '',
+            current: true
           }
         )
       else if (array === 'experience')
@@ -408,6 +500,7 @@ export default {
           location: '',
           from: '',
           to: '',
+          current: [],
           description: ''
         })
     },
@@ -428,47 +521,53 @@ export default {
     },
   },
   created () {
-    if (localStorage.getItem('role') == 'null') {
-      const { value: role } = this.$swal({
-        title: 'Select Role',
-        input: 'select',
-        inputOptions: {
-          student: 'Student',
-          employer: 'Employer'
-        },
-        allowOutsideClick: false,
-        showCancelButton: false,
-        inputPlaceholder: 'Select role',
-        confirmButtonColor: '#f0ad4e',
-        inputValidator: (value) => {
-          return new Promise((resolve, reject) => {
-            if (value === 'student' || value === 'employer') {
-              var id = localStorage.getItem('user_id')
-              var params = {
-                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
-                'Content-Type': 'application/json'
+      console.log("onCOmplete"+localStorage.getItem('user_name'))
+
+      console.log("--------------\n"+typeof localStorage.getItem('role'))
+
+      if (localStorage.getItem('role') == 'null') {
+          const {value: role} = this.$swal({
+              title: 'Select Role',
+              input: 'select',
+              inputOptions: {
+                  student: 'Student',
+                  employer: 'Employer'
+              },
+              allowOutsideClick: false,
+              showCancelButton: false,
+              inputPlaceholder: 'Select role',
+              confirmButtonColor: '#f0ad4e',
+              inputValidator: (value) => {
+                  return new Promise((resolve, reject) => {
+                      if (value === 'student' || value === 'employer') {
+                          var id = localStorage.getItem('user_id')
+                          var params = {
+                              'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
+                              'Content-Type': 'application/json'
+                          }
+                          var obj = {
+                              user: id,
+                              role: value
+                          }
+                          axios.post('http://localhost:3000/api/profile/updateRole', obj, {headers: params})
+                              .then(resposne => {
+                                  localStorage.setItem('role', value)
+                                  console.log(value)
+                                  this.role = value
+                                  resolve()
+                              })
+                              .catch(e => {
+                                  reject('Error')
+                              })
+                      } else {
+                          resolve('You need to select a role :)')
+                      }
+                  })
               }
-              var obj = {
-                user: id,
-                role: value
-              }
-              axios.post('http://localhost:3000/api/profile/updateRole', obj, {headers: params})
-                .then(resposne => {
-                  localStorage.setItem('role', value)
-                  console.log(value)
-                  this.role = value
-                  resolve()
-                })
-                .catch(e => {
-                  reject('Error')
-                })
-            } else {
-              resolve('You need to select a role :)')
-            }
           })
-        }
-      })
-    }
+
+
+      }
   },
   mounted () {
     this.role = localStorage.role
@@ -489,5 +588,12 @@ export default {
     font-size: 25px;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
     margin-bottom: 28px;
+  }
+
+  .error-border {
+    border-color: red;
+  }
+  .error-label {
+    color: red;
   }
 </style>
