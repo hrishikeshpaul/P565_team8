@@ -7,8 +7,8 @@
       </video>
       <div class="container">
         <div style="display: block;">
-          <div>
-            <b-card style="border-radius: 8px !important;">
+          <div class="mt-5">
+            <b-card style="border-radius: 8px !important; background-color: rgb(252,252,252); max-height: 700px; overflow-y: auto">
               <div class="text-center big-title">
                 <span class="px-2 logo-noq">noQ</span>
               </div>
@@ -38,8 +38,8 @@
                                       >
                           <b-form-input type="password" id="password" v-model.trim="login.password" ></b-form-input>
                         </b-form-group>
-                        <b-button type="submit" variant="warning" class="mt-3 mb-3" style="width: 100%" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
-                        <b-button type="submit" variant="warning" class="mt-1 mb-3" style="width: 100%" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</b-button>
+                        <button type="submit" class="mt-3 mb-3 btn-outline-warning" style="width: 100%; height: 35px; border-radius: 10px" @click.prevent="onSubmit" v-if="!forgotPassword">{{forgotPassword ? 'Reset Password' : 'Login'}}</button>
+                        <button type="submit" class="mt-1 mb-3 btn-outline-warning" style="width: 100%; height: 35px; border-radius: 10px" @click.prevent="resetPassword" v-else>{{forgotPassword ? 'Reset Password' : 'Login'}}</button>
                         <div class="align-content-center ">
                           <div class="g-recaptcha" id="rcaptcha" style="margin-left: 45px;" data-sitekey="6Lf7Ab4UAAAAAMD1Px2wHu6_LKXPd2b02BNTPfBs"></div>
                           <span id="captcha" style="color:red" />

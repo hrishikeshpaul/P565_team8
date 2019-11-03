@@ -17,27 +17,28 @@
                     >
         <b-form-input id="username" v-model.trim="register.username" class="no-border"></b-form-input>
       </b-form-group>
-      <label>Password</label>
+      <label>Password</label><span></span>
       <b-form-group id="fieldsetHorizontal"
                     >
         <b-form-input type="password" id="password" :state="state" v-model.trim="register.password" class="no-border"></b-form-input>
       </b-form-group>
+      <ul class="helper-text" style="font-size: 12px;">
+        <li class="length">Must be at least 8 characters long</li>
+        <li class="uppercase">Must contain an uppercase letter</li>
+        <li class="special">Must contain a special character</li>
+      </ul>
       <label>Re-Enter Password</label>
       <b-form-group id="fieldsetHorizontal"
                     >
         <b-form-input type="password" id="password2" :state="state" v-model.trim="register.password2" class="no-border"></b-form-input>
       </b-form-group>
+
       <label>Select Role</label>
       <b-form-group
         id="fieldsetHorizontal">
         <b-form-select v-model="register.role" :options="options" size="md" id="role"></b-form-select>
       </b-form-group>
-      <ul class="helper-text">
-        <li class="length">Must be at least 8 characters long</li>
-        <li class="uppercase">Must contain an uppercase letter</li>
-        <li class="special">Must contain a special character</li>
-    </ul>
-      <b-button type="submit" variant="warning" class="mt-2" style="width: 100%">Register</b-button>
+      <button type="submit" class="mt-2 btn-outline-warning" style="width: 100%; height: 35px; border-radius: 10px">Register</button>
       <br />
     </b-form>
   </div>
