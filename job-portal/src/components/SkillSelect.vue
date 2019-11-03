@@ -68,3 +68,12 @@ export default {
 }
 </script>
 
+<style scoped>
+  /deep/ .multiselect__content-wrapper {
+    font-size: 15px !important;
+    z-index: 1000;
+  }
+  /deep/ .multiselect {
+    background-color: #f6f6f6 !important;
+  }
+</style>

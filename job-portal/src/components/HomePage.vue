@@ -1,13 +1,13 @@
 <template>
   <div>
 <!--    <NavBar @logout="logout"/>-->
-    <span style="font-size: 80px;" class="mx-5 px-5 mb-0">Home</span>
-    <p class="px-5" style="color: grey; margin-top: -20px; margin-left: 55px;">{{role === 'student' ? 'Apply to companies that are are a perfect fit for you!' : 'Accept candidates that are a perfect fir for your organisation'}}</p>
+    <span style="font-size: 80px;" class="mx-5 mb-0">Home</span>
+    <p class="" style="color: grey; margin-top: -20px; margin-left: 55px;">{{role === 'student' ? 'Apply to companies that are are a perfect fit for you!' : 'Accept candidates that are a perfect fir for your organisation'}}</p>
     <div class="container">
       <FilterBar @group="callReGroup" :options="filterOptions"/>
     </div>
 
-    <div class="mx-5 px-5">
+    <div class="mx-5">
       <div v-for="(job, key) in computedJobs" class="mb-3" v-if="userRole === 'student'" >
         <div style="position: relative;">
           <h2><div class="mb-3">{{ key }}</div></h2>
