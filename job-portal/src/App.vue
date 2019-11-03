@@ -96,7 +96,7 @@ export default {
       role: ''
     }
   },
-  mounted() {
+  created () {
     this.email = localStorage.getItem('email')
     this.role = localStorage.getItem('role')
   },

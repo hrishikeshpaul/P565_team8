@@ -10,63 +10,63 @@
           <p style="font-size: 17px; color: #7f8993; margin-top: -7px; padding-left: 5px;" class="mb-0 px-3 nice-font">{{newUser.email}}</p>
         </template>
         <div style="max-height: 600px !important; overflow-y: auto">
-          <button href="#" style="float: right;" class="mt-3 pt-2 mr-2 btn btn-outline-secondary" @click="showWindow(newUser.social.github)"><i class="ti-github"></i></button>
+        <button href="#" style="float: right;" class="mt-3 pt-2 mr-2 btn btn-outline-secondary" @click="showWindow(newUser.social.github)"><i class="ti-github"></i></button>
 
-          <button href="#" style="float: right;" class="mt-3 pt-2 mr-2 btn btn-outline-secondary" @click="showWindow(newUser.social.linkedin)"><i class="ti-linkedin"></i></button>
+        <button href="#" style="float: right;" class="mt-3 pt-2 mr-2 btn btn-outline-secondary" @click="showWindow(newUser.social.linkedin)"><i class="ti-linkedin"></i></button>
 
-          <div class="text-center nice-font">
-            <img :src="gravatarImage(user.email)" style="height: 150px; width: 150px; border-radius: 50%; margin-left: 100px;"/>
-            <p style="font-size: 30px;" class="pt-2 mb-0 pb-0">{{user.name}}</p>
-            <p style="color: gray; font-size: 20px">{{user.company}}</p>
-            <p style="color: gray">{{user.location}}</p>
-            <hr />
-          </div>
-          <div class="px-3 nice-font">
-            <div class="row">
-              <div class="col-lg-1 col-md-1 col-sm-1" style="color: gray; font-size: 20px">
-                <span><i class="ti-briefcase"></i></span>
-              </div>
-              <div class="col-lg-11 col-md-11 col-sm-11 pl-0" style="font-size: 20px">
-                <div v-for="exp in newUser.experience">
-                  <div style="float: right; font-size: 15px; color: gray; margin-top: 5px;">{{getDate(exp.from)}} - {{getDate(exp.to)}}</div>
-                  <div style="font-size: 22px; font-weight: 300">{{exp.company}}</div>
-                  <div style="color: gray; font-size: 15px; margin-top: -3px; margin-bottom: 7px">{{exp.location}}</div>
-                  <div style="color: rgb(116,116,116); font-size: 20px; text-align: justify">{{exp.description}}</div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="text-center nice-font">
+          <img :src="gravatarImage(user.email)" style="height: 150px; width: 150px; border-radius: 50%; margin-left: 100px;"/>
+          <p style="font-size: 30px;" class="pt-2 mb-0 pb-0">{{user.name}}</p>
+          <p style="color: gray; font-size: 20px">{{user.company}}</p>
+          <p style="color: gray">{{user.location}}</p>
           <hr />
-          <div class="px-3 nice-font">
-            <div class="row">
-              <div class="col-lg-1 col-md-1 col-sm-1 mt-1" style="color: gray; font-size: 20px">
-                <span style="margin-top: 5px !important;"><i class="ti-book"></i></span>
-              </div>
-              <div class="col-lg-11 col-md-11 col-sm-11 pl-0" style="font-size: 20px">
-                <div v-for="edu in newUser.education">
-                  <div style="float: right; font-size: 15px; color: gray; margin-top: 5px;">{{getDate(edu.from)}} - {{getDate(edu.to)}}</div>
-                  <div style="font-size: 22px; font-weight: 300">{{edu.school}}</div>
-                  <div style="color: gray; font-size: 15px; margin-top: -3px; margin-bottom: 0px">{{edu.location}}</div>
-                  <div style="color: rgb(120,120,120); font-size: 20px;">{{edu.degree}} - {{edu.fieldofstudy}}</div>
-                  <p></p>
-                </div>
-              </div>
+        </div>
+        <div class="px-3 nice-font">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1" style="color: gray; font-size: 20px">
+              <span><i class="ti-briefcase"></i></span>
             </div>
-          </div>
-          <hr />
-          <div class="px-3 nice-font">
-            <div class="row">
-              <div class="col-lg-1 col-md-1 col-sm-1" style="color: gray; font-size: 20px">
-                <span><i class="ti-star"></i></span>
-              </div>
-              <div class="col-lg-11 col-md-11 col-sm-11 pl-0" style="font-size: 20px">
-                <div style="font-size: 20px">
-                  {{displaySkills(newUser.skills)}}
-                </div>
+            <div class="col-lg-11 col-md-11 col-sm-11 pl-0" style="font-size: 20px">
+              <div v-for="exp in newUser.experience">
+                <div style="float: right; font-size: 15px; color: gray; margin-top: 5px;">{{getDate(exp.from)}} - {{getDate(exp.to)}}</div>
+                <div style="font-size: 22px; font-weight: 300">{{exp.company}}</div>
+                <div style="color: gray; font-size: 15px; margin-top: -3px; margin-bottom: 7px">{{exp.location}}</div>
+                <div style="color: rgb(116,116,116); font-size: 20px; text-align: justify">{{exp.description}}</div>
               </div>
             </div>
           </div>
         </div>
+        <hr />
+        <div class="px-3 nice-font">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 mt-1" style="color: gray; font-size: 20px">
+              <span style="margin-top: 5px !important;"><i class="ti-book"></i></span>
+            </div>
+            <div class="col-lg-11 col-md-11 col-sm-11 pl-0" style="font-size: 20px">
+              <div v-for="edu in newUser.education">
+                <div style="float: right; font-size: 15px; color: gray; margin-top: 5px;">{{getDate(edu.from)}} - {{getDate(edu.to)}}</div>
+                <div style="font-size: 22px; font-weight: 300">{{edu.school}}</div>
+                <div style="color: gray; font-size: 15px; margin-top: -3px; margin-bottom: 0px">{{edu.location}}</div>
+                <div style="color: rgb(120,120,120); font-size: 20px;">{{edu.degree}} - {{edu.fieldofstudy}}</div>
+                <p></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="px-3 nice-font">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1" style="color: gray; font-size: 20px">
+              <span><i class="ti-star"></i></span>
+            </div>
+            <div class="col-lg-11 col-md-11 col-sm-11 pl-0" style="font-size: 20px">
+              <div style="font-size: 20px">
+                {{displaySkills(newUser.skills)}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       </b-modal>
     </div>
   </div>

@@ -39,41 +39,108 @@
                   <b-card-body>
                     <span v-if="user.acceptances.length === 0">You don't have any acceptances! Start applying!</span>
                     <div v-for="(job, idx) in user.acceptances" class="text-left mt-2">
-                      <b-card :title="job.title">
-                        <button href="#" style="float: right; margin-top: -37px !important;"
-                                class="mt-3 pt-2 ml-2 btn btn-outline-danger"
-                                @click="rejectConfirmedApplicant(job._id, user._id)"><i class="ti-close"></i></button>
-                        <button href="#" style="float: right; margin-top: -37px !important;"
-                                class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i></button>
-                        <b>Company:</b>
-                        <p>{{job.company}}</p>
-                        <b>Recruiter: </b>
-                        <p>{{job.employer.name}}</p>
-                        <b>Position:</b>
-                        <p>{{job.position}}</p>
-                        <b>Description:</b>
-                        <p>{{job.description}}</p>
+                      <b-card class="text-left my-2 shadow-hover">
+                        <button href="#" style="float: right; margin-top: 5px !important; border: none;"
+                                class="mt-3 pt-2 ml-2 btn btn-outline-danger" @click="rejectConfirmedApplicant(job._id, user._id)"><i
+                          class="ti-close"></i></button>
+                        <button href="#" style="float: right; margin-top: 5px !important; border: none;"
+                                class="mt-3 pt-2 btn btn-outline-info"><i class="ti-comment-alt"></i>
+                        </button>
+                        <div class="row">
+                          <div style="" class="col-lg-2 col-md-2 col-sm-12 pr-1">
+                            <img style="height: 100px; width: 100px; object-fit: cover;" src="../assets/company.jpg">
+                          </div>
+                          <div style="text-align: justify" class="col-lg-10 col-md-10 col-sm-12">
+                            <h3 class="card-title">{{job.title}}</h3>
+                            <div class="row">
+                              <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                                <span class="mt-5" style="margin-right: 4px"><i class="ti-location-pin"></i></span>
+                              </div>
+                              <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                                <span>{{job.location}}</span>
+                              </div>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                              <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                                <span class="mt-5" style="margin-right: 4px"><i class="ti-briefcase"></i></span>
+                              </div>
+                              <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                                <span>{{job.position}}</span>
+                              </div>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                              <div class="col-lg-1" style="width: 10px !important;">
+                                <span style="font-weight: bold;"><i class="ti-receipt"></i></span>
+                              </div>
+                              <div class="col-lg-11 pl-0">
+                                <span style="white-space: pre-wrap;">{{job.description}}</i></span>
+                              </div>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                              <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                                <span class="mt-5" style="margin-right: 4px"><i class="ti-star"></i></span>
+                              </div>
+                              <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                                <span>{{job.skills.length > 0 ? job.skills.map(s => s.name).join(', ') : 'None'}}</span>
+                              </div>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                              <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                                <span class="mt-5" style="margin-right: 4px"><i class="ti-stats-up"></i></span>
+                              </div>
+                              <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                                <span>{{job.applicants.length}}</span>
+                              </div>
+                            </div>
+                            <p></p>
+                          </div>
+                        </div>
                       </b-card>
                     </div>
                   </b-card-body>
                 </b-tab>
                 <b-tab title="Education" style="max-height: 1000px; overflow-y: auto;">
-                  <b-card-body style="font-size: 22px;">
+                  <b-card-body style="font-size: 18px;">
                     <div v-if="user.education.length > 0" v-for="edu in user.education" :id="edu.school">
-                      <b-card class="mb-3">
-                        <button style="float: right; border: none;" class="btn btn-outline-danger ml-2"
+                      <b-card class="mb-3 shadow-hover">
+                        <button style="float: right; border: none; margin-top: 5px !important;" class="btn btn-outline-danger ml-2"
                                 @click="deleteEducation(edu)"><i class="ti-close"></i></button>
-                        <button style="float: right; border: none;" class="btn btn-outline-secondary"
+                        <button style="float: right; border: none; margin-top: 5px !important;" class="btn btn-outline-secondary"
                                 @click="editEducationModal(edu)"><i class="ti-pencil"></i></button>
-                        <div><b>Name</b>
-                          <p>{{edu.school}} </p></div>
-                        <div><b>Degree</b>
-                          <p>{{edu.degree}} </p></div>
-                        <div><b>Field of Study</b>
-                          <p>{{edu.fieldofstudy}} </p></div>
-                        <div><b>Duration</b>
-                          <p>{{$moment(edu.from).format('MMM Do YY') }} - {{edu.to !== null ?
-                            $moment(edu.to).format('MMM Do YY') : 'Present'}} </p></div>
+                        <p></p>
+                        <h4 class="card-title" style="margin-top: -12px;">{{edu.school}}</h4>
+                        <hr width="100%" align="left"/>
+                        <div class="row">
+                          <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                            <span><i class="ti-bookmark-alt"></i></span>
+                          </div>
+                          <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                            <span>{{edu.degree}}</span>
+                          </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                          <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                            <span><i class="ti-agenda"></i></span>
+                          </div>
+                          <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                            <span>{{edu.fieldofstudy}}</span>
+                          </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                          <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                            <span><i class="ti-time"></i></span>
+                          </div>
+                          <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                            <span>{{formatDate(edu.from)}} - {{formatDate(edu.to)}} </span>
+                          </div>
+                        </div>
+                        <p></p>
                       </b-card>
                     </div>
                     <b-button
@@ -88,24 +155,58 @@
                   </b-card-body>
                 </b-tab>
                 <b-tab title="Experiences" style="max-height: 1000px; overflow-y: auto;">
-                  <b-card-body style="font-size: 22px;">
+                  <b-card-body style="font-size: 19px;">
                     <div v-if="user.experience.length > 0" v-for="exp in user.experience">
-                      <b-card class="mb-3">
-                        <button style="float: right; border: none;" class="btn btn-outline-danger ml-2"
-                                @click="deleteExperience(exp)"><i class="ti-close"></i></button>
-                        <button style="float: right; border: none;" class="btn btn-outline-secondary"
-                                @click="editExperienceModal(exp)"><i class="ti-pencil"></i></button>
-                        <div><b>Company/Organization</b>
-                          <p>{{exp.company}} </p></div>
-                        <div><b>Title</b>
-                          <p>{{exp.title}} </p></div>
-                        <div><b>Location</b>
-                          <p>{{exp.location}} </p></div>
-                        <div><b>Duration</b>
-                          <p>{{$moment(exp.from).format('MMM Do YY') }} - {{formatDate(exp.to)}} </p>
+                      <b-card class="mb-3 shadow-hover">
+                        <div class="row">
+                          <div class="col-lg-10 col-md-11 col-sm-12">
+                            <h3 class="card-title">{{exp.company}}</h3>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-12 pl-0">
+                            <button style="float: right; border: none;" class="btn btn-outline-danger ml-2"
+                                    @click="deleteExperience(exp)"><i class="ti-close"></i></button>
+                            <button style="float: right; border: none;" class="btn btn-outline-secondary"
+                                    @click="editExperienceModal(exp)"><i class="ti-pencil"></i></button>
+                          </div>
                         </div>
-                        <div><b>Description</b>
-                          <p>{{exp.description}}</p></div>
+                        <hr width="100%" align="left" class="mt-0"/>
+                        <p></p>
+                        <div class="row">
+                          <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                            <span><i class="ti-briefcase"></i></span>
+                          </div>
+                          <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                            <span>{{exp.title}}</span>
+                          </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                          <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                            <span><i class="ti-location-pin"></i></span>
+                          </div>
+                          <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                            <span>{{exp.location}}</span>
+                          </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                          <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                            <span><i class="ti-time"></i></span>
+                          </div>
+                          <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                            <span>{{formatDate(exp.from) }} - {{formatDate(exp.to)}}</span>
+                          </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                          <div class="col-lg-1 col-md-1 col-sm-12 pr-0">
+                            <span><i class="ti-receipt"></i></span>
+                          </div>
+                          <div class="col-lg-11 col-md-11 col-sm-12 pl-0">
+                            <span style="text-align: justify">{{exp.description}}</span>
+                          </div>
+                        </div>
+                        <p></p>
                       </b-card>
                     </div>
                     <b-button
@@ -120,7 +221,7 @@
                   </b-card-body>
                 </b-tab>
                 <b-tab title="Skills" style="max-height: 1000px; overflow-y: auto; min-height: 400px;">
-                  <b-card-body style="font-size: 22px;">
+                  <b-card-body style="font-size: 18px;">
                     <b-form class="text-left">
                       <label>Add/Remove Skills:</label>
                       <b-form-group>
@@ -269,6 +370,7 @@
 import axios from 'axios'
 import Fuse from 'fuse.js'
 import gravatar from 'gravatar'
+import 'font-awesome/css/font-awesome.min.css'
 
 import NavBar from './NavBar'
 import JobInputModal from './JobInputModal'
@@ -382,12 +484,34 @@ export default {
       this.showJobInputModal = !this.showJobInputModal
     },
     hideJobInputModal () {
+      this.$swal({
+        position: 'top-right',
+        backdrop: false,
+        showConfirmButton: false,
+        timer: 2500,
+        width: '300px',
+        imageHeight: 20,
+        imageWidth: 20,
+        background: 'rgba(92,184,92,0.93)',
+        title: '<span style="  font-family: \'Raleway\', sans-serif; font-size: 16px; font-weight: 200; color: white; padding-top: 10px;">Successful!</span>'
+      })
       this.showJobInputModal = false
     },
     profileInputModal () {
       this.showEditProfileModal = !this.showEditProfileModal
     },
     hideEditProfileInputModal () {
+      this.$swal({
+        position: 'top-right',
+        backdrop: false,
+        showConfirmButton: false,
+        timer: 2500,
+        width: '300px',
+        imageHeight: 20,
+        imageWidth: 20,
+        background: 'rgba(92,184,92,0.93)',
+        title: '<span style="  font-family: \'Raleway\', sans-serif; font-size: 16px; font-weight: 200; color: white; padding-top: 10px;">Successful!</span>'
+      })
       this.showEditProfileModal = false
     },
     jobInfoModal (job) {
@@ -402,6 +526,17 @@ export default {
       this.showDeleteConfirmModal = !this.showDeleteConfirmModal
     },
     hideDeleteConfirmModal () {
+      this.$swal({
+        position: 'top-right',
+        backdrop: false,
+        showConfirmButton: false,
+        timer: 2500,
+        width: '300px',
+        imageHeight: 20,
+        imageWidth: 20,
+        background: 'rgba(92,184,92,0.93)',
+        title: '<span style="  font-family: \'Raleway\', sans-serif; font-size: 16px; font-weight: 200; color: white; padding-top: 10px;">Successful!</span>'
+      })
       this.showDeleteConfirmModal = false
     },
     editEducationModal (education) {
@@ -411,6 +546,17 @@ export default {
     },
     hideEducationModal () {
       this.showEducationModal = false
+      this.$swal({
+        position: 'top-right',
+        backdrop: false,
+        showConfirmButton: false,
+        timer: 2500,
+        width: '300px',
+        imageHeight: 20,
+        imageWidth: 20,
+        background: 'rgba(92,184,92,0.93)',
+        title: '<span style="  font-family: \'Raleway\', sans-serif; font-size: 16px; font-weight: 200; color: white; padding-top: 10px;">Successful!</span>'
+      })
       this.getData()
     },
     editExperienceModal (experience) {
@@ -556,4 +702,15 @@ export default {
 .user-hover:hover {
   color: grey
 }
+.shadow-hover {
+  box-shadow: none;
+  transition: all 0.4s;
+}
+  .shadow-hover:hover {
+    box-shadow: 1px 2px 7px #bdbdbd;
+  }
+  .swal-wide {
+    font-family: 'Raleway', sans-serif !important;
+
+  }
 </style>

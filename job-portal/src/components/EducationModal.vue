@@ -2,47 +2,47 @@
   <div>
     <div>
       <b-modal ref="modal" hide-footer v-model="show" data-keyboard="false" size="lg"
-               data-backdrop="static" :title="'Education'" header-bg-variant='warning'>
+               data-backdrop="static" :title="'Education'">
         <template v-slot:modal-title>
-          <div style="font-size: 40px;" class="nice-font">
+          <div style="font-size: 40px;" class="nice-font px-3">
             Education
           </div>
-          <p style="font-size: 17px; color: #575e65; margin-top: -7px; padding-left: 2px;" class="mb-0 nice-font">Give some details to describe your education!</p>
+          <p style="font-size: 17px; color: #575e65; margin-top: -7px; padding-left: 2px;" class="mb-0 nice-font px-3">Give some details to describe your education!</p>
         </template>
-        <div class="d-block text-center">
+        <div class="d-block text-center px-3 nice-font pb-2">
           <b-alert variant="danger" v-if="showAlert" :show="10">{{alertText}}</b-alert>
           <b-form class="text-left">
-            <label>Name of School*</label>
+            <label class="mb-0 smaller-font">Name of School*</label>
             <b-form-group>
-              <b-form-input id="title" v-model.trim="newEducation.school"></b-form-input>
+              <b-form-input id="title" v-model.trim="newEducation.school" class="input-field"></b-form-input>
             </b-form-group>
-            <label>Degree*</label>
+            <label class="mb-0 smaller-font">Degree*</label>
             <b-form-group>
-              <b-form-input id="position" v-model.trim="newEducation.degree"></b-form-input>
+              <b-form-input id="position" v-model.trim="newEducation.degree" class="input-field"></b-form-input>
             </b-form-group>
-            <label>Field Of Study*</label>
+            <label class="mb-0 smaller-font">Field Of Study*</label>
             <b-form-group>
-              <b-form-input id="position" v-model.trim="newEducation.fieldofstudy"></b-form-input>
+              <b-form-input id="position" v-model.trim="newEducation.fieldofstudy" class="input-field"></b-form-input>
             </b-form-group>
             <div class="row">
               <div class="col-6">
-                <label>From*</label>
+                <label class="mb-0 smaller-font">From*</label>
                 <b-form-group>
-                  <b-form-input id="from" v-model="newEducation.from" type="date" required></b-form-input>
+                  <b-form-input id="from" v-model="newEducation.from" type="date" required class="input-field"></b-form-input>
                 </b-form-group>
               </div>
               <div class="col-6">
-                <label>To</label>
+                <label class="mb-0 smaller-font">To</label>
                 <span style="background-color: #b4b4b4; color: white; border-radius: 50%; margin-left: 5px;" class="px-2 info-hover" data-toggle="tooltip" data-placement="top" title="If you are currently enrolled, leave this blank">i</span>
                 <b-form-group>
-                  <b-form-input id="to" v-model="newEducation.to" type="date"></b-form-input>
+                  <b-form-input id="to" v-model="newEducation.to" type="date" class="input-field"></b-form-input>
                 </b-form-group>
               </div>
             </div>
           </b-form>
+          <button class="mt-2 btn btn-outline-warning w-100" v-if="buttonText === 'Edit Education'" @click="editEducation ">{{buttonText}}</button>
+          <button class="mt-2 btn-outline-warning w-100 py-1" type="submit" v-else @click="addEducation ">{{buttonText}}</button>
         </div>
-        <button class="mt-2 btn btn-outline-warning w-100" v-if="buttonText === 'Edit Education'" @click="editEducation ">{{buttonText}}</button>
-        <button class="mt-2 btn-outline-warning w-100 py-1" type="submit" v-else @click="addEducation ">{{buttonText}}</button>
       </b-modal>
     </div>
   </div>
@@ -169,9 +169,25 @@ label {
   .info-hover:hover {
     background-color: #6c757d;
   }
-
 .nice-font {
-  font-weight: 100;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif !important;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 200;
+}
+.input-field {
+  border: 0;
+  border-radius: 2px;
+  outline: none;
+  box-shadow: none;
+  margin-top: 1px;
+  background-color: #f6f6f6;
+}
+.input-field:hover {
+  background-color: #f1f1f1;
+}
+.input-field:focus {
+  background-color: #eaeaea;
+}
+.smaller-font {
+  font-size: 13px;
 }
 </style>
