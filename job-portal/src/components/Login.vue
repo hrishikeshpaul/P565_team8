@@ -193,7 +193,7 @@
   </div>
 
 </template>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <script>
 import axios from 'axios'
 import Register from './Register'
@@ -208,8 +208,6 @@ export default {
       forgotPassword: false
     }
   },
-
-
   mounted () {
     document.getElementById("main").style.marginLeft = "0";
     grecaptcha.render("recaptcha", {
