@@ -56,16 +56,19 @@ var UserSchema = new Schema({
     type: Array,
   },
   bio: {
-    type: String
+    type: String,
+    default: null
   },
   experience: [{type: mongoose.Schema.Types.ObjectId, ref: 'Experience'}],
   education: [{type: mongoose.Schema.Types.ObjectId, ref: 'Education'}],
   social: {
     linkedin: {
-      type: String
+      type: String,
+      default: null
     },
     github: {
-      type: String
+      type: String,
+      default: null
     },
   },
   date: {
