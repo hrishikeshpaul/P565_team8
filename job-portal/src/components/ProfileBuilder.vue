@@ -14,10 +14,13 @@
             @on-error="handleErrorMessage"
           >
             <h2 slot="title">Hi, let us get you started with your profile!</h2>
-            <div class="mb-2"><span v-if="errorMsg"  style="color: red;">{{errorMsg}}</span></div>
+            <div class="alert alert-danger mb-2 text-center" role="alert"  v-if="errorMsg">
+              {{errorMsg}}
+            </div>
 
             <tab-content title="Personal details"
                          icon="ti-user"
+                         class="mt-2"
                          :before-change="validateAsync"
             >
               <b-form>
@@ -37,8 +40,8 @@
                               :label="role === 'student' ? '* University' : '* Company'"
                               :class="{'error-label': invalidOrganization}"
                 >
-                  <UniversitySelect  :class="{'error-border': invalidOrganization}" v-model.trim="user.company" @addCompany="addCompany"/>
-                  <!--                   <b-form-input id="name"  :class="{'error-border': invalidOrganization}" v-model.trim="user.company"></b-form-input>-->
+                  <UniversitySelect  :class="{'error-border': invalidOrganization}" v-model.trim="user.company" @addCompany="addCompany" v-if="role === 'student'"/>
+                  <b-form-input id="name"  :class="{'error-border': invalidOrganization}" v-model.trim="user.company" v-if="role==='employer'"></b-form-input>
                 </b-form-group>
                 <b-form-group id="fieldsetHorizontal"
                               :label-cols="4"
@@ -52,7 +55,7 @@
                               :label-cols="4"
                               breakpoint="md"
                               label-size="sm"
-                              label="LinkedIn"
+                              label="* LinkedIn"
                               :class="{'error-label': invalidLinkedIn}"
                  >
                    <b-form-input id="linkedin" :class="{'error-border': invalidLinkedIn}" v-model.trim="user.social.linkedin"></b-form-input>
@@ -62,6 +65,7 @@
                               breakpoint="md"
                               label-size="sm"
                               label="Github"
+                              v-if="role === 'student'"
                 >
                   <b-form-input id="github" v-model.trim="user.social.github"></b-form-input>
                 </b-form-group>
@@ -75,7 +79,8 @@
                 </b-form-group>
               </b-form>
             </tab-content>
-            <tab-content :title="role === 'student' ? 'Education' : 'Orgainsational Information'"
+            <tab-content :title="'Education'"
+                         v-if="role === 'student'"
                          :icon="role === 'student' ? 'ti-book' : 'ti-bag'"
                          :before-change="validateAsync">
               <div v-for="(education,index) in educations" v-if="role === 'student'">
@@ -271,297 +276,272 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import NavBar from './NavBar'
-    import SkillSelect from './SkillSelect'
-    import UniversitySelect from './UniversitySelect'
+import axios from 'axios'
+import NavBar from './NavBar'
+import SkillSelect from './SkillSelect'
+import UniversitySelect from './UniversitySelect'
 
-    export default {
-        name: 'ProfileBuilder',
-        components: {
-            NavBar,
-            SkillSelect,
-            UniversitySelect,
-        },
-        data () {
-            return {
-                isError:false,
-                invalidName: false,
-                invalidOrganization: false,
-                invalidLinkedIn: false,
-                name: '',
-                user: {
-                    social: {}
-                },
-                role: '',
-                company: {},
-                experiences: [{
-                    company: '',
-                    title: '',
-                    location: '',
-                    from: '',
-                    to: '',
-                    current: [true],
-                    description: ''
-                }],
-                educations: [{
-                    school: '',
-                    degree: '',
-                    fieldofstudy: '',
-                    from: '',
-                    to: '',
-                    current: false
-                }],
-                skills: [],
-                activeIndex: 0,
-                loadingWizard: false,
-                errorMsg: null,
-                goNextIfNoError: false,
-                showNoError: false,
-                noError: ''
-            }
-        },
-        methods: {
-            onComplete: function () {
-
-                var params = {
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
-                    'Content-Type': 'application/json'
-                }
-                var id = localStorage.getItem('user_id')
-                console.log(id)
-                console.log("onCOmplete"+localStorage.getItem('user_name'))
-                axios.patch(`http://localhost:3000/api/user/${id}`, {first_time: false}, {headers: params})
-                    .then(response => {
-                        console.log('-----------hi')
-                        localStorage.setItem('user_first_time', 'false')
-                        this.$router.push({
-                            name: 'HomePage'
-                        })
-                    })
-                    .catch(e => {
-                        console.log(e.response.data)
-                    })
-
-            },
-            handleTabChanged (prevIndex, nextIndex) {
-                this.activeIndex = nextIndex;
-            },
-            setLoading: function (value) {
-                this.loadingWizard = value
-            },
-            handleValidation: function (isValid, tabIndex){
-                console.log('Tab: ' + tabIndex + ' valid: ' + isValid)
-            },
-            handleErrorMessage: function(errorMsg) {
-                this.errorMsg = errorMsg
-            },
-            validateAsync:function() {
-                return new Promise((resolve, reject) => {
-                    var id = localStorage.getItem('user_id')
-                    var params = {
-                        'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
-                        'Content-Type': 'application/json'
-                    }
-                    if (this.activeIndex === 0) {
-                        var obj = {
-                            data: {
-                                name: this.user.name,
-                                company: this.company,
-                                website: this.user.website,
-                                social: this.user.social,
-                                bio: this.user.bio
-                            },
-                            user: {id: id}
-                        }
-                        if (!this.user.name|| !this.company || ! this.user.social.linkedin) {
-                            this.invalidName=false;
-                            this.invalidOrganization = false;
-                            this.invalidLinkedIn =false;
-                            if (!this.user.name)
-                                this.invalidName=true;
-                            if (!this.user.company)
-                                this.invalidOrganization = true;
-                            if (!this.user.social.linkedin)
-                                this.invalidLinkedIn = true;
-                            reject('Please enter required fields');
-                        }
-
-                        axios.post(`http://localhost:3000/api/profile/personal`, obj, {headers: params})
-                            .then(response => {
-                                resolve(true)
-                            })
-                            .catch(e => {
-                                reject(e.response.data)
-                            })
-                    } else if (this.activeIndex === 1) {
-                        if (this.role === 'student') {
-                            if (this.educations[0].school === '') {
-                                resolve(true)
-                            } else {
-                                var obj = {
-                                    data: this.educations,
-                                    user: {id: id}
-                                }
-                                axios.post(`http://localhost:3000/api/profile/education`, obj, {headers: params})
-                                    .then(response => {
-                                        resolve(true)
-                                    })
-                                    .catch(e => {
-                                        reject(e.response.data)
-                                    })
-                            }
-                        }
-                        else {
-                            console.log('put the employer code here')
-                        }
-                    } else if (this.activeIndex === 2) {
-                        if (this.role === 'student') {
-                            if (this.experiences[0].company === '') {
-                                resolve(true)
-                            } else {
-                                var obj = {
-                                    data: this.experiences,
-                                    user: {id: id}
-                                }
-                                // temporary solve of bug where the current is not working
-                                obj.data.forEach(exp => {
-                                    exp.current = false
-                                })
-                                axios.post(`http://localhost:3000/api/profile/experience`, obj, {headers: params})
-                                    .then(response => {
-                                        resolve(true)
-                                    })
-                                    .catch(e => {
-                                        reject(e.response.data)
-                                    })
-                            }
-                        }
-                        else {
-                            console.log('put employer code')
-                        }
-                    } else if (this.activeIndex === 3) {
-                        if (this.skills.length > 0) {
-                            console.log('not done')
-                            var skillsArray = []
-                            this.skills.forEach(skill => {
-                                skillsArray.push(skill.name)
-                            })
-
-                            var obj = {
-                                data: skillsArray,
-                                user: {id: id}
-                            }
-
-                            axios.post(`http://localhost:3000/api/profile/skills`, obj, {headers: params})
-                                .then(response => {
-                                    resolve(true)
-                                })
-                                .catch(e => {
-                                    reject(e.response.data)
-                                })
-                        } else {
-                            resolve(true)
-                        }
-                    }
-                })
-            },
-            addItem (array) {
-                if (array === 'education')
-                    this.educations.push(
-                        {
-                            school: '',
-                            degree: '',
-                            fieldofstudy: '',
-                            from: '',
-                            to: '',
-                            current: true
-                        }
-                    )
-                else if (array === 'experience')
-                    this.experiences.push({
-                        company: '',
-                        title: '',
-                        location: '',
-                        from: '',
-                        to: '',
-                        current: [],
-                        description: ''
-                    })
-            },
-            addSkills (skill) {
-                this.skills = skill
-            },
-            addCompany (skill) {
-                this.company = skill.name
-            },
-            deleteItem (index, array) {
-                if (array === 'education')
-                    this.educations = this.educations.splice(this.educations.indexOf(index), 1)
-                else if (array === 'experience')
-                    this.experiences = this.experiences.splice(this.experiences.indexOf(index), 1)
-            },
-            logout () {
-                localStorage.removeItem('jwtToken')
-                this.$router.push({
-                    name: 'Login'
-                })
-            },
-        },
-        created () {
-            console.log("onCOmplete"+localStorage.getItem('user_name'))
-
-            console.log("--------------\n"+typeof localStorage.getItem('role'))
-
-
-            if (localStorage.getItem('role') == 'null') {
-                const {value: role} = this.$swal({
-                    title: 'Select Role',
-                    input: 'select',
-                    inputOptions: {
-                        student: 'Student',
-                        employer: 'Employer'
-                    },
-                    allowOutsideClick: false,
-                    showCancelButton: false,
-                    inputPlaceholder: 'Select role',
-                    confirmButtonColor: '#f0ad4e',
-                    inputValidator: (value) => {
-                        return new Promise((resolve, reject) => {
-                            if (value === 'student' || value === 'employer') {
-                                var id = localStorage.getItem('user_id')
-                                var params = {
-                                    'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
-                                    'Content-Type': 'application/json'
-                                }
-                                var obj = {
-                                    user: id,
-                                    role: value
-                                }
-                                axios.post('http://localhost:3000/api/profile/updateRole', obj, {headers: params})
-                                    .then(resposne => {
-                                        localStorage.setItem('role', value)
-                                        console.log(value)
-                                        this.role = value
-                                        resolve()
-                                    })
-                                    .catch(e => {
-                                        reject('Error')
-                                    })
-                            } else {
-                                resolve('You need to select a role :)')
-                            }
-                        })
-                    }
-                })
-
-
-            }
-        },
-        mounted () {
-            this.role = localStorage.role
-        }
+export default {
+  name: 'ProfileBuilder',
+  components: {
+    NavBar,
+    SkillSelect,
+    UniversitySelect
+  },
+  data () {
+    return {
+      isError: false,
+      invalidName: false,
+      invalidOrganization: false,
+      invalidLinkedIn: false,
+      name: '',
+      user: {
+        social: {}
+      },
+      role: '',
+      company: {},
+      experiences: [{
+        company: '',
+        title: '',
+        location: '',
+        from: '',
+        to: '',
+        current: true,
+        description: ''
+      }],
+      educations: [{
+        school: '',
+        degree: '',
+        fieldofstudy: '',
+        from: '',
+        to: '',
+        current: false
+      }],
+      skills: [],
+      activeIndex: 0,
+      loadingWizard: false,
+      errorMsg: null,
+      goNextIfNoError: false,
+      showNoError: false,
+      noError: ''
     }
+  },
+  methods: {
+    onComplete: function () {
+      var params = {
+        'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
+        'Content-Type': 'application/json'
+      }
+      var id = localStorage.getItem('user_id')
+      axios.patch(`http://localhost:3000/api/user/${id}`, {first_time: false}, {headers: params})
+        .then(response => {
+          localStorage.setItem('user_first_time', 'false')
+          this.$router.push({
+            name: 'HomePage'
+          })
+        })
+        .catch(e => {
+          console.log(e.response.data)
+        })
+    },
+    handleTabChanged (prevIndex, nextIndex) {
+      this.activeIndex = nextIndex
+    },
+    setLoading: function (value) {
+      this.loadingWizard = value
+    },
+    handleValidation: function (isValid, tabIndex) {
+      console.log('Tab: ' + tabIndex + ' valid: ' + isValid)
+    },
+    handleErrorMessage: function (errorMsg) {
+      this.errorMsg = errorMsg
+    },
+    validateAsync: function () {
+      return new Promise((resolve, reject) => {
+        var id = localStorage.getItem('user_id')
+        var params = {
+          'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
+          'Content-Type': 'application/json'
+        }
+        if (this.activeIndex === 0) {
+          var obj = {
+            data: {
+              name: this.user.name,
+              company: this.company,
+              website: this.user.website,
+              social: this.user.social,
+              bio: this.user.bio
+            },
+            user: {id: id}
+          }
+          if (!this.user.name || !this.company || !this.user.social.linkedin) {
+            this.invalidName = false
+            this.invalidOrganization = false
+            this.invalidLinkedIn = false
+            if (!this.user.name) { this.invalidName = true }
+            if (!this.user.company) { this.invalidOrganization = true }
+            if (!this.user.social.linkedin) { this.invalidLinkedIn = true }
+            reject('Please enter required fields')
+          }
+
+          axios.post(`http://localhost:3000/api/profile/personal`, obj, {headers: params})
+            .then(response => {
+              resolve(true)
+            })
+            .catch(e => {
+              reject(e.response.data)
+            })
+        } else if (this.activeIndex === 1) {
+          if (this.role === 'student') {
+            if (this.educations[0].school === '') {
+              resolve(true)
+            } else {
+              var obj = {
+                data: this.educations,
+                user: {id: id}
+              }
+              axios.post(`http://localhost:3000/api/profile/education`, obj, {headers: params})
+                .then(response => {
+                  resolve(true)
+                })
+                .catch(e => {
+                  reject(e.response.data)
+                })
+            }
+          } else {
+            console.log('put the employer code here')
+          }
+        } else if (this.activeIndex === 2) {
+          if (this.role === 'student') {
+            if (this.experiences[0].company === '') {
+              resolve(true)
+            } else {
+              var obj = {
+                data: this.experiences,
+                user: {id: id}
+              }
+              axios.post(`http://localhost:3000/api/profile/experience`, obj, {headers: params})
+                .then(response => {
+                  resolve(true)
+                })
+                .catch(e => {
+                  reject(e.response.data)
+                })
+            }
+          } else {
+            console.log('put employer code')
+          }
+        } else if (this.activeIndex === 3) {
+          if (this.skills.length > 0) {
+            var skillsArray = []
+            this.skills.forEach(skill => {
+              skillsArray.push(skill.name)
+            })
+
+            var obj = {
+              data: skillsArray,
+              user: {id: id}
+            }
+
+            axios.post(`http://localhost:3000/api/profile/skills`, obj, {headers: params})
+              .then(response => {
+                resolve(true)
+              })
+              .catch(e => {
+                reject(e.response.data)
+              })
+          } else {
+            resolve(true)
+          }
+        }
+      })
+    },
+    addItem (array) {
+      if (array === 'education') {
+        this.educations.push(
+          {
+            school: '',
+            degree: '',
+            fieldofstudy: '',
+            from: '',
+            to: '',
+            current: true
+          }
+        )
+      } else if (array === 'experience') {
+        this.experiences.push({
+          company: '',
+          title: '',
+          location: '',
+          from: '',
+          to: '',
+          current: [],
+          description: ''
+        })
+      }
+    },
+    addSkills (skill) {
+      this.skills = skill
+    },
+    addCompany (skill) {
+      this.company = skill.name
+    },
+    deleteItem (index, array) {
+      if (array === 'education') { this.educations = this.educations.splice(this.educations.indexOf(index), 1) } else if (array === 'experience') { this.experiences = this.experiences.splice(this.experiences.indexOf(index), 1) }
+    },
+    logout () {
+      localStorage.removeItem('jwtToken')
+      this.$router.push({
+        name: 'Login'
+      })
+    }
+  },
+  created () {
+    if (localStorage.getItem('role') == 'null') {
+      const {value: role} = this.$swal({
+        title: 'Select Role',
+        input: 'select',
+        inputOptions: {
+          student: 'Student',
+          employer: 'Employer'
+        },
+        allowOutsideClick: false,
+        showCancelButton: false,
+        inputPlaceholder: 'Select role',
+        confirmButtonColor: '#f0ad4e',
+        inputValidator: (value) => {
+          return new Promise((resolve, reject) => {
+            if (value === 'student' || value === 'employer') {
+              var id = localStorage.getItem('user_id')
+              var params = {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length),
+                'Content-Type': 'application/json'
+              }
+              var obj = {
+                user: id,
+                role: value
+              }
+              axios.post('http://localhost:3000/api/profile/updateRole', obj, {headers: params})
+                .then(resposne => {
+                  localStorage.setItem('role', value)
+                  this.role = value
+                  resolve()
+                })
+                .catch(e => {
+                  reject('Error')
+                })
+            } else {
+              resolve('You need to select a role :)')
+            }
+          })
+        }
+      })
+    }
+  },
+  mounted () {
+    this.role = localStorage.role
+  }
+}
 </script>
 
 <style scoped>
@@ -584,5 +564,26 @@
   }
   .error-label {
     color: red;
+  }
+  .nice-font {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 200;
+  }
+  .input-field {
+    border: 0;
+    border-radius: 2px;
+    outline: none;
+    box-shadow: none;
+    margin-top: 1px;
+    background-color: #f6f6f6;
+  }
+  .input-field:hover {
+    background-color: #f1f1f1;
+  }
+  .input-field:focus {
+    background-color: #eaeaea;
+  }
+  .smaller-font {
+    font-size: 13px;
   }
 </style>
