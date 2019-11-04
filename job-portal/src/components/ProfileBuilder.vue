@@ -24,58 +24,42 @@
                          :before-change="validateAsync"
             >
               <b-form>
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="4"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="* Full Name"
-                              :class="{'error-label': invalidName}">
-                  <b-form-input id="name_input" :class="{'error-border': invalidName}" v-model.trim="user.name"></b-form-input>
+                <label class="smaller-font">Full Name *</label>
+                <b-form-group :class="{'error-label': invalidName}">
+                  <b-form-input id="name_input" :class="{'error-border': invalidName, 'input-field': 'true'}" v-model.trim="user.name"></b-form-input>
                 </b-form-group>
 
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="4"
-                              breakpoint="md"
-                              label-size="sm"
-                              :label="role === 'student' ? '* University' : '* Company'"
+                <label class="smaller-font">{{role === 'student' ? 'University *' : 'Company *'}}</label>
+                <b-form-group
                               :class="{'error-label': invalidOrganization}"
                 >
                   <UniversitySelect  :class="{'error-border': invalidOrganization}" v-model.trim="user.company" @addCompany="addCompany" v-if="role === 'student'"/>
                   <b-form-input id="name"  :class="{'error-border': invalidOrganization}" v-model.trim="user.company" v-if="role==='employer'"></b-form-input>
                 </b-form-group>
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="4"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="Website"
+
+                <label class="smaller-font">Website</label>
+                <b-form-group
                 >
-                  <b-form-input id="website" v-model.trim="user.website"></b-form-input>
+                  <b-form-input id="website" v-model.trim="user.website" class="input-field"></b-form-input>
                 </b-form-group>
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="4"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="* LinkedIn"
+                <label class="smaller-font">LinkedIn *</label>
+                <b-form-group
                               :class="{'error-label': invalidLinkedIn}"
                  >
-                   <b-form-input id="linkedin" :class="{'error-border': invalidLinkedIn}" v-model.trim="user.social.linkedin"></b-form-input>
+                   <b-form-input id="linkedin" :class="{'error-border': invalidLinkedIn, 'input-field': 'true'}" v-model.trim="user.social.linkedin"></b-form-input>
                 </b-form-group>
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="4"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="Github"
+
+                <label class="smaller-font">GitHub</label>
+                <b-form-group
                               v-if="role === 'student'"
                 >
-                  <b-form-input id="github" v-model.trim="user.social.github"></b-form-input>
+                  <b-form-input id="github" v-model.trim="user.social.github" class="input-field"></b-form-input>
                 </b-form-group>
-                <b-form-group id="fieldsetHorizontal"
-                              :label-cols="4"
-                              breakpoint="md"
-                              label-size="sm"
-                              label="Bio"
+
+                <label class="smaller-font">Bio</label>
+                <b-form-group
                 >
-                  <b-form-input id="bio" v-model.trim="user.bio"></b-form-input>
+                  <b-form-textarea id="bio" v-model.trim="user.bio" rows="3" class="input-field"></b-form-textarea>
                 </b-form-group>
               </b-form>
             </tab-content>
@@ -93,54 +77,34 @@
                   </div>
                 </div>
                 <b-form v-if="role === 'student'">
-                  <b-form-group id="fieldsetHorizontal"
-                                :label-cols="4"
-                                breakpoint="md"
-                                label-size="sm"
-                                label="Name of School">
-                    <b-form-input id="school" v-model.trim="education.school"></b-form-input>
+
+                  <label class="smaller-font">Name of School</label>
+                  <b-form-group>
+                    <b-form-input id="school" v-model.trim="education.school" class="input-field"></b-form-input>
                   </b-form-group>
-                  <b-form-group id="fieldsetHorizontal"
-                                :label-cols="4"
-                                breakpoint="md"
-                                label-size="sm"
-                                label="Degree">
-                    <b-form-input id="degree" v-model.trim="education.degree"></b-form-input>
+
+                  <label class="smaller-font">Degree</label>
+                  <b-form-group>
+                    <b-form-input id="degree" v-model.trim="education.degree" class="input-field"></b-form-input>
                   </b-form-group>
-                  <b-form-group id="fieldsetHorizontal"
-                                :label-cols="4"
-                                breakpoint="md"
-                                label-size="sm"
-                                label="Field Of Study">
-                    <b-form-input id="fieldofstudy" v-model.trim="education.fieldofstudy"></b-form-input>
+
+                  <label class="smaller-font">Field of Study</label>
+                  <b-form-group>
+                    <b-form-input id="fieldofstudy" v-model.trim="education.fieldofstudy" class="input-field"></b-form-input>
                   </b-form-group>
                   <div class="row">
-                    <div class="col-5">
-                      <b-form-group id="fieldsetHorizontal"
-                                    :label-cols="2"
-                                    breakpoint="md"
-                                    label-size="sm"
-                                    label="From">
-                        <b-form-input id="from" v-model.trim="education.from" type="date"></b-form-input>
+                    <div class="col-6">
+
+                      <label class="smaller-font">From</label>
+                      <b-form-group>
+                        <b-form-input id="from" v-model.trim="education.from" type="date" class="input-field"></b-form-input>
                       </b-form-group>
                     </div>
-                    <div class="col-5">
-                      <b-form-group id="fieldsetHorizontal"
-                                    :label-cols="2"
-                                    breakpoint="md"
-                                    label-size="sm"
-                                    label="To">
-                        <b-form-input id="to" v-model.trim="education.to" type="date"></b-form-input>
+                    <div class="col-6">
+                      <label class="smaller-font">To</label>
+                      <b-form-group>
+                        <b-form-input id="to" v-model.trim="education.to" type="date" class="input-field"></b-form-input>
                       </b-form-group>
-                    </div>
-                    <div class="col-2 mt-4 pt-2">
-                      <b-form-checkbox
-                        id="checkbox-1"
-                        v-model="education.current"
-                        name="checkbox-1"
-                      >
-                        Current
-                      </b-form-checkbox>
                     </div>
                   </div>
                 </b-form>
@@ -151,24 +115,6 @@
                 class="btn-outline-warning mb-2 mt-1 "
                 @click.prevent="addItem('education')">
                 Add</button>
-              <div v-if="role === 'employer' ">
-                <b-form>
-                  <b-form-group id="fieldsetHorizontal"
-                                :label-cols="4"
-                                breakpoint="md"
-                                label-size="sm"
-                                label="Name of Organization">
-                    <b-form-input id="name" v-model.trim="company.name"></b-form-input>
-                  </b-form-group>
-                  <b-form-group id="fieldsetHorizontal"
-                                :label-cols="4"
-                                breakpoint="md"
-                                label-size="sm"
-                                label="Location">
-                    <b-form-input id="name" v-model.trim="company.location"></b-form-input>
-                  </b-form-group>
-                </b-form>
-              </div>
             </tab-content>
             <!--           EXPERIENCE TAB-->
             <tab-content
@@ -186,62 +132,37 @@
                   </div>
                 </div>
                 <b-form>
-                  <b-form-group id="fieldsetHorizontal"
-                                :label-cols="4"
-                                breakpoint="md"
-                                label-size="sm"
-                                label="Name of Organization">
-                    <b-form-input id="company" v-model.trim="experience.company"></b-form-input>
+                  <label class="smaller-font">Name of Organisation</label>
+                  <b-form-group>
+                    <b-form-input id="company" v-model.trim="experience.company" class="input-field"></b-form-input>
                   </b-form-group>
-                  <b-form-group id="fieldsetHorizontal"
-                                :label-cols="4"
-                                breakpoint="md"
-                                label-size="sm"
-                                label="Title">
-                    <b-form-input id="title" v-model.trim="experience.title"></b-form-input>
+
+                  <label class="smaller-font">Title</label>
+                  <b-form-group>
+                    <b-form-input id="title" v-model.trim="experience.title" class="input-field"></b-form-input>
                   </b-form-group>
-                  <b-form-group id="fieldsetHorizontal"
-                                :label-cols="4"
-                                breakpoint="md"
-                                label-size="sm"
-                                label="Location">
-                    <b-form-input id="location" v-model.trim="experience.location"></b-form-input>
+
+                  <label class="smaller-font">Location</label>
+                  <b-form-group>
+                    <b-form-input id="location" v-model.trim="experience.location" class="input-field"></b-form-input>
                   </b-form-group>
                   <div class="row">
-                    <div class="col-5">
-                      <b-form-group id="fieldsetHorizontal"
-                                    :label-cols="2"
-                                    breakpoint="md"
-                                    label-size="sm"
-                                    label="From">
-                        <b-form-input id="from" v-model.trim="experience.from" type="date"></b-form-input>
+                    <div class="col-6">
+                      <label class="smaller-font">From</label>
+                      <b-form-group>
+                        <b-form-input id="from" v-model.trim="experience.from" type="date" class="input-field"></b-form-input>
                       </b-form-group>
                     </div>
-                    <div class="col-5">
-                      <b-form-group id="fieldsetHorizontal"
-                                    :label-cols="2"
-                                    breakpoint="md"
-                                    label-size="sm"
-                                    label="To">
-                        <b-form-input id="to" v-model.trim="experience.to" type="date"></b-form-input>
+                    <div class="col-6">
+                      <label class="smaller-font">To</label>
+                      <b-form-group>
+                        <b-form-input id="to" v-model.trim="experience.to" type="date" class="input-field"></b-form-input>
                       </b-form-group>
-                    </div>
-                    <div class="col-2 mt-4 pt-2">
-                      <b-form-checkbox
-                        id="checkbox-1"
-                        v-model="experience.current"
-                        name="checkbox-1"
-                      >
-                        Current
-                      </b-form-checkbox>
                     </div>
                   </div>
-                  <b-form-group id="fieldsetHorizontal"
-                                :label-cols="4"
-                                breakpoint="md"
-                                label-size="sm"
-                                label="Description">
-                    <b-form-input id="description" v-model.trim="experience.description"></b-form-input>
+                    <label class="smaller-font">Title</label>
+                  <b-form-group>
+                    <b-form-textarea id="description" v-model.trim="experience.description" rows="4" class="input-field"></b-form-textarea>
                   </b-form-group>
                 </b-form>
               </div>
@@ -309,16 +230,15 @@ export default {
         location: '',
         from: '',
         to: '',
-        current: true,
         description: ''
       }],
       educations: [{
         school: '',
         degree: '',
+        location: '',
         fieldofstudy: '',
         from: '',
-        to: '',
-        current: false
+        to: ''
       }],
       skills: [],
       activeIndex: 0,
@@ -395,44 +315,100 @@ export default {
               reject(e.response.data)
             })
         } else if (this.activeIndex === 1) {
-          if (this.role === 'student') {
-            if (this.educations[0].school === '') {
-              resolve(true)
-            } else {
+          if (this.role === "student") {
+            let vals = new Set();
+            for (let i = 0; i < this.educations.length; i++) {
+              vals.add(this.educations[i].school === "");
+              vals.add(this.educations[i].degree === "");
+              vals.add(this.educations[i].location === "");
+              vals.add(this.educations[i].fieldofstudy === "");
+              vals.add(this.educations[i].from === "");
+              vals.add(this.educations[i].to === "");
+              if (
+                this.educations[i].from != "" &&
+                this.educations[i].to != ""
+              ) {
+                let from = new Date(this.educations[i].from);
+                let to = new Date(this.educations[i].to);
+                if (from > to) {
+                  reject(
+                    "Please make sure the to date appears after the from date"
+                  );
+                }
+              }
+            }
+
+            if (vals.size == 1) {
               var obj = {
                 data: this.educations,
-                user: {id: id}
-              }
-              axios.post(`http://localhost:3000/api/profile/education`, obj, {headers: params})
+                user: { id: id }
+              };
+
+              axios
+                .post(`http://localhost:3000/api/profile/education`, obj, {
+                  headers: params
+                })
                 .then(response => {
-                  resolve(true)
+                  resolve(true);
                 })
                 .catch(e => {
-                  reject(e.response.data)
-                })
+                  reject(e.response.data);
+                });
+            } else {
+              reject(
+                "Please complete all fields, or return to this section later."
+              );
             }
           } else {
-            console.log('put the employer code here')
+            console.log("pt employer code");
           }
         } else if (this.activeIndex === 2) {
-          if (this.role === 'student') {
-            if (this.experiences[0].company === '') {
-              resolve(true)
-            } else {
+          if (this.role === "student") {
+            let vals = new Set();
+            for (let i = 0; i < this.experiences.length; i++) {
+              vals.add(this.experiences[i].company === "");
+              vals.add(this.experiences[i].title === "");
+              vals.add(this.experiences[i].location === "");
+              vals.add(this.experiences[i].from === "");
+              vals.add(this.experiences[i].to === "");
+              vals.add(this.experiences[i].description === "");
+              if (
+                this.experiences[i].from != "" &&
+                this.experiences[i].to != ""
+              ) {
+                let from = new Date(this.experiences[i].from);
+                let to = new Date(this.experiences[i].to);
+                if (from > to) {
+                  reject(
+                    "Please make sure the to date appears after the from date"
+                  );
+                }
+              }
+            }
+            console.log(vals)
+            if (vals.size === 1) {
               var obj = {
                 data: this.experiences,
-                user: {id: id}
-              }
-              axios.post(`http://localhost:3000/api/profile/experience`, obj, {headers: params})
+                user: { id: id }
+              };
+
+              axios
+                .post(`http://localhost:3000/api/profile/experience`, obj, {
+                  headers: params
+                })
                 .then(response => {
-                  resolve(true)
+                  resolve(true);
                 })
                 .catch(e => {
-                  reject(e.response.data)
-                })
+                  reject(e.response.data);
+                });
+            } else {
+              reject(
+                "Please complete all fields, or return to this section later."
+              );
             }
           } else {
-            console.log('put employer code')
+            console.log("pt employer code");
           }
         } else if (this.activeIndex === 3) {
           if (this.skills.length > 0) {

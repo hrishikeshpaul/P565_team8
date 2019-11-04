@@ -51,31 +51,6 @@
             </div>
           </div>
         </div>
-<!--        <div class="d-block px-3 nice-font">-->
-<!--          <div>-->
-<!--            <div class="col-lg-2 col-md-2 col-sm-12 ">-->
-<!--              <img src="../assets/company.jpg" style="height: 200px; width: 200px; object-fit: cover;"/>-->
-<!--            </div>-->
-<!--            <div class="col-lg-10 col-md-10 col-sm-12 pl-0">-->
-<!--              <div class="row">-->
-<!--                <div class="col-lg-1 col-mg-1">-->
-<!--                  <span><i></i></span>-->
-<!--                </div>-->
-<!--                <div class="col-lg-11 col-mg-11"></div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <b>Company: </b>-->
-<!--          <p>{{newJob.company}}</p>-->
-<!--          <b>Location: </b>-->
-<!--          <p>{{newJob.location}}</p>-->
-<!--          <b>Position: </b>-->
-<!--          <p>{{newJob.position}}</p>-->
-<!--          <b>Description: </b>-->
-<!--          <p style="white-space: pre-wrap">{{newJob.description}}</p>-->
-<!--          <b>Skills Required: </b>-->
-<!--          <p>{{newJob.skills.length > 0 ? newJob.skills.map(s => s.name).join(', ') : 'None'}}</p>-->
-<!--        </div>-->
       </b-modal>
     </div>
   </div>
