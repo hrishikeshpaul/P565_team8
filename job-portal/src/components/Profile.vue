@@ -105,7 +105,7 @@
                 </b-tab>
                 <b-tab title="Education" style="max-height: 1000px; overflow-y: auto;">
                   <b-card-body style="font-size: 18px;">
-                    <div v-if="user.education.length > 0" v-for="edu in user.education" :id="edu.school">
+                    <div v-for="edu in user.education" :id="edu.school">
                       <b-card class="mb-3 shadow-hover">
                         <button style="float: right; border: none; margin-top: 5px !important;" class="btn btn-outline-danger ml-2"
                                 @click="deleteEducation(edu)"><i class="ti-close"></i></button>
@@ -156,7 +156,7 @@
                 </b-tab>
                 <b-tab title="Experiences" style="max-height: 1000px; overflow-y: auto;">
                   <b-card-body style="font-size: 19px;">
-                    <div v-if="user.experience.length > 0" v-for="exp in user.experience">
+                    <div v-for="exp in user.experience">
                       <b-card class="mb-3 shadow-hover">
                         <div class="row">
                           <div class="col-lg-10 col-md-11 col-sm-12">
@@ -422,7 +422,17 @@ export default {
       educationButtonText: '',
       experienceButtonText: '',
       user_id: localStorage.getItem('user_id'),
-      user: {},
+      user: {
+        acceptances: [],
+        bio: '',
+        name: '',
+        location: '',
+        company: '',
+        social: {
+          linkedin: '',
+          github: ''
+        }
+      },
       skillsToUpdate: [],
       role: localStorage.role,
       show: true,

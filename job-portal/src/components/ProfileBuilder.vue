@@ -290,7 +290,10 @@ export default {
         invalidOrganization: false,
       name: '',
       user: {
-        social: {}
+        social: {
+          linkedin: '',
+          github: ''
+        }
       },
       role: '',
       company: {},
@@ -441,7 +444,7 @@ export default {
                 exp.current = false
               })
               axios.post(`http://localhost:3000/api/profile/experience`, obj, {headers: params})
-                .then(response => {   
+                .then(response => {
                   resolve(true)
                 })
                 .catch(e => {

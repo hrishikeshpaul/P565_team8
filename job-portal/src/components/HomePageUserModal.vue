@@ -95,6 +95,10 @@
       show: false,
       newUser: {
         location: '',
+        social: {
+          linkedin: '',
+          github: ''
+        },
         skills: []
       },
       showAlert: false,

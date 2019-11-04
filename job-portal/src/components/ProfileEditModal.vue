@@ -14,33 +14,33 @@
           <b-form class="text-left">
             <label class="mb-0 smaller-font">Name</label>
             <b-form-group>
-              <b-form-input id="title" v-model.trim="user.name" class="input-field"></b-form-input>
+              <b-form-input id="title" v-model.trim="newUser.name" class="input-field"></b-form-input>
             </b-form-group>
             <label class="mb-0 smaller-font">Company</label>
             <b-form-group>
-              <b-form-input id="position" v-model.trim="user.company" class="input-field"></b-form-input>
+              <b-form-input id="position" v-model.trim="newUser.company" class="input-field"></b-form-input>
             </b-form-group>
             <label class="mb-0 smaller-font">Website</label>
             <b-form-group>
-              <b-form-input id="company" v-model.trim="user.website" class="input-field"></b-form-input>
+              <b-form-input id="company" v-model.trim="newUser.website" class="input-field"></b-form-input>
             </b-form-group>
             <label class="mb-0 smaller-font">LinkedIn</label>
             <b-form-group>
-              <b-form-input id="company" v-model.trim="user.social.linkedin" class="input-field"></b-form-input>
+              <b-form-input id="company" v-model.trim="newUser.social.linkedin" class="input-field"></b-form-input>
             </b-form-group>
 
-            <label class="mb-0 smaller-font" v-if="user.role == 'student'">GitHub</label>
-            <b-form-group v-if="user.role == 'student'">
-              <b-form-input id="company" v-model.trim="user.social.github" class="input-field"></b-form-input>
+            <label class="mb-0 smaller-font" v-if="newUser.role == 'student'">GitHub</label>
+            <b-form-group v-if="newUser.role == 'student'">
+              <b-form-input id="company" v-model.trim="newUser.social.github" class="input-field"></b-form-input>
             </b-form-group>
 
             <label class="mb-0 smaller-font">Location</label>
             <b-form-group>
-              <b-form-input id="location" v-model.trim="user.location" class="input-field"></b-form-input>
+              <b-form-input id="location" v-model.trim="newUser.location" class="input-field"></b-form-input>
             </b-form-group>
             <label class="mb-0 smaller-font">Bio</label>
             <b-form-group>
-              <b-form-textarea id="Bio" v-model.trim="user.bio" rows="4" class="input-field"></b-form-textarea>
+              <b-form-textarea id="Bio" v-model.trim="newUser.bio" rows="4" class="input-field"></b-form-textarea>
             </b-form-group>
           </b-form>
           <button class="mt-3 btn btn-outline-warning w-100" @click="editUser">Edit</button>
@@ -65,19 +65,36 @@ export default {
       required: true
     },
     user: {
-      type: Object
+      type: Object,
+      default () {
+        return {
+          social: {
+            linkedin: '',
+            github: ''
+          }
+        }
+      }
     }
   },
   data () {
     return {
       show: false,
       alertText: '',
-      showAlert: false
+      showAlert: false,
+      newUser: {
+        social: {
+          linkedin: '',
+          github: ''
+        }
+      }
     }
   },
   watch: {
     showModal (newVal) {
       this.show = newVal
+    },
+    user (newVal) {
+      this.newUser = newVal
     }
   },
   methods: {
@@ -86,22 +103,22 @@ export default {
         Authorization: 'Bearer ' + localStorage.getItem('jwtToken').substring(4, localStorage.getItem('jwtToken').length)
       }
 
-      if (this.user.name.length === 0) {
+      if (this.newUser.name.length === 0) {
         this.alertText = 'You cannot leave the name empty'
         this.showAlert = true
-      } else if (this.user.company.length === 0) {
-        this.alertText = this.user.role === 'student' ? 'You cannot leave the university name empty' : 'You cannot leave the company name empty'
+      } else if (this.newUser.company.length === 0) {
+        this.alertText = this.newUser.role === 'student' ? 'You cannot leave the university name empty' : 'You cannot leave the company name empty'
         this.showAlert = true
-      } else if (this.user.website.length === 0) {
+      } else if (this.newUser.website.length === 0) {
         this.alertText = 'You cannot leave the website empty'
         this.showAlert = true
-      } else if (this.user.location.length === 0) {
+      } else if (this.newUser.location.length === 0) {
         this.alertText = 'You cannot leave the location empty'
         this.showAlert = true
       } else {
         var id = localStorage.getItem('user_id')
 
-        axios.patch(`http://localhost:3000/api/user/${id}`, this.user, {headers: headers})
+        axios.patch(`http://localhost:3000/api/user/${id}`, this.newUser, {headers: headers})
           .then(response => {
             if (response.status === 204) {
               this.show = false
