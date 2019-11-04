@@ -37,9 +37,8 @@
                                :label="role === 'student' ? '* University' : '* Company'"
                                :class="{'error-label': invalidOrganization}"
                  >
-                   <SkillSelect @addSkills="addSkills"/>
-
-                   <b-form-input id="name"  :class="{'error-border': invalidOrganization}" v-model.trim="user.company"></b-form-input>
+                   <UniversitySelect  :class="{'error-border': invalidOrganization}" v-model.trim="user.company" @addCompany="addCompany"/>
+<!--                   <b-form-input id="name"  :class="{'error-border': invalidOrganization}" v-model.trim="user.company"></b-form-input>-->
                  </b-form-group>
                  <b-form-group id="fieldsetHorizontal"
                                :label-cols="4"
@@ -274,14 +273,14 @@
   import axios from 'axios'
   import NavBar from './NavBar'
   import SkillSelect from './SkillSelect'
-  // import UniversitySelect from './UniversitySelect'
+  import UniversitySelect from './UniversitySelect'
 
 export default {
   name: 'ProfileBuilder',
   components: {
     NavBar,
     SkillSelect,
-      // UniversitySelect,
+      UniversitySelect,
   },
   data () {
     return {
@@ -366,14 +365,14 @@ export default {
           var obj = {
             data: {
               name: this.user.name,
-              company: this.user.company,
+              company: this.company,
               website: this.user.website,
               social: this.user.social,
               bio: this.user.bio
             },
             user: {id: id}
           }
-          if (!this.user.name|| !this.user.company) {
+          if (!this.user.name|| !this.company) {
               this.invalidName=false;
               this.invalidOrganization = false;
               if (!this.user.name)
@@ -488,6 +487,9 @@ export default {
     addSkills (skill) {
      this.skills = skill
     },
+    addCompany (skill) {
+     this.company = skill.name
+    },
     deleteItem (index, array) {
       if (array === 'education')
         this.educations = this.educations.splice(this.educations.indexOf(index), 1)
@@ -505,6 +507,17 @@ export default {
       console.log("onCOmplete"+localStorage.getItem('user_name'))
 
       console.log("--------------\n"+typeof localStorage.getItem('role'))
+      console.log("****************"+JSON.stringify(localStorage))
+
+      // if (localStorage.getItem('name') != 'null') {
+      //     const {value: role} = this.$swal({
+      //         title: localStorage.getItem('name').toString(),
+      //         allowOutsideClick: false,
+      //         showCancelButton: false,
+      //         confirmButtonColor: '#f0ad4e',
+      //     })
+      // }
+
 
       if (localStorage.getItem('role') == 'null') {
           const {value: role} = this.$swal({
